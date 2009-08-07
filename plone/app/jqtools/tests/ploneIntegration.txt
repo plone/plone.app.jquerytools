@@ -20,22 +20,18 @@ We should have one items in the JS registry::
 
     >>> jsreg = portal.portal_javascripts
     >>> ids = jsreg.getResourceIds()
-    >>> '++resource++jqtools.js' in ids
+    >>> '++resource++plone.app.jqtools.js' in ids
     True
 
 Open the main JS code item as a resource::
 
-    >>> browser.open(portal_url+'/++resource++jqtools.js')
+    >>> browser.open(portal_url+'/++resource++plone.app.jqtools.js')
 
 And, make sure it's got our code in it::
 
-    # >>> print browser.contents
-    # /*
-    #  * jquery.tools ... - The missing UI library
-    #  * 
-    # ...
-
-Deliberate failure:
-    >>> 1
-    2
+    >>> print browser.contents
+    /*
+     * jquery.tools ... - The missing UI library
+     * 
+    ...
 

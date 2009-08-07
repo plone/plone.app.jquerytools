@@ -5,7 +5,7 @@
 
 
 <resource 
-    name="plone.app.jqtools.jqtools.js" 
+    name="plone.app.jqtools.js" 
     file="browser/jquery.tools.min.js"
     />
 
