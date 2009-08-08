@@ -1,0 +1,12 @@
+/*
+ * jquery.tools 1.0.2 - The missing UI library
+ * 
+ * [tools.tabs-1.0.1, tools.tooltip-1.0.2, tools.scrollable-1.0.5, tools.expose-1.0.3]
+ * 
+ * Copyright (c) 2009 Tero Piirainen
+ * http://flowplayer.org/tools/
+ *
+ * Dual licensed under MIT and GPL 2+ licenses
+ * http://www.opensource.org/licenses
+ * 
+ */
