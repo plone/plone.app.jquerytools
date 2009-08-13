@@ -3,5 +3,6 @@
   <javascript cacheable="True" compression="none" cookable="True"
               enabled="True" id="++resource++plone.app.jqtools.js" inline="False"
               expression=""
+              insert-after="jquery-integration.js"
               />
 </object>
