@@ -26,4 +26,8 @@ setup(name='plone.app.jqtools',
           'Products.CMFCore',
           'Products.GenericSetup',
       ],
+      entry_points="""
+          [z3c.autoinclude.plugin]
+          target = plone
+      """,
       )
