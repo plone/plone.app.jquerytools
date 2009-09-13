@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b1 (xxxx-xx-xx)
-------------------
+1.0b1
+-----
 
 * Initial release
