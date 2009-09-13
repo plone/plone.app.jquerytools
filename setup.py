@@ -3,7 +3,7 @@ import os
 
 version = '1.0dev'
 
-setup(name='plone.app.jqtools',
+setup(name='plone.app.jquerytools',
       version=version,
       description="JQuery Tools Integration for Plone",
       long_description=open("README.txt").read() + "\n" +
@@ -15,7 +15,7 @@ setup(name='plone.app.jqtools',
       keywords='Plone JQuery',
       author='Plone Foundation',
       author_email='plone-developers@lists.sourceforge.net',
-      url='http://svn.plone.org/svn/plone/plone.app.jqtools',
+      url='http://svn.plone.org/svn/plone/plone.app.jquerytools',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['plone', 'plone.app'],

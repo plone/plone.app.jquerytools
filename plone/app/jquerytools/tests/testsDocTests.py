@@ -23,7 +23,7 @@ def test_suite():
     return unittest.TestSuite([
 
         ztc.FunctionalDocFileSuite(
-            f, package = 'plone.app.jqtools.tests',
+            f, package = 'plone.app.jquerytools.tests',
             test_class = ptc.FunctionalTestCase,
             optionflags = doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS)
         

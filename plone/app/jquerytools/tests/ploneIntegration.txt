@@ -10,7 +10,7 @@ Setup the test framework::
 
 We should already be installed::
 
-    >>> import plone.app.jqtools
+    >>> import plone.app.jquerytools
 
 
 Javascript Resource and View
@@ -20,12 +20,12 @@ We should have one items in the JS registry::
 
     >>> jsreg = portal.portal_javascripts
     >>> ids = jsreg.getResourceIds()
-    >>> '++resource++plone.app.jqtools.js' in ids
+    >>> '++resource++plone.app.jquerytools.js' in ids
     True
 
 Open the main JS code item as a resource::
 
-    >>> browser.open(portal_url+'/++resource++plone.app.jqtools.js')
+    >>> browser.open(portal_url+'/++resource++plone.app.jquerytools.js')
 
 And, make sure it's got our code in it::
 
