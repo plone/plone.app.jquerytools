@@ -1,6 +1,6 @@
-jquery.tools 1.1.0 - The missing UI library for the Web
+jquery.tools 1.1.2 - The missing UI library for the Web
 
-[tools.tabs-1.0.2, tools.tooltip-1.1.0, tools.scrollable-1.1.0, tools.overlay-1.1.0, tools.expose-1.0.4]
+[tools.tabs-1.0.4, tools.tooltip-1.1.2, tools.scrollable-1.1.2, tools.overlay-1.1.2, tools.expose-1.0.5]
 
 Copyright (c) 2009 Tero Piirainen
 http://flowplayer.org/tools/
