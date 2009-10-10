@@ -31,7 +31,6 @@ And, make sure it's got our code in it::
 
     >>> print browser.contents
     /*
-     * jquery.tools ... - The missing UI library
-     * 
+     * jquery.tools ... - The missing UI library for the Web
     ...
 
