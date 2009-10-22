@@ -9,6 +9,11 @@
     file="browser/jquery.tools.min.js"
     />
 
+<resource 
+    name="plone.app.jquerytools.overlayhelpers.js" 
+    file="browser/overlayhelpers.js"
+    />
+
 <genericsetup:registerProfile
     name="default"
     title="Plone JQuery Tools Integration"
