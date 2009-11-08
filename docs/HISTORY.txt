@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0b6
+
+ * Document use of overlay helper.
+
 1.0b5
 
  * Integrate overlay helpers originally developed in pipbox. These
