@@ -354,6 +354,11 @@ pb.ajax_click = function(event) {
             });
         }
 
+        // This may be a complex form.
+        if (ploneFormTabbing) {
+            ploneFormTabbing.initialize();
+        }
+
         // Now, it's all ready to display; hide the
         // spinner and call JQT overlay load.
         pb.spinner.hide();
