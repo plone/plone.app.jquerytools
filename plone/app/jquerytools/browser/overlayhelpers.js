@@ -239,6 +239,16 @@ pb.form_handler = function(event) {
     var url = form.attr('action') + ' ' + ajax_parent.data('filter');
     var inputs = form.serializeArray();
 
+    // jq's serialization does not include the submit button,
+    // which zope/plone often need.
+    var submitButton = form.find("input[type=submit]");
+    if (submitButton.length) {
+        var name = submitButton[0].name;
+        if (name) {
+            inputs[inputs.length] = {name:name, value:submitButton[0].value};
+        }
+    }
+
     // Note that we're loading into a new div (not yet in the DOM)
     // so that we can check it's contents before inserting
     jQuery('<div />').load(url, inputs, function() {

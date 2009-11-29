@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0b7 (unreleased)
+-----
+
+* Marshall submit button values in ajax form submit, since jQuery
+  doesn't include them.
+
 1.0b6
 -----
 
