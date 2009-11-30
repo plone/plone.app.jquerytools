@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.0b8
+-----
+
+* Check 'action' attribute for url, enabling simple forms to open overlays.
+
 1.0b7
 -----
 

@@ -47,8 +47,8 @@ jQuery.fn.prepOverlay = function(pbo) {
         // visited this node.
         if (!o.attr('rel')) {
             // be promiscuous, pick up the url from
-            // either href or src attributes
-            var src = o.attr('href') || o.attr('src');
+            //href, src or action attributes
+            var src = o.attr('href') || o.attr('src') || o.attr('action');
 
             // translate url with config specifications
             if (pbo.urlmatch) {
