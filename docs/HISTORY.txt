@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b7 (unreleased)
+1.0b7
 -----
 
 * Initialize form tabbing on ajax form load.
