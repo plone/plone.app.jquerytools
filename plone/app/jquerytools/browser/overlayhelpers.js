@@ -315,7 +315,7 @@ pb.ajax_click = function(event) {
     if (!el.length) {
         // we don't, so create it, annotating it
         // with the information we'll need if it's
-        // got an embedded forms.
+        // got an embedded form.
         el = jQuery('<div class="pb-ajax" />');
         el.data('filter', filter);
         el.data('formtarget', formtarget);
@@ -355,7 +355,7 @@ pb.ajax_click = function(event) {
         }
 
         // This may be a complex form.
-        if (ploneFormTabbing) {
+        if (ploneFormTabbing && ploneFormTabbing.initialize) {
             ploneFormTabbing.initialize();
         }
 

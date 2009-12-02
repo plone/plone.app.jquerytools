@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0b9
+-----
+
+* Avoid overlay helper errors in Plone 3.x when trying to handle tabbed
+  forms.
+
 1.0b8
 -----
 
