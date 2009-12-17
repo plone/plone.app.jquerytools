@@ -16,7 +16,7 @@ We should already be installed::
 Javascript Resource and View
 ----------------------------
 
-We should have two items in the JS registry::
+We should have three items in the JS registry::
 
     >>> jsreg = portal.portal_javascripts
     >>> ids = jsreg.getResourceIds()
@@ -24,6 +24,9 @@ We should have two items in the JS registry::
     True
 
     >>> '++resource++plone.app.jquerytools.overlayhelpers.js' in ids
+    True
+
+    >>> '++resource++plone.app.jquerytools.plugins.js' in ids
     True
 
 Open the main JS code item as a resource::
@@ -47,5 +50,16 @@ And, make sure it's got our code in it::
     /*****************
     <BLANKLINE>
     jQuery Tools overlay helpers.
+    ...
+
+Open the plugins item as a resource::
+
+    >>> browser.open(portal_url+'/++resource++plone.app.jquerytools.plugins.js')
+
+And, make sure it's got our code in it::
+
+    >>> print browser.contents
+    /*
+     * jquery.tools 1.1.2 - The missing UI library for the Web
     ...
 

@@ -10,4 +10,9 @@
                 expression=""
                 insert-after="++resource++plone.app.jquerytools.js"
                 />
+    <javascript cacheable="True" compression="safe" cookable="True"
+                enabled="False" id="++resource++plone.app.jquerytools.plugins.js" inline="False"
+                expression=""
+                insert-after="++resource++plone.app.jquerytools.js"
+                />
 </object>

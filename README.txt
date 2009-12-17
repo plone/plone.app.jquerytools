@@ -1,12 +1,27 @@
 Introduction
 ============
 
-plone.app.jquerytools does two things:
+plone.app.jquerytools does four things:
 
 * It adds jQuery Tools to Plone's JavaScript resources.
 
 * It adds some helper code for loading overlays dynamically and
   for handling AJAX forms.
+
+* Adds several jQuery Tools plugins to the JavaScript resources.
+  The plugins registry entry is disabled by default. Applications
+  that need it and can justify a little more js bloat may turn it on.
+  
+  Plugins included are:
+  
+  tools.tabs.slideshow, tools.tabs.history, tools.tooltip.slide
+  tools.tooltip.dynamic
+  tools.scrollable.circular, tools.scrollable.autoscroll, tools.scrollable.navigator,
+  tools.overlay.gallery-1.0.0
+
+* Makes the jQuery Tools graphics available in a browser resource directory,
+  ++resource++plone.app.jquerytools.graphics. For example, the black.png file
+  is ++resource++plone.app.jquerytools.graphics/black.png.
 
 For information on using jQuery tools, see http://flowplayer.org/tools/ .
 
