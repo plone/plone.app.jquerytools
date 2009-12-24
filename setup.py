@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.0b10'
+version = '1.0b11'
 
 setup(name='plone.app.jquerytools',
       version=version,
@@ -15,7 +15,7 @@ setup(name='plone.app.jquerytools',
       keywords='Plone JQuery',
       author='Plone Foundation',
       author_email='plone-developers@lists.sourceforge.net',
-      url='http://svn.plone.org/svn/plone/plone.app.jquerytools',
+      url='http://pypi.python.org/pypi/plone.app.jquerytools',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['plone', 'plone.app'],
@@ -23,8 +23,10 @@ setup(name='plone.app.jquerytools',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'zope.component',
           'Products.CMFCore',
           'Products.GenericSetup',
+          'Zope2',
       ],
       entry_points="""
           [z3c.autoinclude.plugin]

@@ -1,8 +1,14 @@
 Changelog
 =========
 
-1.0b10
-------
+1.0b11 - unreleased
+-------------------
+
+* Declared all package dependencies and avoid unused imports inside tests.
+  [hannosch]
+
+1.0b10 - 2009-12-18
+-------------------
 
 * Add plugins resource and graphics directory.
 
