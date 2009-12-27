@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-import os
 
 version = '1.0b11'
 
@@ -7,7 +6,7 @@ setup(name='plone.app.jquerytools',
       version=version,
       description="JQuery Tools Integration for Plone",
       long_description=open("README.txt").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
+                       open("CHANGES.txt").read(),
       classifiers=[
           "Framework :: Plone",
           "Programming Language :: Python",

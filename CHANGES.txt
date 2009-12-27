@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b11 - unreleased
+1.0b11 - 2009-12-27
 -------------------
 
 * Declared all package dependencies and avoid unused imports inside tests.
