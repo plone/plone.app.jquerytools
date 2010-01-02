@@ -39,7 +39,11 @@ jQuery.fn.prepOverlay = function(pbo) {
         if (onBeforeLoad) {
             config.onBeforeLoad = onBeforeLoad;
         }
+        var onLoad = config.onLoad;
         config.onLoad = function() {
+            if (onLoad) {
+                onLoad.apply(this, arguments);
+            }
             pb.fi_focus(this.getOverlay());
         };
 
