@@ -1,7 +1,7 @@
 /*****************
 
    jQuery Tools overlay helpers.
-   
+
    Copyright © 2009, The Plone Foundation
    Licensed under the GPL
 
@@ -112,7 +112,7 @@ jQuery.fn.prepOverlay = function(pbo) {
                 // we don't get a whole page.
                 var filter = pbo.filter;
                 if (!filter) {
-                    // see if one's been supplied in the src 
+                    // see if one's been supplied in the src
                     var parts = src.split(' ');
                     src = parts.shift();
                     filter = parts.join(' ');
@@ -275,7 +275,14 @@ pb.form_handler = function(event) {
             pb.fi_focus(ajax_parent);
         } else {
             // there's no form in our new content
-            switch (ajax_parent.data('noform')) {
+
+            var noform = ajax_parent.data('noform');
+            if (typeof(noform) == "function") {
+                // get action from callback
+                noform = noform(this);
+            }
+
+            switch (noform) {
             case 'close':
                 api.close();
                 break;
@@ -287,7 +294,12 @@ pb.form_handler = function(event) {
             case 'redirect':
                 api.close();
                 pb.spinner.show();
-                location.replace(ajax_parent.data('redir_url'));
+                var target = ajax_parent.data('redir_url');
+                if (typeof(target) == "function") {
+                    // get target from callback
+                    target = target(this);
+                }
+                location.replace(target);
                 break;
             default:
                 ajax_parent.empty().append(el);

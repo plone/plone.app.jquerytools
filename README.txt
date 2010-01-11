@@ -122,14 +122,18 @@ For AJAX overlays, add the option:
       content has nothing matching the formselector. Available actions include
       'close' to simply close the overlay, 'reload' to reload the page, and
       'redirect' to redirect to another page. If you choose 'redirect', you
-      must specify the URL in the redirect option.
+      must specify the URL in the redirect option. You may also supply a callback
+      function that returns one of these strings. The overlay helper will call
+      the function with the overlay element as an argument.
 
     * closeselector: use this to specify a JQuery selector that will be used
       to find elements within the overlay that should close the overlay if
       clicked. The most obvious example is a form's cancel button.
 
     * redirect: if you specify 'redirect' for the noform action, use the
-      redirect option to specify the full target URL.
+      redirect option to specify the full target URL. You may also supply a callback
+      function that returns a URL. The overlay helper will call
+      the function with the overlay element as an argument.
 
 AJAX
 ----

@@ -4,6 +4,11 @@ Changelog
 1.0b12 - unreleased
 -------------------
 
+* Allow noform and redirect options to be specified as callback functions.
+  This will allow building in more smarts about what to do when ajax
+  forms finish.
+  [smcmahon]
+
 * Avoid clobbering the onLoad config option if it is passed to prepOverlay.
   [davisagli]
 
