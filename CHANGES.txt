@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b12 - unreleased
+1.0b12 - 2010-01-11
 -------------------
 
 * Allow noform and redirect options to be specified as callback functions.
