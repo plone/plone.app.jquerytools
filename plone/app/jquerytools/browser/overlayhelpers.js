@@ -374,8 +374,8 @@ pb.ajax_click = function(event) {
         }
 
         // This may be a complex form.
-        if (ploneFormTabbing && ploneFormTabbing.initialize) {
-            ploneFormTabbing.initialize();
+        if (jQuery.fn.ploneTabInit) {
+            el.ploneTabInit();
         }
 
         // Now, it's all ready to display; hide the
