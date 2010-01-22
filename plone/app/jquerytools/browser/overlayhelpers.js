@@ -10,7 +10,7 @@
 
 
 // Name space object for pipbox
-pb = {};
+var pb = {};
 
 // We may be creating multiple targets per page. We need to be able to
 // tell them apart. We'll do it by counting.
@@ -245,13 +245,16 @@ pb.form_handler = function(event) {
 
     // jq's serialization does not include the submit button,
     // which zope/plone often need.
-    var submitButton = form.find("input[type=submit]");
-    if (submitButton.length) {
-        var name = submitButton[0].name;
-        if (name) {
-            inputs[inputs.length] = {name:name, value:submitButton[0].value};
-        }
-    }
+    var esource = event.originalEvent.explicitOriginalTarget;
+    inputs[inputs.length] = {name:esource.name, value:esource.value};
+    
+    // var submitButton = form.find("input[type=submit]");
+    // if (submitButton.length) {
+    //     var name = submitButton[0].name;
+    //     if (name) {
+    //         inputs[inputs.length] = {name:name, value:submitButton[0].value};
+    //     }
+    // }
 
     // Note that we're loading into a new div (not yet in the DOM)
     // so that we can check it's contents before inserting
