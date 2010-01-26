@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.0b14 - Unreleased
+-------------------
+
+* Change reload strategy to set location to current href rather than using
+  reload, which can cause repost queries on some browsers.
+  [smcmahon]
+
 1.0b13 - 2010-01-22
 -------------------
 

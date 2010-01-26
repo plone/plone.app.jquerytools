@@ -292,7 +292,10 @@ pb.form_handler = function(event) {
             case 'reload':
                 api.close();
                 pb.spinner.show();
-                location.reload();
+                // location.reload results in a repost
+                // dialog in some browsers; very unlikely to
+                // be what we want.
+                location.replace(location.href);
                 break;
             case 'redirect':
                 api.close();
