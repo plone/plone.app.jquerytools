@@ -125,6 +125,8 @@ jQuery.fn.prepOverlay = function(pbo) {
                 el.data('noform', pbo.noform);
                 el.data('redir_url', pbo.redirect);
                 el.data('closeselector', pbo.closeselector);
+                el.data('beforepost', pbo.beforepost);
+                el.data('afterpost', pbo.afterpost);
 
                 // for some subtypes, we're setting click handlers
                 // and attaching overlay to the target element. That's
@@ -231,11 +233,20 @@ pb.form_handler = function(event) {
     var ajax_parent = form.closest('.pb-ajax');
     var formtarget = ajax_parent.data('formtarget');
     var closeselector = ajax_parent.data('closeselector');
+    var beforepost = ajax_parent.data('beforepost');
+    var afterpost = ajax_parent.data('afterpost');
     var api = ajax_parent.parent().overlay();
 
     if (jQuery.inArray(form[0], ajax_parent.find(formtarget)) < 0) {
         // this form wasn't ours; do the default action.
         return true;
+    }
+    
+    // beforepost callback
+    if (beforepost) {
+        if (! beforepost(event)) {
+            return true;
+        }
     }
 
     pb.spinner.show();
@@ -248,18 +259,15 @@ pb.form_handler = function(event) {
     var esource = event.originalEvent.explicitOriginalTarget;
     inputs[inputs.length] = {name:esource.name, value:esource.value};
     
-    // var submitButton = form.find("input[type=submit]");
-    // if (submitButton.length) {
-    //     var name = submitButton[0].name;
-    //     if (name) {
-    //         inputs[inputs.length] = {name:name, value:submitButton[0].value};
-    //     }
-    // }
-
     // Note that we're loading into a new div (not yet in the DOM)
     // so that we can check it's contents before inserting
     jQuery('<div />').load(url, inputs, function() {
         var el = jQuery(this);
+
+        // afterpost callback
+        if (afterpost) {
+            afterpost(el);
+        }
 
         pb.spinner.hide();
 

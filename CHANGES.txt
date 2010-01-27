@@ -4,6 +4,8 @@ Changelog
 1.0b14 - Unreleased
 -------------------
 
+* Add beforepost and afterpost callback options for ajax forms.
+
 * Change reload strategy to set location to current href rather than using
   reload, which can cause repost queries on some browsers.
   [smcmahon]

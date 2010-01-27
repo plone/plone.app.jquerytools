@@ -111,7 +111,7 @@ The complete options list:
 
  * config: JQuery Tools configuration options in a dictionary
 
-For AJAX overlays, add the option:
+For AJAX overlays, add the following, form-oriented, options:
 
     * formselector: Used to specify the JQuery selector for any
       forms inside the loaded content that you want to be handled
@@ -134,6 +134,15 @@ For AJAX overlays, add the option:
       redirect option to specify the full target URL. You may also supply a callback
       function that returns a URL. The overlay helper will call
       the function with the overlay element as an argument.
+
+    * beforepost: you may specify a function that will be called 
+      before the AJAX form posting. The form submit event is passed to the
+      function.
+      
+    * afterpost: you may specify a function that will be called immediately
+      after the AJAX load of the post response. The function will be passed
+      an element containing the returned HTML as a jQuery object. This callback
+      occurs before any other processing of the response.
 
 AJAX
 ----
@@ -198,3 +207,6 @@ specified; that's because we don't want to install an ajax submit handler
 when we may be renaming or deleting the displayed object. Second, we specify
 a close selector so that pushing the cancel button will close the overlay
 without bothering to submit the form.
+
+Limitations: Forms may not include file fields, as the current marshaling
+strategy isn't adequate to deal with them.
