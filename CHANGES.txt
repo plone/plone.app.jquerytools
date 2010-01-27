@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b14 - Unreleased
+1.0b14 - 2010-10-27
 -------------------
 
 * Add beforepost and afterpost callback options for ajax forms.
