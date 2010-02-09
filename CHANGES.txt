@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.0b15 - unreleased
+-------------------
+
+* Circumvent double-submit warning for AJAX forms.
+  [smcmahon]
+  
+* Use the $ convention for jQuery.
+
 1.0b14 - 2010-10-27
 -------------------
 

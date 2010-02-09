@@ -344,6 +344,9 @@ pb.overlay_counter = 1;
 
         pb.spinner.show();
 
+        // prevent double click warning for this form
+        $(this).find("input.submitting").removeClass('submitting');
+
         // see if we already have a container to load
         if (!el.length) {
             // we don't, so create it, annotating it
@@ -430,5 +433,5 @@ pb.overlay_counter = 1;
         return true;
     };
 
-    
+
 })(jQuery);
