@@ -4,10 +4,14 @@ Changelog
 1.0b15 - unreleased
 -------------------
 
+* Recover when jQuery tries to throw away error responses in ajax loads.
+[smcmahon]
+
 * Circumvent double-submit warning for AJAX forms.
   [smcmahon]
   
 * Use the $ convention for jQuery.
+[smcmahon]
 
 1.0b14 - 2010-10-27
 -------------------

@@ -16,7 +16,6 @@ var pb = {};
 // tell them apart. We'll do it by counting.
 pb.overlay_counter = 1;
 
-
 (function($) {
 
     // find our spinner; which isn't in the DOM yet, on page load
@@ -225,6 +224,17 @@ pb.overlay_counter = 1;
 
 
     /******
+        pb.ajax_error_recover
+        jQuery's ajax load function does not load error responses.
+        This routine returns the filtered error response.
+    ******/
+    pb.ajax_error_recover = function(responseText, filter) {
+        var tcontent = $('<div/>').append(responseText.replace(/<script(.|\s)*?\/script>/gi, ""));
+        return filter ? tcontent.find(filter) : tcontent
+    }
+
+
+    /******
         pb.form_handler
         submit event handler for AJAX overlay forms.
         It does an ajax post of the form data, then
@@ -264,8 +274,12 @@ pb.overlay_counter = 1;
 
         // Note that we're loading into a new div (not yet in the DOM)
         // so that we can check it's contents before inserting
-        $('<div />').load(url, inputs, function() {
+        $('<div />').load(url, inputs, function(responseText, errorText) {
             var el = $(this);
+
+            if (errorText === 'error') {
+                el.append(pb.ajax_error_recover(responseText, filter));
+            }
 
             // afterpost callback
             if (afterpost) {
@@ -372,10 +386,16 @@ pb.overlay_counter = 1;
         }
 
         // and load the div
-        el.load(src, null, function() {
+        el.load(src, null, function(responseText, errorText) {
+            var el = $(this);
+
+            if (errorText === 'error') {
+                el.append(pb.ajax_error_recover(responseText, filter));
+            }
+
             // a non-semantic div here will make sure we can
             // do enough formatting.
-            $(this).wrapInner('<div />');
+            el.wrapInner('<div />');
 
             // add the submit handler if we've a formtarget
             if (formtarget) {
