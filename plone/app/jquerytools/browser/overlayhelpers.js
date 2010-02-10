@@ -1,6 +1,6 @@
 /*****************
 
-   $ Tools overlay helpers.
+   jQuery Tools overlay helpers.
 
    Copyright © 2009, The Plone Foundation
    Licensed under the GPL
@@ -200,10 +200,10 @@ pb.overlay_counter = 1;
 
     /******
         pb.close_handler
-        when we're in an event, we don't necessarily have
+        When we're in an event, we don't necessarily have
         easy access to the overlay object to use its close
         method.
-        This is an alternate.
+        This is an alternate access point.
     ******/
     pb.close_handler = function(event) {
         $(event.target).closest('.overlay').find('.close').click();
@@ -236,7 +236,7 @@ pb.overlay_counter = 1;
 
     /******
         pb.form_handler
-        submit event handler for AJAX overlay forms.
+        Submit event handler for AJAX overlay forms.
         It does an ajax post of the form data, then
         uses the response to load the overlay target
         element.
@@ -344,7 +344,7 @@ pb.overlay_counter = 1;
 
     /******
         pb.ajax_click
-        click handler for ajax sources. The job of this routine
+        Click handler for ajax sources. The job of this routine
         is to do the ajax load of the overlay element, then
         call the JQT overlay loader.
     ******/

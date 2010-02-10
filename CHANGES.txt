@@ -5,18 +5,19 @@ Changelog
 -------------------
 
 * Recover when jQuery tries to throw away error responses in ajax loads.
-[smcmahon]
+  [smcmahon]
 
 * Circumvent double-submit warning for AJAX forms.
   [smcmahon]
   
 * Use the $ convention for jQuery.
-[smcmahon]
+  [smcmahon]
 
 1.0b14 - 2010-10-27
 -------------------
 
 * Add beforepost and afterpost callback options for ajax forms.
+  [smcmahon]
 
 * Change reload strategy to set location to current href rather than using
   reload, which can cause repost queries on some browsers.
