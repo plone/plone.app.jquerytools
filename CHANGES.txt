@@ -4,6 +4,11 @@ Changelog
 1.0b15 - unreleased
 -------------------
 
+* AJAX form handling was busted in Safari by submit button marshaling
+  fix. Found a hopefully more general solution for finding submit
+  button name and value.
+  [smcmahon]
+
 * beforepost and afterpost callback options weren't working. fixed.
   [smcmahon]
 

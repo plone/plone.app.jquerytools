@@ -230,8 +230,8 @@ pb.overlay_counter = 1;
     ******/
     pb.ajax_error_recover = function(responseText, filter) {
         var tcontent = $('<div/>').append(responseText.replace(/<script(.|\s)*?\/script>/gi, ""));
-        return filter ? tcontent.find(filter) : tcontent
-    }
+        return filter ? tcontent.find(filter) : tcontent;
+    };
 
 
     /******
@@ -250,6 +250,7 @@ pb.overlay_counter = 1;
         var beforepost = data_parent.data('beforepost');
         var afterpost = data_parent.data('afterpost');
         var api = data_parent.overlay();
+        var filter = data_parent.data('filter');
 
         if ($.inArray(form[0], ajax_parent.find(formtarget)) < 0) {
             // this form wasn't ours; do the default action.
@@ -265,13 +266,15 @@ pb.overlay_counter = 1;
 
         pb.spinner.show();
 
-        var url = form.attr('action') + ' ' + data_parent.data('filter');
+        var url = form.attr('action') + ' ' + filter;
         var inputs = form.serializeArray();
 
         // jq's serialization does not include the submit button,
         // which zope/plone often need.
-        var esource = event.originalEvent.explicitOriginalTarget;
-        inputs[inputs.length] = {name:esource.name, value:esource.value};
+        var esource = this.submit;
+        if (esource) {
+            inputs[inputs.length] = {name:esource.name, value:esource.value};
+        }
 
         // Note that we're loading into a new div (not yet in the DOM)
         // so that we can check it's contents before inserting
@@ -339,6 +342,7 @@ pb.overlay_counter = 1;
             }
         });
 
+        event.preventDefault();
         return false;
     };
 
