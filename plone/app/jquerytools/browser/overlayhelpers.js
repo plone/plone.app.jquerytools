@@ -244,11 +244,12 @@ pb.overlay_counter = 1;
     pb.form_handler = function(event) {
         var form = $(event.target);
         var ajax_parent = form.closest('.pb-ajax');
-        var formtarget = ajax_parent.data('formtarget');
-        var closeselector = ajax_parent.data('closeselector');
-        var beforepost = ajax_parent.data('beforepost');
-        var afterpost = ajax_parent.data('afterpost');
-        var api = ajax_parent.parent().overlay();
+        var data_parent = ajax_parent.closest('.overlay-ajax');
+        var formtarget = data_parent.data('formtarget');
+        var closeselector = data_parent.data('closeselector');
+        var beforepost = data_parent.data('beforepost');
+        var afterpost = data_parent.data('afterpost');
+        var api = data_parent.overlay();
 
         if ($.inArray(form[0], ajax_parent.find(formtarget)) < 0) {
             // this form wasn't ours; do the default action.
@@ -264,7 +265,7 @@ pb.overlay_counter = 1;
 
         pb.spinner.show();
 
-        var url = form.attr('action') + ' ' + ajax_parent.data('filter');
+        var url = form.attr('action') + ' ' + data_parent.data('filter');
         var inputs = form.serializeArray();
 
         // jq's serialization does not include the submit button,
@@ -304,7 +305,7 @@ pb.overlay_counter = 1;
             } else {
                 // there's no form in our new content
 
-                var noform = ajax_parent.data('noform');
+                var noform = data_parent.data('noform');
                 if (typeof(noform) == "function") {
                     // get action from callback
                     noform = noform(this);
@@ -325,7 +326,7 @@ pb.overlay_counter = 1;
                 case 'redirect':
                     api.close();
                     pb.spinner.show();
-                    var target = ajax_parent.data('redir_url');
+                    var target = data_parent.data('redir_url');
                     if (typeof(target) == "function") {
                         // get target from callback
                         target = target(this);
@@ -363,15 +364,8 @@ pb.overlay_counter = 1;
 
         // see if we already have a container to load
         if (!el.length) {
-            // we don't, so create it, annotating it
-            // with the information we'll need if it's
-            // got an embedded form.
+            // we don't, so create it
             el = $('<div class="pb-ajax" />');
-            el.data('filter', filter);
-            el.data('formtarget', formtarget);
-            el.data('noform', content.data('noform'));
-            el.data('redir_url', content.data('redir_url'));
-
             content.append(el);
         }
 
