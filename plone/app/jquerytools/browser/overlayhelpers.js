@@ -279,7 +279,7 @@ pb.overlay_counter = 1;
 
         // jq's serialization does not include the submit button,
         // which zope/plone often need.
-        var esource = this.submit;
+        var esource = event.originalEvent.explicitOriginalTarget;
         if (esource) {
             inputs[inputs.length] = {name:esource.name, value:esource.value};
         }
