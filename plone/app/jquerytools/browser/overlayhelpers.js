@@ -16,6 +16,8 @@ var pb = {};
 // tell them apart. We'll do it by counting.
 pb.overlay_counter = 1;
 
+jQuery.tools.overlay.conf.oneInstance = false;
+
 (function($) {
 
     // find our spinner; which isn't in the DOM yet, on page load
@@ -194,20 +196,6 @@ pb.overlay_counter = 1;
             api.load();
         }
 
-        return false;
-    };
-
-
-    /******
-        pb.close_handler
-        When we're in an event, we don't necessarily have
-        easy access to the overlay object to use its close
-        method.
-        This is an alternate access point.
-    ******/
-    pb.close_handler = function(event) {
-        $(event.target).closest('.overlay').find('.close').click();
-        // avoid form submit
         return false;
     };
 
