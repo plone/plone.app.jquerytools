@@ -135,16 +135,17 @@ For AJAX overlays, add the following, form-oriented, options:
       function that returns a URL. The overlay helper will call
       the function with the overlay element as an argument.
 
-    * beforepost: you may specify a function that will be called 
-      before the AJAX form posting. The form submit event is passed to the
-      function. Return true if you wish the AJAX form handler to handle the event;
+    * beforepost: you may specify a function that will be called before the
+      AJAX form posting. The form submit event is passed to the function.
+      Return true if you wish the AJAX form handler to handle the event;
       return false if you wish the default submit action to occur instead.
-      
+
     * afterpost: you may specify a function that will be called immediately
-      after the AJAX load of the post response. The function will be passed
-      an element containing the returned HTML as a jQuery object. This callback
-      occurs before any other processing of the response. The callback
-      function's return value is ignored.
+      after the AJAX load of the post response. The function will be passed an
+      element containing the returned HTML as a jQuery object. Second argument
+      is data_parent object, which contains overlay configuration and other
+      usefull data. This callback occurs before any other processing of the
+      response. The callback function's return value is ignored.
 
 AJAX
 ----

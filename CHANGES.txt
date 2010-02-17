@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* added 'source' to data_parent to be able to access source element (element
+  on original page, which raised the overlay window) eg. in afterpost handler.
+  [naro]
+
 1.0b15 - unreleased
 -------------------
 

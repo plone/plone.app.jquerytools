@@ -129,6 +129,14 @@ pb.overlay_counter = 1;
                     el.data('closeselector', pbo.closeselector);
                     el.data('beforepost', pbo.beforepost);
                     el.data('afterpost', pbo.afterpost);
+                    // o = jquery element which raised the overlay window.
+                    // it may be accessed eg. from afterpost handler as
+                    // $node.prepOverlay(...
+                    //    afterpost: function(data, data_parent) {
+                    //                 var source = data_parent.data('source')
+                    //              }
+                    // );
+                    el.data('source', o);
 
                     // for some subtypes, we're setting click handlers
                     // and attaching overlay to the target element. That's
@@ -287,7 +295,7 @@ pb.overlay_counter = 1;
 
             // afterpost callback
             if (afterpost) {
-                afterpost(el);
+                afterpost(el, data_parent);
             }
 
             pb.spinner.hide();
