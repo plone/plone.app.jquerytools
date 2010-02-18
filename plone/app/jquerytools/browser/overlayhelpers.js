@@ -275,7 +275,7 @@ pb.overlay_counter = 1;
         pb.spinner.show();
 
         var url = form.attr('action');
-        if (filter):
+        if (filter)
             var url = url + ' ' + filter;
         var inputs = form.serializeArray();
 
