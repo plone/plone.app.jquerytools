@@ -277,12 +277,19 @@ pb.overlay_counter = 1;
         var url = form.attr('action') + ' ' + filter;
         var inputs = form.serializeArray();
 
-        // jq's serialization does not include the submit button,
-        // which zope/plone often need.
-        var esource = event.originalEvent.explicitOriginalTarget;
-        if (esource) {
-            inputs[inputs.length] = {name:esource.name, value:esource.value};
+        var submitButton = form.find("input[type=submit]"); 
+        if (submitButton.length) { 
+            var name = submitButton[0].name; 
+            if (name) { 
+                inputs[inputs.length] = {name:name, value:submitButton[0].value}; 
+            } 
         }
+        // var esource = this['form.buttons.update']; // TEMPORARY SOLUTION
+        // if (esource === undefined) 
+        //     esource = this['form.buttons.add']; // TEMPORARY SOLUTION
+        // if (esource) {
+        //     inputs[inputs.length] = {name:esource.name, value:esource.value};
+        // }
 
         // Note that we're loading into a new div (not yet in the DOM)
         // so that we can check it's contents before inserting
