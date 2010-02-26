@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.0b16 - unreleased
+
+* Improved logic for finding the submit button via a click handler.
+  [smcmahon]
+
 1.0b15 - 2010-02-17
 -------------------
 

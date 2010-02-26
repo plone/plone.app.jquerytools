@@ -223,6 +223,25 @@ jQuery.tools.overlay.conf.oneInstance = false;
 
 
     /******
+        pb.prep_ajax_form
+        submit events don't know what caused the submit, but many form
+        handlers need to know what button was pushed. We handle this
+        by setting a click handler on the form that will annotate the form
+        with the name of the clicked button.
+    ******/
+    pb.prep_ajax_form = function(myform) {
+        myform
+            .submit(pb.form_handler)
+            .click(function(e) {
+                var target = $(e.target);
+        		if ((target.is(":submit"))) {
+        		    this.submitclick = target;
+        		}
+        		return true;
+        	});
+    };
+
+    /******
         pb.form_handler
         Submit event handler for AJAX overlay forms.
         It does an ajax post of the form data, then
@@ -259,9 +278,8 @@ jQuery.tools.overlay.conf.oneInstance = false;
 
         // jq's serialization does not include the submit button,
         // which zope/plone often need.
-        var esource = this.submit;
-        if (esource) {
-            inputs[inputs.length] = {name:esource.name, value:esource.value};
+        if (this.submitclick) {
+            inputs[inputs.length] = {name:this.submitclick.attr('name'), value:this.submitclick.val()};
         }
 
         // Note that we're loading into a new div (not yet in the DOM)
@@ -283,7 +301,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
             var myform = el.find(formtarget);
             if (myform.length) {
                 // attach submit handler
-                myform.submit(pb.form_handler);
+                pb.prep_ajax_form(myform);
                 // attach close to element id'd by closeselector
                 if (closeselector) {
                     el.find(closeselector).click(function(event) {
@@ -385,8 +403,9 @@ jQuery.tools.overlay.conf.oneInstance = false;
 
             // add the submit handler if we've a formtarget
             if (formtarget) {
-                el.find(formtarget).submit(pb.form_handler);
+                pb.prep_ajax_form(el.find(formtarget));
             }
+
             // if a closeselector has been specified, tie it to the overlay's
             // close method via closure
             if (closeselector) {
@@ -400,7 +419,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
             if ($.fn.ploneTabInit) {
                 el.ploneTabInit();
             }
-
+            
             // Now, it's all ready to display; hide the
             // spinner and call JQT overlay load.
             pb.spinner.hide();
