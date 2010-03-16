@@ -10,7 +10,7 @@
 
 
 // Name space object for pipbox
-var pb = {};
+var pb = {spinner:{}};
 
 // We may be creating multiple targets per page. We need to be able to
 // tell them apart. We'll do it by counting.
@@ -20,10 +20,12 @@ jQuery.tools.overlay.conf.oneInstance = false;
 
 (function($) {
 
-    // find our spinner; which isn't in the DOM yet, on page load
-    $(function() {
-        pb.spinner = $('#kss-spinner');
-    });
+    pb.spinner.show = function () {
+        $('body').css('cursor','wait');
+    };
+    pb.spinner.hide = function () {
+        $('body').css('cursor','');
+    };
 
     /******
         $.fn.prepOverlay
