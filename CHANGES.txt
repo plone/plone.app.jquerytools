@@ -1,7 +1,14 @@
 Changelog
 =========
 
-1.0b16 - unreleased
+1.0rc1 (unreleased)
+-------------------
+
+* Insert overlays in the DOM at the end of body rather than visual
+  portal wrapper. Fixes #10307.
+  [smcmahon]
+
+1.0b16
 
 * Patched jquery.tools.min.js to fix close on click outside overlay.
   [smcmahon]

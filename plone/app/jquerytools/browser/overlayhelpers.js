@@ -93,14 +93,8 @@ jQuery.tools.overlay.conf.oneInstance = false;
                     '<div class="close"><span>Close</span></div>'
                     );
 
-                    // add the target element at the end of the portal wrapper
-                    // or body.
-                    var container = $("#visual-portal-wrapper");
-                    if (!container.length) {
-                        container = $("body");
-                    }
-                    el.appendTo(container);
-
+                    // add the target element at the end of the body.
+                    el.appendTo($("body"));
 
                     // if we've a width specified, set it on the overlay div
                     if (pbo.width) {
@@ -419,7 +413,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
             if ($.fn.ploneTabInit) {
                 el.ploneTabInit();
             }
-            
+
             // Now, it's all ready to display; hide the
             // spinner and call JQT overlay load.
             pb.spinner.hide();
