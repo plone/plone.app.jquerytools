@@ -391,6 +391,8 @@ jQuery.tools.overlay.conf.oneInstance = false;
 
             if (errorText === 'error') {
                 el.append(pb.ajax_error_recover(responseText, filter));
+            } else if (!responseText.length) {
+                el.append(ajax_noresponse_message || 'No response from server.');
             }
 
             // a non-semantic div here will make sure we can
