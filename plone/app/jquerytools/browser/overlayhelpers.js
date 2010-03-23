@@ -287,12 +287,6 @@ jQuery.tools.overlay.conf.oneInstance = false;
         if (this.submitclick) {
             inputs[inputs.length] = {name:this.submitclick.attr('name'), value:this.submitclick.val()};
         }
-        // var esource = this['form.buttons.update']; // TEMPORARY SOLUTION
-        // if (esource === undefined) 
-        //     esource = this['form.buttons.add']; // TEMPORARY SOLUTION
-        // if (esource) {
-        //     inputs[inputs.length] = {name:esource.name, value:esource.value};
-        // }
 
         // Note that we're loading into a new div (not yet in the DOM)
         // so that we can check it's contents before inserting
