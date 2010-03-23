@@ -8,6 +8,9 @@ Changelog
 1.0rc1 (unreleased)
 -------------------
 
+* Add message for ajax no response from server.
+  [smcmahon]
+
 * Insert overlays in the DOM at the end of body rather than visual
   portal wrapper. Fixes #10307.
   [smcmahon]

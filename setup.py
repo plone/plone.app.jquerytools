@@ -4,14 +4,14 @@ version = '1.0b17'
 
 setup(name='plone.app.jquerytools',
       version=version,
-      description="JQuery Tools Integration for Plone",
+      description="jQuery Tools Integration for Plone plus AJAX form helpers.",
       long_description=open("README.txt").read() + "\n" +
                        open("CHANGES.txt").read(),
       classifiers=[
           "Framework :: Plone",
           "Programming Language :: Python",
         ],
-      keywords='Plone JQuery',
+      keywords='Plone jQuery overlays AJAX',
       author='Plone Foundation',
       author_email='plone-developers@lists.sourceforge.net',
       url='http://pypi.python.org/pypi/plone.app.jquerytools',
