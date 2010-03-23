@@ -5,7 +5,22 @@ Changelog
   on original page, which raised the overlay window) eg. in afterpost handler.
   [naro]
 
-1.0b15 - unreleased
+1.0rc1 (unreleased)
+-------------------
+
+* Insert overlays in the DOM at the end of body rather than visual
+  portal wrapper. Fixes #10307.
+  [smcmahon]
+
+1.0b16
+
+* Patched jquery.tools.min.js to fix close on click outside overlay.
+  [smcmahon]
+
+* Improved logic for finding the submit button via a click handler.
+  [smcmahon]
+
+1.0b15 - 2010-02-17
 -------------------
 
 * AJAX form handling was busted in Safari by submit button marshaling

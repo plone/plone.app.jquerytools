@@ -10,18 +10,22 @@
 
 
 // Name space object for pipbox
-var pb = {};
+var pb = {spinner:{}};
 
 // We may be creating multiple targets per page. We need to be able to
 // tell them apart. We'll do it by counting.
 pb.overlay_counter = 1;
 
+jQuery.tools.overlay.conf.oneInstance = false;
+
 (function($) {
 
-    // find our spinner; which isn't in the DOM yet, on page load
-    $(function() {
-        pb.spinner = $('#kss-spinner');
-    });
+    pb.spinner.show = function () {
+        $('body').css('cursor','wait');
+    };
+    pb.spinner.hide = function () {
+        $('body').css('cursor','');
+    };
 
     /******
         $.fn.prepOverlay
@@ -91,14 +95,8 @@ pb.overlay_counter = 1;
                     '<div class="close"><span>Close</span></div>'
                     );
 
-                    // add the target element at the end of the portal wrapper
-                    // or body.
-                    var container = $("#visual-portal-wrapper");
-                    if (!container.length) {
-                        container = $("body");
-                    }
-                    el.appendTo(container);
-
+                    // add the target element at the end of the body.
+                    el.appendTo($("body"));
 
                     // if we've a width specified, set it on the overlay div
                     if (pbo.width) {
@@ -207,20 +205,6 @@ pb.overlay_counter = 1;
 
 
     /******
-        pb.close_handler
-        When we're in an event, we don't necessarily have
-        easy access to the overlay object to use its close
-        method.
-        This is an alternate access point.
-    ******/
-    pb.close_handler = function(event) {
-        $(event.target).closest('.overlay').find('.close').click();
-        // avoid form submit
-        return false;
-    };
-
-
-    /******
         pb.fi_focus
         First-input focus inside $ selection.
     ******/
@@ -241,6 +225,25 @@ pb.overlay_counter = 1;
         return filter ? tcontent.find(filter) : tcontent;
     };
 
+
+    /******
+        pb.prep_ajax_form
+        submit events don't know what caused the submit, but many form
+        handlers need to know what button was pushed. We handle this
+        by setting a click handler on the form that will annotate the form
+        with the name of the clicked button.
+    ******/
+    pb.prep_ajax_form = function(myform) {
+        myform
+            .submit(pb.form_handler)
+            .click(function(e) {
+                var target = $(e.target);
+        		if ((target.is(":submit"))) {
+        		    this.submitclick = target;
+        		}
+        		return true;
+        	});
+    };
 
     /******
         pb.form_handler
@@ -279,12 +282,10 @@ pb.overlay_counter = 1;
             var url = url + ' ' + filter;
         var inputs = form.serializeArray();
 
-        var submitButton = form.find("input[type=submit]"); 
-        if (submitButton.length) { 
-            var name = submitButton[0].name; 
-            if (name) { 
-                inputs[inputs.length] = {name:name, value:submitButton[0].value}; 
-            } 
+        // jq's serialization does not include the submit button,
+        // which zope/plone often need.
+        if (this.submitclick) {
+            inputs[inputs.length] = {name:this.submitclick.attr('name'), value:this.submitclick.val()};
         }
         // var esource = this['form.buttons.update']; // TEMPORARY SOLUTION
         // if (esource === undefined) 
@@ -312,7 +313,7 @@ pb.overlay_counter = 1;
             var myform = el.find(formtarget);
             if (myform.length) {
                 // attach submit handler
-                myform.submit(pb.form_handler);
+                pb.prep_ajax_form(myform);
                 // attach close to element id'd by closeselector
                 if (closeselector) {
                     el.find(closeselector).click(function(event) {
@@ -414,8 +415,9 @@ pb.overlay_counter = 1;
 
             // add the submit handler if we've a formtarget
             if (formtarget) {
-                el.find(formtarget).submit(pb.form_handler);
+                pb.prep_ajax_form(el.find(formtarget));
             }
+
             // if a closeselector has been specified, tie it to the overlay's
             // close method via closure
             if (closeselector) {
