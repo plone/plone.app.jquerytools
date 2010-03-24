@@ -2,7 +2,10 @@ Changelog
 =========
 
 1.0rc1 (unreleased)
--------------------
+=======
+* Added 'source' to data_parent to be able to access source element (element
+  on original page, which raised the overlay window) eg. in afterpost handler.
+  [naro]
 
 * Add message for ajax no response from server.
   [smcmahon]

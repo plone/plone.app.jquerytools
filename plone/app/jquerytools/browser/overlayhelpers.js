@@ -127,6 +127,8 @@ jQuery.tools.overlay.conf.oneInstance = false;
                     el.data('closeselector', pbo.closeselector);
                     el.data('beforepost', pbo.beforepost);
                     el.data('afterpost', pbo.afterpost);
+                    // o = jquery element which raised the overlay window.
+                    el.data('source', o);
 
                     // for some subtypes, we're setting click handlers
                     // and attaching overlay to the target element. That's
@@ -269,7 +271,9 @@ jQuery.tools.overlay.conf.oneInstance = false;
 
         pb.spinner.show();
 
-        var url = form.attr('action') + ' ' + filter;
+        var url = form.attr('action');
+        if (filter)
+            var url = url + ' ' + filter;
         var inputs = form.serializeArray();
 
         // jq's serialization does not include the submit button,
@@ -289,7 +293,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
 
             // afterpost callback
             if (afterpost) {
-                afterpost(el);
+                afterpost(el, data_parent);
             }
 
             pb.spinner.hide();
