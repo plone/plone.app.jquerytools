@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
 
-version = '1.0b17'
+version = '1.0rc1'
 
 setup(name='plone.app.jquerytools',
       version=version,
-      description="jQuery Tools Integration for Plone plus AJAX form helpers.",
+      description="jQuery Tools integration for Plone plus overlay and AJAX form helpers.",
       long_description=open("README.txt").read() + "\n" +
                        open("CHANGES.txt").read(),
       classifiers=[

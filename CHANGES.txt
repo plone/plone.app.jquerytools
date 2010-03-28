@@ -2,7 +2,11 @@ Changelog
 =========
 
 1.0rc1 (unreleased)
-=======
+------
+
+* Made the closing of an ajax overlay delete the loaded content so that it
+  doesn't muddy up the DOM. [smcmahon]
+
 * Added 'source' to data_parent to be able to access source element (element
   on original page, which raised the overlay window) eg. in afterpost handler.
   [naro]
@@ -14,7 +18,14 @@ Changelog
   portal wrapper. Fixes #10307.
   [smcmahon]
 
+1.0b17
+------
+
+* 1.0b16 fix to click-outside-overlay cause *any* click to close the overlay.
+  Fixed. [smcmahon]
+
 1.0b16
+------
 
 * Patched jquery.tools.min.js to fix close on click outside overlay.
   [smcmahon]

@@ -57,7 +57,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
             // visited this node.
             if (!o.attr('rel')) {
                 // be promiscuous, pick up the url from
-                //href, src or action attributes
+                // href, src or action attributes
                 var src = o.attr('href') || o.attr('src') || o.attr('action');
 
                 // translate url with config specifications
@@ -361,6 +361,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
     ******/
     pb.ajax_click = function(event) {
         var content = $($(this).attr('rel'));
+        var api = content.overlay();
         var src = content.data('target');
         var el = content.children('div.pb-ajax');
         var filter = content.data('filter');
@@ -412,7 +413,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
             // close method via closure
             if (closeselector) {
                 el.find(closeselector).click(function(event) {
-                    content.overlay().close();
+                    api.close();
                     return false;
                 });
             }
@@ -422,10 +423,13 @@ jQuery.tools.overlay.conf.oneInstance = false;
                 el.ploneTabInit();
             }
 
+            // remove element on close so that it doesn't congest the DOM
+            api.onClose = function () { el.remove() };
+
             // Now, it's all ready to display; hide the
             // spinner and call JQT overlay load.
             pb.spinner.hide();
-            content.overlay().load();
+            api.load();
 
             return true;
         });
