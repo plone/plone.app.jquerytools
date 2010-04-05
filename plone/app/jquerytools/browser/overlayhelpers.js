@@ -85,8 +85,9 @@ jQuery.tools.overlay.conf.oneInstance = false;
                     pb.overlay_counter += 1;
 
                     // mark the source with a rel attribute so we can find
-                    // the overlay
+                    // the overlay, and a special class for styling
                     o.attr('rel', '#' + nt);
+                    o.addClass('link-overlay');
 
                     // create a target element; a div with markers;
                     // content will be inserted here by the callback

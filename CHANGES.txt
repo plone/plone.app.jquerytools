@@ -4,6 +4,9 @@ Changelog
 1.0rc1 (unreleased)
 ------
 
+* Add 'link-overlay' class to overlay triggers.
+  [davisagli]
+
 * Made the closing of an ajax overlay delete the loaded content so that it
   doesn't muddy up the DOM. [smcmahon]
 
