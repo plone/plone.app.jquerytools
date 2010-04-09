@@ -133,7 +133,7 @@ For AJAX overlays, add the following, form-oriented, options:
     * redirect: if you specify 'redirect' for the noform action, use the
       redirect option to specify the full target URL. You may also supply a callback
       function that returns a URL. The overlay helper will call
-      the function with the overlay element as an argument.
+      the function with the overlay element and the response text as arguments.
 
     * beforepost: you may specify a function that will be called before the
       AJAX form posting. The form submit event is passed to the function.

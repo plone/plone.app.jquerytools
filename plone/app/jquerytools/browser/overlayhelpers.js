@@ -339,7 +339,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
                     var target = data_parent.data('redir_url');
                     if (typeof(target) == "function") {
                         // get target from callback
-                        target = target(this);
+                        target = target(this, responseText);
                     }
                     location.replace(target);
                     break;
