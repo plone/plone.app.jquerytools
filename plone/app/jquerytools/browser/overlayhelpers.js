@@ -273,8 +273,9 @@ jQuery.tools.overlay.conf.oneInstance = false;
         pb.spinner.show();
 
         var url = form.attr('action');
-        if (filter)
-            var url = url + ' ' + filter;
+        if (filter) {
+            url = url + ' ' + filter;
+        }
         var inputs = form.serializeArray();
 
         // jq's serialization does not include the submit button,
@@ -425,7 +426,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
             }
 
             // remove element on close so that it doesn't congest the DOM
-            api.onClose = function () { el.remove() };
+            api.onClose = function () { el.remove(); };
 
             // Now, it's all ready to display; hide the
             // spinner and call JQT overlay load.
