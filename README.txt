@@ -66,7 +66,8 @@ The code::
     jq('.newsImageContainer a')
         .prepOverlay({
              subtype:'image',
-             urlmatch:'/image_view_fullscreen$',urlreplace:'_preview'
+             urlmatch:'/image_view_fullscreen$',
+             urlreplace:'_preview'
             });
 
 Another quick example, one that provides full-image popups for images placed
@@ -75,7 +76,8 @@ via kupu::
     jq('img.image-right,img.image-left,img.image-inline')
         .prepOverlay({
             subtype:'image',
-            urlmatch:'/image_.+$',urlreplace:''
+            urlmatch:'/image_.+$',
+            urlreplace:''
             });
 
 What's different? We're targeting <img ... /> tags, which don't have href
@@ -211,6 +213,9 @@ specified; that's because we don't want to install an ajax submit handler
 when we may be renaming or deleting the displayed object. Second, we specify
 a close selector so that pushing the cancel button will close the overlay
 without bothering to submit the form.
+
+See Products/CMFPlone/skins/plone_ecmascript/popupform.js for several examples
+of using callbacks to handle tricky cases.
 
 Limitations: Forms may not include file fields, as the current marshaling
 strategy isn't adequate to deal with them.
