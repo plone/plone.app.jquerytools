@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.0rc1 - 2010-04-09
--------------------
+1.0rc1
+------
 
 * Add responseText to parameters passed in the redirect callback; this
   enables smarter redirects in cases where pages may have disappeared.
