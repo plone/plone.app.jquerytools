@@ -92,7 +92,11 @@ jQuery.tools.overlay.conf.oneInstance = false;
                     // create a target element; a div with markers;
                     // content will be inserted here by the callback
                     var el = $(
-                    '<div id="' + nt + '" class="overlay overlay-' + pbo.subtype + '">' +
+                    '<div id="' + nt + 
+                        '" class="overlay overlay-' + 
+                        pbo.subtype + 
+                        ' ' + (pbo.cssclass || '') + 
+                        '">' +
                     '<div class="close"><span>Close</span></div>'
                     );
 
@@ -385,7 +389,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
         // affix a random query argument to prevent
         // loading from browser cache
         var sep = (src.indexOf('?') >= 0) ? '&': '?';
-        src += sep + "rand=" + (new Date().getTime());
+        src += sep + "ajax_load=" + (new Date().getTime());
 
         // add filter, if any
         if (filter) {

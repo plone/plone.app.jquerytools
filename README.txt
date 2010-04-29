@@ -110,6 +110,9 @@ The complete options list:
 
  * width: Width of the popup. Leave unset to determine through CSS.
    Overriden by image width for image overlays.
+ 
+ * cssclass: A custom css class to apply to the overlay. Ignored
+   for inline overlays.
 
  * config: JQuery Tools configuration options in a dictionary
 
