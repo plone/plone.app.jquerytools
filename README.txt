@@ -3,7 +3,9 @@ Introduction
 
 plone.app.jquerytools does four things:
 
-* It adds jQuery Tools to Plone's JavaScript resources.
+* It adds jQuery Tools to Plone's JavaScript resources. Included with the
+  base kit is tabs, tooltip, scrollable, overlay, toolbox.history, 
+  and toolbox.expose.
 
 * It adds some helper code for loading overlays dynamically and
   for handling AJAX forms.
@@ -14,14 +16,10 @@ plone.app.jquerytools does four things:
 
   Plugins included are:
 
-  tools.tabs.slideshow, tools.tabs.history, tools.tooltip.slide
-  tools.tooltip.dynamic
-  tools.scrollable.circular, tools.scrollable.autoscroll, tools.scrollable.navigator,
-  tools.overlay.gallery-1.0.0
-
-* Makes the jQuery Tools graphics available in a browser resource directory,
-  ++resource++plone.app.jquerytools.graphics. For example, the black.png file
-  is ++resource++plone.app.jquerytools.graphics/black.png.
+  tools.tabs.slideshow, 
+  tools.tooltip.dynamic,
+  tools.scrollable.autoscroll,
+  tools.scrollable.navigator
 
 For information on using jQuery tools, see http://flowplayer.org/tools/ .
 

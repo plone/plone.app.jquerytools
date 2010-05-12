@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0rc3
+------
+
+* Updated to tools 1.2.1; removed jqt image resources (too bulky
+  to justify as part of main distribution).
+
 1.0rc2
 ------
 
