@@ -4,8 +4,13 @@ Changelog
 1.0rc3
 ------
 
+* Set max-height on ajax overlays to 75% of the viewport's height; switch
+  to fixed positioning on everything but IE6.
+  [smcmahon]
+
 * Updated to tools 1.2.1; removed jqt image resources (too bulky
   to justify as part of main distribution).
+  [smcmahon]
 
 1.0rc2
 ------

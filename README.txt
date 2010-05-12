@@ -48,7 +48,7 @@ Let's say, for example, that you want to make clicking on news-item photos
 open a lightbox-style larger version of the image. To do this, you'll need to
 specify:
 
- * A jquery style selector for a Plone element, e.g., ".newsImageContainer a"
+ * A jQuery style selector for a Plone element, e.g., ".newsImageContainer a"
 
  * "image" for the load method ("ajax" and "iframe" are other alternatives)
 
@@ -100,7 +100,7 @@ The complete options list:
 
  * subtype: 'image' | 'iframe' | 'ajax'
 
- * selector: the JQuery selector to find your elements
+ * selector: the jQuery selector to find your elements
 
  * urlmatch: Regular expression for a portion of the target URL
 
@@ -112,7 +112,7 @@ The complete options list:
  * cssclass: A custom css class to apply to the overlay. Ignored
    for inline overlays.
 
- * config: JQuery Tools configuration options in a dictionary
+ * config: jQuery Tools configuration options in a dictionary
 
 For AJAX overlays, add the following, form-oriented, options:
 
