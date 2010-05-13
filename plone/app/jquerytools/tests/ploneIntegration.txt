@@ -37,7 +37,7 @@ And, make sure it's got our code in it::
 
     >>> print browser.contents
     /*
-     * jquery.tools ... - The missing UI library for the Web
+     * jQuery Tools ... - The missing UI library for the Web
     ...
 
 Open the overlay helper code item as a resource::
@@ -60,6 +60,7 @@ And, make sure it's got our code in it::
 
     >>> print browser.contents
     /*
-     * jquery.tools 1.1.2 - The missing UI library for the Web
+    <BLANKLINE>
+     jQuery Tools ...
     ...
 
