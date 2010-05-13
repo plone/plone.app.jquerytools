@@ -382,9 +382,11 @@ jQuery.tools.overlay.conf.oneInstance = false;
         // see if we already have a container to load
         if (!el.length) {
             // we don't, so create it
-            // don't let it be over 75% of the viewport's height
-            el = $('<div class="pb-ajax" />')
-              .css('max-height', Math.floor($(window).height() * 0.75));
+            el = $('<div class="pb-ajax" />');
+            if (api.getConf().fixed) {
+                // don't let it be over 75% of the viewport's height
+                el.css('max-height', Math.floor($(window).height() * 0.75));
+            }
             content.append(el);
         }
 
