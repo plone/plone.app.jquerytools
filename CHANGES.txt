@@ -4,6 +4,9 @@ Changelog
 1.0rc3
 ------
 
+* Update to tools 1.2.2. (Trivial changes)
+  [smcmahon]
+
 * Set max-height on ajax overlays to 75% of the viewport's height; switch
   to fixed positioning on everything but IE6.
   [smcmahon]
