@@ -19,6 +19,11 @@
     file="browser/jquery.tools.plugins.min.js"
     />
 
+<resource
+    name="plone.app.jquerytools.form.js"
+    file="browser/jquery.form.js"
+    />
+
 <genericsetup:registerProfile
     name="default"
     title="Plone JQuery Tools Integration"

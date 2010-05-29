@@ -235,13 +235,13 @@ jQuery.tools.overlay.conf.oneInstance = false;
     pb.prep_ajax_form = function(myform) {
         myform
             .submit(pb.form_handler)
-            .click(function(e) {
-                var target = $(e.target);
-        		if ((target.is(":submit"))) {
-        		    this.submitclick = target;
-        		}
-        		return true;
-        	});
+            //             .click(function(e) {
+            //                 var target = $(e.target);
+            //  if ((target.is(":submit"))) {
+            //      this.submitclick = target;
+            //  }
+            //  return true;
+            // });
     };
 
     /******
@@ -277,79 +277,84 @@ jQuery.tools.overlay.conf.oneInstance = false;
         pb.spinner.show();
 
         var url = form.attr('action');
-        if (filter) {
-            url = url + ' ' + filter;
-        }
-        var inputs = form.serializeArray();
+        // if (filter) {
+        //     url = url + ' ' + filter;
+        // }
+        // var inputs = form.serializeArray();
 
         // jq's serialization does not include the submit button,
         // which zope/plone often need.
-        if (this.submitclick) {
-            inputs[inputs.length] = {name:this.submitclick.attr('name'), value:this.submitclick.val()};
-        }
+        // if (this.submitclick) {
+        //     inputs[inputs.length] = {name:this.submitclick.attr('name'), value:this.submitclick.val()};
+        // }
 
         // Note that we're loading into a new div (not yet in the DOM)
         // so that we can check it's contents before inserting
-        $('<div />').load(url, inputs, function(responseText, errorText) {
-            var el = $(this);
-
-            if (errorText === 'error') {
-                el.append(pb.ajax_error_recover(responseText, filter));
-            }
-
-            // afterpost callback
-            if (afterpost) {
-                afterpost(el, data_parent);
-            }
-
-            pb.spinner.hide();
-
-            var myform = el.find(formtarget);
-            if (myform.length) {
-                // attach submit handler
-                pb.prep_ajax_form(myform);
-                // attach close to element id'd by closeselector
-                if (closeselector) {
-                    el.find(closeselector).click(function(event) {
-                        api.close();
-                        return false;
-                    });
-                }
+        form.ajaxSubmit({
+            url: url,
+            target: ajax_parent,
+            error: function(xhr) { // FIXME
+                var el = $(this);
+                el.append(pb.ajax_error_recover(xhr.responseText, filter));
                 ajax_parent.empty().append(el);
-                pb.fi_focus(ajax_parent);
-            } else {
-                // there's no form in our new content
+            },
+            success: function(responseText) {
+                var el = $(this);
 
-                var noform = data_parent.data('noform');
-                if (typeof(noform) == "function") {
-                    // get action from callback
-                    noform = noform(this);
+                // afterpost callback
+                if (afterpost) {
+                    afterpost(el, data_parent);
                 }
 
-                switch (noform) {
-                case 'close':
-                    api.close();
-                    break;
-                case 'reload':
-                    api.close();
-                    pb.spinner.show();
-                    // location.reload results in a repost
-                    // dialog in some browsers; very unlikely to
-                    // be what we want.
-                    location.replace(location.href);
-                    break;
-                case 'redirect':
-                    api.close();
-                    pb.spinner.show();
-                    var target = data_parent.data('redir_url');
-                    if (typeof(target) == "function") {
-                        // get target from callback
-                        target = target(this, responseText);
+                pb.spinner.hide();
+
+                var myform = el.find(formtarget);
+                if (myform.length) {
+                    // attach submit handler
+                    pb.prep_ajax_form(myform);
+                    // attach close to element id'd by closeselector
+                    if (closeselector) {
+                        el.find(closeselector).click(function(event) {
+                            api.close();
+                            return false;
+                        });
                     }
-                    location.replace(target);
-                    break;
-                default:
                     ajax_parent.empty().append(el);
+                    pb.fi_focus(ajax_parent);
+                } else {
+                    // there's no form in our new content
+
+                    var noform = data_parent.data('noform');
+                    if (typeof(noform) == "function") {
+                        // get action from callback
+                        noform = noform(this);
+                    }
+
+                    switch (noform) {
+                    case 'close':
+                        api.close();
+                        break;
+                    case 'reload':
+                        api.close();
+                        pb.spinner.show();
+                        // location.reload results in a repost
+                        // dialog in some browsers; very unlikely to
+                        // be what we want.
+                        location.replace(location.href);
+                        break;
+                    case 'redirect':
+                        api.close();
+                        pb.spinner.show();
+                        var target = data_parent.data('redir_url');
+                        if (typeof(target) == "function") {
+                            // get target from callback
+                            target = target(this, responseText);
+                        }
+                        location.replace(target);
+                        break;
+                    default:
+                        ajax_parent.empty().append(el);
+                    }
                 }
             }
         });
