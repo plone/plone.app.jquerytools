@@ -2,12 +2,13 @@
 
    jQuery Tools overlay helpers.
 
-   Copyright © 2009, The Plone Foundation
-   Licensed under the GPL
+   Copyright © 2010, The Plone Foundation
+   Licensed under the GPL, see LICENSE.txt for details.
 
 *****************/
 
-
+/*jslint browser: true */
+/*global jQuery, ajax_noresponse_message */
 
 // Name space object for pipbox
 var pb = {spinner:{}};
@@ -232,27 +233,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
         by setting a click handler on the form that will annotate the form
         with the name of the clicked button.
     ******/
-    pb.prep_ajax_form = function(myform) {
-        myform
-            .submit(pb.form_handler)
-            //             .click(function(e) {
-            //                 var target = $(e.target);
-            //  if ((target.is(":submit"))) {
-            //      this.submitclick = target;
-            //  }
-            //  return true;
-            // });
-    };
-
-    /******
-        pb.form_handler
-        Submit event handler for AJAX overlay forms.
-        It does an ajax post of the form data, then
-        uses the response to load the overlay target
-        element.
-    ******/
-    pb.form_handler = function(event) {
-        var form = $(event.target);
+    pb.prep_ajax_form = function(form) {
         var ajax_parent = form.closest('.pb-ajax');
         var data_parent = ajax_parent.closest('.overlay-ajax');
         var formtarget = data_parent.data('formtarget');
@@ -261,107 +242,195 @@ jQuery.tools.overlay.conf.oneInstance = false;
         var afterpost = data_parent.data('afterpost');
         var api = data_parent.overlay();
         var filter = data_parent.data('filter');
+        var options = {};
 
-        if ($.inArray(form[0], ajax_parent.find(formtarget)) < 0) {
-            // this form wasn't ours; do the default action.
-            return true;
+        
+        options.url = form.attr('action');
+        if (filter) {
+            options.url = form.attr('action') + ' ' + filter;
         }
-
-        // beforepost callback
         if (beforepost) {
-            if (! beforepost(event)) {
-                return true;
-            }
+            options.beforeSubmit = function(arr, form, options) {
+                return beforepost(form, arr, options);
+            };
         }
+        options.success = function(responseText, statusText, xhr, form) {
+            var el = $('<div />').html(responseText);
+            
+            if (statusText === 'error') {
+                el.append(pb.ajax_error_recover(responseText, filter));
+            }
+            
+            // afterpost callback
+            if (afterpost) {
+                afterpost(el, data_parent);
+            }
 
-        pb.spinner.show();
-
-        var url = form.attr('action');
-        // if (filter) {
-        //     url = url + ' ' + filter;
-        // }
-        // var inputs = form.serializeArray();
-
-        // jq's serialization does not include the submit button,
-        // which zope/plone often need.
-        // if (this.submitclick) {
-        //     inputs[inputs.length] = {name:this.submitclick.attr('name'), value:this.submitclick.val()};
-        // }
-
-        // Note that we're loading into a new div (not yet in the DOM)
-        // so that we can check it's contents before inserting
-        form.ajaxSubmit({
-            url: url,
-            target: ajax_parent,
-            error: function(xhr) { // FIXME
-                var el = $(this);
-                el.append(pb.ajax_error_recover(xhr.responseText, filter));
+            var myform = el.find(formtarget);
+            if (myform.length) {
+                // attach submit handler
+                pb.prep_ajax_form(myform);
+                // attach close to element id'd by closeselector
+                if (closeselector) {
+                    el.find(closeselector).click(function(event) {
+                        api.close();
+                        return false;
+                    });
+                }
                 ajax_parent.empty().append(el);
-            },
-            success: function(responseText) {
-                var el = $(this);
+                pb.fi_focus(ajax_parent);
+            } else {
+                // there's no form in our new content
 
-                // afterpost callback
-                if (afterpost) {
-                    afterpost(el, data_parent);
+                var noform = data_parent.data('noform');
+                if (typeof(noform) == "function") {
+                    // get action from callback
+                    noform = noform(this);
                 }
 
-                pb.spinner.hide();
-
-                var myform = el.find(formtarget);
-                if (myform.length) {
-                    // attach submit handler
-                    pb.prep_ajax_form(myform);
-                    // attach close to element id'd by closeselector
-                    if (closeselector) {
-                        el.find(closeselector).click(function(event) {
-                            api.close();
-                            return false;
-                        });
+                switch (noform) {
+                case 'close':
+                    api.close();
+                    break;
+                case 'reload':
+                    api.close();
+                    pb.spinner.show();
+                    // location.reload results in a repost
+                    // dialog in some browsers; very unlikely to
+                    // be what we want.
+                    location.replace(location.href);
+                    break;
+                case 'redirect':
+                    api.close();
+                    pb.spinner.show();
+                    var target = data_parent.data('redir_url');
+                    if (typeof(target) == "function") {
+                        // get target from callback
+                        target = target(this, responseText);
                     }
+                    location.replace(target);
+                    break;
+                default:
                     ajax_parent.empty().append(el);
-                    pb.fi_focus(ajax_parent);
-                } else {
-                    // there's no form in our new content
-
-                    var noform = data_parent.data('noform');
-                    if (typeof(noform) == "function") {
-                        // get action from callback
-                        noform = noform(this);
-                    }
-
-                    switch (noform) {
-                    case 'close':
-                        api.close();
-                        break;
-                    case 'reload':
-                        api.close();
-                        pb.spinner.show();
-                        // location.reload results in a repost
-                        // dialog in some browsers; very unlikely to
-                        // be what we want.
-                        location.replace(location.href);
-                        break;
-                    case 'redirect':
-                        api.close();
-                        pb.spinner.show();
-                        var target = data_parent.data('redir_url');
-                        if (typeof(target) == "function") {
-                            // get target from callback
-                            target = target(this, responseText);
-                        }
-                        location.replace(target);
-                        break;
-                    default:
-                        ajax_parent.empty().append(el);
-                    }
                 }
             }
-        });
-
-        event.preventDefault();
-        return false;
+        };
+        
     };
+
+    // /******
+    //     pb.form_handler
+    //     Submit event handler for AJAX overlay forms.
+    //     It does an ajax post of the form data, then
+    //     uses the response to load the overlay target
+    //     element.
+    // ******/
+    // pb.form_handler = function(event) {
+    //     var form = $(event.target);
+    //     var ajax_parent = form.closest('.pb-ajax');
+    //     var data_parent = ajax_parent.closest('.overlay-ajax');
+    //     var formtarget = data_parent.data('formtarget');
+    //     var closeselector = data_parent.data('closeselector');
+    //     var beforepost = data_parent.data('beforepost');
+    //     var afterpost = data_parent.data('afterpost');
+    //     var api = data_parent.overlay();
+    //     var filter = data_parent.data('filter');
+    // 
+    //     if ($.inArray(form[0], ajax_parent.find(formtarget)) < 0) {
+    //         // this form wasn't ours; do the default action.
+    //         return true;
+    //     }
+    // 
+    //     // beforepost callback
+    //     if (beforepost) {
+    //         if (! beforepost(event)) {
+    //             return true;
+    //         }
+    //     }
+    // 
+    //     pb.spinner.show();
+    // 
+    //     var url = form.attr('action');
+    //     if (filter) {
+    //         url = url + ' ' + filter;
+    //     }
+    //     var inputs = form.serializeArray();
+    // 
+    //     // jq's serialization does not include the submit button,
+    //     // which zope/plone often need.
+    //     if (this.submitclick) {
+    //         inputs[inputs.length] = {name:this.submitclick.attr('name'), value:this.submitclick.val()};
+    //     }
+    // 
+    //     // Note that we're loading into a new div (not yet in the DOM)
+    //     // so that we can check it's contents before inserting
+    //     $('<div />').load(url, inputs, function(responseText, errorText) {
+    //         var el = $(this);
+    // 
+    //         if (errorText === 'error') {
+    //             el.append(pb.ajax_error_recover(responseText, filter));
+    //         }
+    // 
+    //         // afterpost callback
+    //         if (afterpost) {
+    //             afterpost(el, data_parent);
+    //         }
+    // 
+    //         pb.spinner.hide();
+    // 
+    //         var myform = el.find(formtarget);
+    //         if (myform.length) {
+    //             // attach submit handler
+    //             pb.prep_ajax_form(myform);
+    //             // attach close to element id'd by closeselector
+    //             if (closeselector) {
+    //                 el.find(closeselector).click(function(event) {
+    //                     api.close();
+    //                     return false;
+    //                 });
+    //             }
+    //             ajax_parent.empty().append(el);
+    //             pb.fi_focus(ajax_parent);
+    //         } else {
+    //             // there's no form in our new content
+    // 
+    //             var noform = data_parent.data('noform');
+    //             if (typeof(noform) == "function") {
+    //                 // get action from callback
+    //                 noform = noform(this);
+    //             }
+    // 
+    //             switch (noform) {
+    //             case 'close':
+    //                 api.close();
+    //                 break;
+    //             case 'reload':
+    //                 api.close();
+    //                 pb.spinner.show();
+    //                 // location.reload results in a repost
+    //                 // dialog in some browsers; very unlikely to
+    //                 // be what we want.
+    //                 location.replace(location.href);
+    //                 break;
+    //             case 'redirect':
+    //                 api.close();
+    //                 pb.spinner.show();
+    //                 var target = data_parent.data('redir_url');
+    //                 if (typeof(target) == "function") {
+    //                     // get target from callback
+    //                     target = target(this, responseText);
+    //                 }
+    //                 location.replace(target);
+    //                 break;
+    //             default:
+    //                 ajax_parent.empty().append(el);
+    //             }
+    //         }
+    //     });
+    // 
+    //     event.preventDefault();
+    //     return false;
+    // };
 
 
     /******

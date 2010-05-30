@@ -24,6 +24,16 @@
     file="browser/jquery.form.js"
     />
 
+<resource
+    name="plone.app.jquerytools.testForm.html"
+    file="browser/testForm.html"
+    />
+
+<resource
+    name="plone.app.jquerytools.testAJAXFormPopup.html"
+    file="browser/testAJAXFormPopup.html"
+    />
+
 <genericsetup:registerProfile
     name="default"
     title="Plone JQuery Tools Integration"

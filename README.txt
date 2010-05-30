@@ -141,7 +141,7 @@ For AJAX overlays, add the following, form-oriented, options:
     * beforepost: you may specify a function that will be called before the
       AJAX form posting. The form submit event is passed to the function.
       Return true if you wish the AJAX form handler to handle the event;
-      return false if you wish the default submit action to occur instead.
+      return false if you wish to cancel the submit.
 
     * afterpost: you may specify a function that will be called immediately
       after the AJAX load of the post response. The function will be passed an
