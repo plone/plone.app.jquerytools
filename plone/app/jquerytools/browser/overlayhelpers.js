@@ -29,10 +29,8 @@ jQuery.tools.overlay.conf.oneInstance = false;
     };
 
     /******
-        $.fn.prepOverlay
-        jQuery plugin to inject overlay target into DOM
-        and annotate it with the data we'll need in order
-        to display it.
+        $.fn.prepOverlay jQuery plugin to inject overlay target into DOM and
+        annotate it with the data we'll need in order to display it.
     ******/
     $.fn.prepOverlay = function(pbo) {
         return this.each(function() {
@@ -73,7 +71,8 @@ jQuery.tools.overlay.conf.oneInstance = false;
                     // we're going to let tools' overlay do all the real
                     // work. Just get the markers in place.
                     src = src.replace(/^.+#/, '#');
-                    $("[id='" + src.replace('#', '') + "']").addClass('overlay');
+                    $("[id='" + src.replace('#', '') + "']")
+                        .addClass('overlay');
                     o.removeAttr('href').attr('rel', src);
                     // use overlay on the source (clickable) element
                     o.overlay();
@@ -226,7 +225,8 @@ jQuery.tools.overlay.conf.oneInstance = false;
         This routine returns the filtered error response.
     ******/
     pb.ajax_error_recover = function(responseText, filter) {
-        var tcontent = $('<div/>').append(responseText.replace(/<script(.|\s)*?\/script>/gi, ""));
+        var tcontent = $('<div/>')
+            .append(responseText.replace(/<script(.|\s)*?\/script>/gi, ""));
         return filter ? tcontent.find(filter) : tcontent;
     };
 
@@ -246,6 +246,10 @@ jQuery.tools.overlay.conf.oneInstance = false;
         var filter = data_parent.data('filter');
         var options = {};
 
+        options.beforeSerialize = function() {
+            pb.spinner.show();
+        };
+
         if (beforepost) {
             options.beforeSubmit = function(arr, form, options) {
                 return beforepost(form, arr, options);
@@ -263,11 +267,12 @@ jQuery.tools.overlay.conf.oneInstance = false;
                 // responseText parameter is actually xhr
                 responseText = responseText.responseText;
             }
+            // strip inline script tags
+            responseText = responseText.replace(/<script(.|\s)*?\/script>/gi, "");
 
-            el = $(responseText.replace(/<script(.|\s)*?\/script>/gi, ""))
-                 .find(filter || 'body')
-                 .wrap('<div />')
-                 ;
+            // filter response html and put it in a wrapper div
+            el = $('<div />')
+                .append($(responseText).find(filter || 'body'));
 
             // afterpost callback
             if (success && afterpost) {
@@ -329,6 +334,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
                     ajax_parent.empty().append(el);
                 }
             }
+            pb.spinner.hide();
         };
         // error and success callbacks are the same
         options.error = options.success;
@@ -445,7 +451,9 @@ jQuery.tools.overlay.conf.oneInstance = false;
             src = content.data('target');
             if (src) {
                 content.append(
-                '<iframe src="' + src + '" width="' + content.width() + '" height="' + content.height() + '" onload="pb.spinner.hide()"/>'
+                '<iframe src="' + src + '" width="' +
+                 content.width() + '" height="' + content.height() + 
+                 '" onload="pb.spinner.hide()"/>'
                 );
             }
         } else {
