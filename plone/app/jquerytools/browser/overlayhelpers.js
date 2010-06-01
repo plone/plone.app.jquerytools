@@ -96,9 +96,9 @@ jQuery.tools.overlay.conf.oneInstance = false;
                     // create a target element; a div with markers;
                     // content will be inserted here by the callback
                     el = $(
-                    '<div id="' + nt + 
-                        '" class="overlay overlay-' + pbo.subtype + 
-                        ' ' + (pbo.cssclass || '') + 
+                    '<div id="' + nt +
+                        '" class="overlay overlay-' + pbo.subtype +
+                        ' ' + (pbo.cssclass || '') +
                         '"><div class="close"><span>Close</span></div>'
                     );
 
@@ -172,7 +172,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
     ******/
     pb.image_click = function(event) {
         var content, api, src, img, el;
-        
+
         // find target container
         content = $($(this).attr('rel'));
         // and its JQT api
@@ -233,10 +233,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
 
     /******
         pb.prep_ajax_form
-        submit events don't know what caused the submit, but many form
-        handlers need to know what button was pushed. We handle this
-        by setting a click handler on the form that will annotate the form
-        with the name of the clicked button.
+        Set up form with ajaxForm, including success and error handlers.
     ******/
     pb.prep_ajax_form = function(form) {
         var ajax_parent = form.closest('.pb-ajax');
@@ -247,26 +244,22 @@ jQuery.tools.overlay.conf.oneInstance = false;
         var afterpost = data_parent.data('afterpost');
         var api = data_parent.overlay();
         var filter = data_parent.data('filter');
-        // var el = $('<div />');
         var options = {};
 
-        // options.url = form.attr('action');
-        // if (filter) {
-        //     options.url = form.attr('action') + ' ' + filter;
-        // }
-        // options.target = el;
         if (beforepost) {
             options.beforeSubmit = function(arr, form, options) {
                 return beforepost(form, arr, options);
             };
         }
-        // options.error = function(responseText, statusText, xhr, form) {
-        //     console.log(statusText)
-        // };
         options.success = function(responseText, statusText, xhr, form) {
-            var noform, el, myform;
-            
-            if (statusText === 'error') {
+            // success comes in many forms, some of which are errors;
+            //
+
+            var noform, el, myform, success;
+
+            success = statusText === 'success';
+
+            if (! success) {
                 // responseText parameter is actually xhr
                 responseText = responseText.responseText;
             }
@@ -275,14 +268,14 @@ jQuery.tools.overlay.conf.oneInstance = false;
                  .find(filter || 'body')
                  .wrap('<div />')
                  ;
-            
+
             // afterpost callback
-            if (afterpost) {
+            if (success && afterpost) {
                 afterpost(el, data_parent);
             }
 
             myform = el.find(formtarget);
-            if (myform.length && statusText === 'success') {
+            if (success && myform.length) {
                 ajax_parent.empty().append(el);
                 pb.fi_focus(ajax_parent);
 
@@ -298,7 +291,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
                 }
             } else {
                 // there's no form in our new content or there's been an error
-                if (statusText === 'success') {
+                if (success) {
                     noform = data_parent.data('noform');
                     if (typeof(noform) === "function") {
                         // get action from callback
@@ -332,10 +325,12 @@ jQuery.tools.overlay.conf.oneInstance = false;
                     location.replace(target);
                     break;
                 default:
+                    // most likely we're displaying an error message
                     ajax_parent.empty().append(el);
                 }
             }
         };
+        // error and success callbacks are the same
         options.error = options.success;
         form.ajaxForm(options);
     };
