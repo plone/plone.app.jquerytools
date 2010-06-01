@@ -7,7 +7,7 @@
 
 *****************/
 
-/*jslint browser: true */
+/*jslint browser: true, laxbreak: true */
 /*global jQuery, ajax_noresponse_message */
 
 // Name space object for pipbox
@@ -36,17 +36,20 @@ jQuery.tools.overlay.conf.oneInstance = false;
     ******/
     $.fn.prepOverlay = function(pbo) {
         return this.each(function() {
-            var o = $(this);
+            var o, config, onBeforeLoad, onLoad, src, nt,
+                el, filter, parts;
+
+            o = $(this);
 
             // set overlay configuration
-            var config = pbo.config || {};
+            config = pbo.config || {};
 
             // set onBeforeLoad handler
-            var onBeforeLoad = pb[pbo.subtype];
+            onBeforeLoad = pb[pbo.subtype];
             if (onBeforeLoad) {
                 config.onBeforeLoad = onBeforeLoad;
             }
-            var onLoad = config.onLoad;
+            onLoad = config.onLoad;
             config.onLoad = function() {
                 if (onLoad) {
                     onLoad.apply(this, arguments);
@@ -59,17 +62,17 @@ jQuery.tools.overlay.conf.oneInstance = false;
             if (!o.attr('rel')) {
                 // be promiscuous, pick up the url from
                 // href, src or action attributes
-                var src = o.attr('href') || o.attr('src') || o.attr('action');
+                src = o.attr('href') || o.attr('src') || o.attr('action');
 
                 // translate url with config specifications
                 if (pbo.urlmatch) {
-                    src = src.replace(RegExp(pbo.urlmatch), pbo.urlreplace);
+                    src = src.replace(new RegExp(pbo.urlmatch), pbo.urlreplace);
                 }
 
-                if (pbo.subtype == 'inline') {
+                if (pbo.subtype === 'inline') {
                     // we're going to let tools' overlay do all the real
                     // work. Just get the markers in place.
-                    src = src.replace(RegExp('^.+#'), '#');
+                    src = src.replace(/^.+#/, '#');
                     $("[id='" + src.replace('#', '') + "']").addClass('overlay');
                     o.removeAttr('href').attr('rel', src);
                     // use overlay on the source (clickable) element
@@ -82,7 +85,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
                     // this is not inline, so in one fashion or another
                     // we'll be loading it via the beforeLoad callback.
                     // create a unique id for a target element
-                    var nt = 'pb_' + pb.overlay_counter;
+                    nt = 'pb_' + pb.overlay_counter;
                     pb.overlay_counter += 1;
 
                     // mark the source with a rel attribute so we can find
@@ -92,13 +95,11 @@ jQuery.tools.overlay.conf.oneInstance = false;
 
                     // create a target element; a div with markers;
                     // content will be inserted here by the callback
-                    var el = $(
+                    el = $(
                     '<div id="' + nt + 
-                        '" class="overlay overlay-' + 
-                        pbo.subtype + 
+                        '" class="overlay overlay-' + pbo.subtype + 
                         ' ' + (pbo.cssclass || '') + 
-                        '">' +
-                    '<div class="close"><span>Close</span></div>'
+                        '"><div class="close"><span>Close</span></div>'
                     );
 
                     // add the target element at the end of the body.
@@ -116,10 +117,10 @@ jQuery.tools.overlay.conf.oneInstance = false;
                     // anything in src after a space is going to be a
                     // $ filter to use in an ajax load so that
                     // we don't get a whole page.
-                    var filter = pbo.filter;
+                    filter = pbo.filter;
                     if (!filter) {
                         // see if one's been supplied in the src
-                        var parts = src.split(' ');
+                        parts = src.split(' ');
                         src = parts.shift();
                         filter = parts.join(' ');
                     }
@@ -152,6 +153,8 @@ jQuery.tools.overlay.conf.oneInstance = false;
                     case 'iframe':
                         o.overlay(config);
                         break;
+                    default:
+                        throw "Unsupported overlay type";
                     }
 
                     // in case the click source wasn't
@@ -168,24 +171,26 @@ jQuery.tools.overlay.conf.oneInstance = false;
         click handler for ajax sources.
     ******/
     pb.image_click = function(event) {
+        var content, api, src, img, el;
+        
         // find target container
-        var content = $($(this).attr('rel'));
+        content = $($(this).attr('rel'));
         // and its JQT api
-        var api = content.overlay();
+        api = content.overlay();
 
         // is the image loaded yet?
         if (content.find('img').length === 0) {
             // load the image. first, get the
             // src information out of the stored data.
-            var src = content.data('target');
+            src = content.data('target');
             if (src) {
                 pb.spinner.show();
 
                 // create the image and stuff it
                 // into our target
-                var img = new Image();
+                img = new Image();
                 img.src = src;
-                var el = $(img);
+                el = $(img);
                 content.append(el.addClass('pb-image'));
 
                 // Now, we'll cause the overlay to
@@ -259,7 +264,6 @@ jQuery.tools.overlay.conf.oneInstance = false;
         //     console.log(statusText)
         // };
         options.success = function(responseText, statusText, xhr, form) {
-            // var el = $('<div />').html(responseText);
             var noform, el, myform;
             
             if (statusText === 'error') {
@@ -282,7 +286,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
                 ajax_parent.empty().append(el);
                 pb.fi_focus(ajax_parent);
 
-                // attach submit handler
+                // attach submit handler with the same options
                 myform.ajaxForm(options);
 
                 // attach close to element id'd by closeselector
@@ -294,10 +298,9 @@ jQuery.tools.overlay.conf.oneInstance = false;
                 }
             } else {
                 // there's no form in our new content or there's been an error
-
                 if (statusText === 'success') {
                     noform = data_parent.data('noform');
-                    if (typeof(noform) == "function") {
+                    if (typeof(noform) === "function") {
                         // get action from callback
                         noform = noform(this);
                     }
@@ -322,7 +325,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
                     api.close();
                     pb.spinner.show();
                     var target = data_parent.data('redir_url');
-                    if (typeof(target) == "function") {
+                    if (typeof(target) === "function") {
                         // get target from callback
                         target = target(this, responseText);
                     }
@@ -333,126 +336,10 @@ jQuery.tools.overlay.conf.oneInstance = false;
                 }
             }
         };
-        
         options.error = options.success;
-        
         form.ajaxForm(options);
-        
     };
 
-    // /******
-    //     pb.form_handler
-    //     Submit event handler for AJAX overlay forms.
-    //     It does an ajax post of the form data, then
-    //     uses the response to load the overlay target
-    //     element.
-    // ******/
-    // pb.form_handler = function(event) {
-    //     var form = $(event.target);
-    //     var ajax_parent = form.closest('.pb-ajax');
-    //     var data_parent = ajax_parent.closest('.overlay-ajax');
-    //     var formtarget = data_parent.data('formtarget');
-    //     var closeselector = data_parent.data('closeselector');
-    //     var beforepost = data_parent.data('beforepost');
-    //     var afterpost = data_parent.data('afterpost');
-    //     var api = data_parent.overlay();
-    //     var filter = data_parent.data('filter');
-    // 
-    //     if ($.inArray(form[0], ajax_parent.find(formtarget)) < 0) {
-    //         // this form wasn't ours; do the default action.
-    //         return true;
-    //     }
-    // 
-    //     // beforepost callback
-    //     if (beforepost) {
-    //         if (! beforepost(event)) {
-    //             return true;
-    //         }
-    //     }
-    // 
-    //     pb.spinner.show();
-    // 
-    //     var url = form.attr('action');
-    //     if (filter) {
-    //         url = url + ' ' + filter;
-    //     }
-    //     var inputs = form.serializeArray();
-    // 
-    //     // jq's serialization does not include the submit button,
-    //     // which zope/plone often need.
-    //     if (this.submitclick) {
-    //         inputs[inputs.length] = {name:this.submitclick.attr('name'), value:this.submitclick.val()};
-    //     }
-    // 
-    //     // Note that we're loading into a new div (not yet in the DOM)
-    //     // so that we can check it's contents before inserting
-    //     $('<div />').load(url, inputs, function(responseText, errorText) {
-    //         var el = $(this);
-    // 
-    //         if (errorText === 'error') {
-    //             el.append(pb.ajax_error_recover(responseText, filter));
-    //         }
-    // 
-    //         // afterpost callback
-    //         if (afterpost) {
-    //             afterpost(el, data_parent);
-    //         }
-    // 
-    //         pb.spinner.hide();
-    // 
-    //         var myform = el.find(formtarget);
-    //         if (myform.length) {
-    //             // attach submit handler
-    //             pb.prep_ajax_form(myform);
-    //             // attach close to element id'd by closeselector
-    //             if (closeselector) {
-    //                 el.find(closeselector).click(function(event) {
-    //                     api.close();
-    //                     return false;
-    //                 });
-    //             }
-    //             ajax_parent.empty().append(el);
-    //             pb.fi_focus(ajax_parent);
-    //         } else {
-    //             // there's no form in our new content
-    // 
-    //             var noform = data_parent.data('noform');
-    //             if (typeof(noform) == "function") {
-    //                 // get action from callback
-    //                 noform = noform(this);
-    //             }
-    // 
-    //             switch (noform) {
-    //             case 'close':
-    //                 api.close();
-    //                 break;
-    //             case 'reload':
-    //                 api.close();
-    //                 pb.spinner.show();
-    //                 // location.reload results in a repost
-    //                 // dialog in some browsers; very unlikely to
-    //                 // be what we want.
-    //                 location.replace(location.href);
-    //                 break;
-    //             case 'redirect':
-    //                 api.close();
-    //                 pb.spinner.show();
-    //                 var target = data_parent.data('redir_url');
-    //                 if (typeof(target) == "function") {
-    //                     // get target from callback
-    //                     target = target(this, responseText);
-    //                 }
-    //                 location.replace(target);
-    //                 break;
-    //             default:
-    //                 ajax_parent.empty().append(el);
-    //             }
-    //         }
-    //     });
-    // 
-    //     event.preventDefault();
-    //     return false;
-    // };
 
 
     /******
@@ -554,11 +441,13 @@ jQuery.tools.overlay.conf.oneInstance = false;
         content is loading.
     ******/
     pb.iframe = function() {
+        var src;
+
         pb.spinner.show();
 
         var content = this.getContent();
         if (content.find('iframe').length === 0) {
-            var src = content.data('target');
+            src = content.data('target');
             if (src) {
                 content.append(
                 '<iframe src="' + src + '" width="' + content.width() + '" height="' + content.height() + '" onload="pb.spinner.hide()"/>'
