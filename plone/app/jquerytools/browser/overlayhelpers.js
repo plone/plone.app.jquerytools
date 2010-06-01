@@ -242,34 +242,49 @@ jQuery.tools.overlay.conf.oneInstance = false;
         var afterpost = data_parent.data('afterpost');
         var api = data_parent.overlay();
         var filter = data_parent.data('filter');
+        // var el = $('<div />');
         var options = {};
 
-        
-        options.url = form.attr('action');
-        if (filter) {
-            options.url = form.attr('action') + ' ' + filter;
-        }
+        // options.url = form.attr('action');
+        // if (filter) {
+        //     options.url = form.attr('action') + ' ' + filter;
+        // }
+        // options.target = el;
         if (beforepost) {
             options.beforeSubmit = function(arr, form, options) {
                 return beforepost(form, arr, options);
             };
         }
+        // options.error = function(responseText, statusText, xhr, form) {
+        //     console.log(statusText)
+        // };
         options.success = function(responseText, statusText, xhr, form) {
-            var el = $('<div />').html(responseText);
+            // var el = $('<div />').html(responseText);
+            var noform, el, myform;
             
             if (statusText === 'error') {
-                el.append(pb.ajax_error_recover(responseText, filter));
+                // responseText parameter is actually xhr
+                responseText = responseText.responseText;
             }
+
+            el = $(responseText.replace(/<script(.|\s)*?\/script>/gi, ""))
+                 .find(filter || 'body')
+                 .wrap('<div />')
+                 ;
             
             // afterpost callback
             if (afterpost) {
                 afterpost(el, data_parent);
             }
 
-            var myform = el.find(formtarget);
-            if (myform.length) {
+            myform = el.find(formtarget);
+            if (myform.length && statusText === 'success') {
+                ajax_parent.empty().append(el);
+                pb.fi_focus(ajax_parent);
+
                 // attach submit handler
-                pb.prep_ajax_form(myform);
+                myform.ajaxForm(options);
+
                 // attach close to element id'd by closeselector
                 if (closeselector) {
                     el.find(closeselector).click(function(event) {
@@ -277,16 +292,19 @@ jQuery.tools.overlay.conf.oneInstance = false;
                         return false;
                     });
                 }
-                ajax_parent.empty().append(el);
-                pb.fi_focus(ajax_parent);
             } else {
-                // there's no form in our new content
+                // there's no form in our new content or there's been an error
 
-                var noform = data_parent.data('noform');
-                if (typeof(noform) == "function") {
-                    // get action from callback
-                    noform = noform(this);
+                if (statusText === 'success') {
+                    noform = data_parent.data('noform');
+                    if (typeof(noform) == "function") {
+                        // get action from callback
+                        noform = noform(this);
+                    }
+                } else {
+                    noform = statusText;
                 }
+
 
                 switch (noform) {
                 case 'close':
@@ -315,6 +333,10 @@ jQuery.tools.overlay.conf.oneInstance = false;
                 }
             }
         };
+        
+        options.error = options.success;
+        
+        form.ajaxForm(options);
         
     };
 
