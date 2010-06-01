@@ -15,9 +15,16 @@
 <script>
 
 jQuery(function($){
+    $.fn.ajaxSubmit.debug = true;
+
     $('a').prepOverlay({
         subtype:'ajax',
-        formselector:'form'
+        formselector:'form',
+        beforepost: function(form, formData) {
+                var queryString = $.param(formData); 
+                alert('About to submit: \n\n' + queryString);
+                return true; 
+            }
         });
     
 });
