@@ -5,13 +5,18 @@
                 expression=""
                 insert-after="jquery-integration.js"
                 />
+    <javascript cacheable="True" compression="none" cookable="True"
+                enabled="False" id="++resource++plone.app.jquerytools.plugins.js" inline="False"
+                expression=""
+                insert-after="++resource++plone.app.jquerytools.js"
+                />
     <javascript cacheable="True" compression="safe" cookable="True"
                 enabled="True" id="++resource++plone.app.jquerytools.overlayhelpers.js" inline="False"
                 expression=""
                 insert-after="++resource++plone.app.jquerytools.js"
                 />
     <javascript cacheable="True" compression="safe" cookable="True"
-                enabled="False" id="++resource++plone.app.jquerytools.plugins.js" inline="False"
+                enabled="True" id="++resource++plone.app.jquerytools.form.js" inline="False"
                 expression=""
                 insert-after="++resource++plone.app.jquerytools.js"
                 />

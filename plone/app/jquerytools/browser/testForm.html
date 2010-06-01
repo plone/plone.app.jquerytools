@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>testForm</title>
+	
+</head>
+
+<body>
+
+    <form id="myForm1" action="++resource++plone.app.jquerytools.testForm.html" method="post"><div>
+            <input type="hidden" name="Hidden" value="hiddenValue" />
+            <table>
+
+            <tr><td>Name:</td><td><input name="Name" type="text" value="MyName1" /></td></tr>
+            <tr><td>Password:</td><td><input name="Password" type="password" /></td></tr>
+            <tr><td>Multiple:</td><td><select name="Multiple" multiple="multiple">
+
+                <optgroup label="Group 1">
+                    <option value="one" selected="selected">One</option>
+                    <option value="two">Two</option>
+
+                    <option value="three">Three</option>
+                </optgroup>
+                <optgroup label="Group 2">
+                    <option value="four">Four</option>
+
+                    <option value="five">Five</option>
+                    <option value="six">Six</option>
+
+                </optgroup>
+            </select></td></tr>
+            <tr><td>Single:</td><td><select name="Single">
+                <option value="one" selected="selected">One</option>
+                <option value="two">Two</option>
+
+                <option value="three">Three</option>
+
+            </select></td></tr>
+            <tr><td>Single2:</td><td><select name="Single2">
+                <optgroup label="Group 1">
+                    <option value="A" selected="selected">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                </optgroup>
+
+                <optgroup label="Group 2">
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                    <option value="F">F</option>
+                </optgroup>
+            </select></td></tr>
+
+            <tr><td>Check:</td><td>
+
+                <input type="checkbox" name="Check" value="1" />
+                <input type="checkbox" name="Check" value="2" />
+                <input type="checkbox" name="Check" value="3" />
+            </td></tr>
+            <tr><td>Radio:</td><td>
+                <input type="radio" name="Radio" value="1" />
+                <input type="radio" name="Radio" value="2" />
+
+                <input type="radio" name="Radio" value="3" />
+
+            </td></tr>
+            <tr><td>Text:</td><td><textarea name="Text" rows="2" cols="20">This is Form1</textarea></td></tr>
+            </table>
+            <input type="reset"   name="resetButton " value="Reset" />
+            <input type="submit"  name="submitButton" value="Submit1" />
+            <input type="image"   name="submitButton" value="Submit2" src="submit.gif" />
+            <input type="image"   name="submitButton" value="Submit3" src="submit.gif" />
+            <input type="image"   name="submitButton" value="Submit4" src="submit.gif" />
+
+			<button type="submit" name="submitButton" value="Submit5"><span>submit 5</span></button>
+    </div></form>
+
+
+</body>
+</html>

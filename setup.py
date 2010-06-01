@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '1.0rc3'
+version = '1.1b1'
 
 setup(name='plone.app.jquerytools',
       version=version,

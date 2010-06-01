@@ -1,20 +1,23 @@
 Introduction
 ============
 
-plone.app.jquerytools does four things:
+plone.app.jquerytools does five things:
 
 * It adds jQuery Tools to Plone's JavaScript resources. Included with the
   base kit is tabs, tooltip, scrollable, overlay, toolbox.history, 
   and toolbox.expose.
 
-* It adds some helper code for loading overlays dynamically and
-  for handling AJAX forms.
+* Integrates the jQuery Form plugin <http://malsup.com/jquery/form/> to add
+  support for AJAX form handling.
+
+* Adds helper code for loading overlays dynamically and for handling AJAX
+  forms based on existing pages with minimal setup.
 
 * Adds several jQuery Tools plugins to the JavaScript resources.
   The plugins registry entry is disabled by default. Applications
   that need it and can justify a little more js bloat may turn it on.
 
-  Plugins included are:
+  Plugins included in the disabled resource are:
 
   tools.tabs.slideshow, 
   tools.tooltip.dynamic,
@@ -22,6 +25,10 @@ plone.app.jquerytools does four things:
   tools.scrollable.navigator
 
 For information on using jQuery tools, see http://flowplayer.org/tools/ .
+
+For information on using the jQuery Form plugin, see
+http://malsup.com/jquery/form/ .
+
 
 plone.app.jquerytools was developed for Plone 4. However, it can
 be used in Plone 3.x by adding a zcml slug and running it's
@@ -125,23 +132,24 @@ For AJAX overlays, add the following, form-oriented, options:
       content has nothing matching the formselector. Available actions include
       'close' to simply close the overlay, 'reload' to reload the page, and
       'redirect' to redirect to another page. If you choose 'redirect', you
-      must specify the URL in the redirect option. You may also supply a callback
-      function that returns one of these strings. The overlay helper will call
-      the function with the overlay element as an argument.
+      must specify the URL in the redirect option. You may also supply a
+      callback function that returns one of these strings. The overlay helper
+      will call the function with the overlay element as an argument.
 
     * closeselector: use this to specify a JQuery selector that will be used
       to find elements within the overlay that should close the overlay if
       clicked. The most obvious example is a form's cancel button.
 
     * redirect: if you specify 'redirect' for the noform action, use the
-      redirect option to specify the full target URL. You may also supply a callback
-      function that returns a URL. The overlay helper will call
-      the function with the overlay element and the response text as arguments.
+      redirect option to specify the full target URL. You may also supply a
+      callback function that returns a URL. The overlay helper will call the
+      function with the overlay element and the response text as arguments.
 
     * beforepost: you may specify a function that will be called before the
-      AJAX form posting. The form submit event is passed to the function.
-      Return true if you wish the AJAX form handler to handle the event;
-      return false if you wish the default submit action to occur instead.
+      AJAX form posting. This callback will be passed the jQuery-wrapped form
+      and the serialized form data. Return true if you wish the AJAX form
+      handler to handle the event; return false if you wish to cancel the
+      submit.
 
     * afterpost: you may specify a function that will be called immediately
       after the AJAX load of the post response. The function will be passed an
