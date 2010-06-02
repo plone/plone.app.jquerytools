@@ -272,7 +272,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
 
             // filter response html and put it in a wrapper div
             el = $('<div />')
-                .append($(responseText).find(filter || 'body'));
+                .append($(responseText).filter(filter || 'body'));
 
             // afterpost callback
             if (success && afterpost) {

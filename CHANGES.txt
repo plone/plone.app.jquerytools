@@ -1,11 +1,18 @@
 Changelog
 =========
 
+1.1b2 (unreleased)
+------------------
+
+* Fix regression in filtering introduced in 1.1b1.
+  [davisagli]
+
 1.1b1
 -----
 
 * Integrate jQuery form plugin http://malsup.com/jquery/form/ so that we
   can handle file uploads. Bump version # to reflect significant change.
+  [davisagli, smcmahon]
 
 1.0rc3
 ------
