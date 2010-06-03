@@ -1,8 +1,14 @@
 Changelog
 =========
 
-1.1b3 - Unreleased
+1.1b3 - 2010-06-03
 ------------------
+
+* Switch back to "find", undoing 1.1b2 change. 'filter' does not find
+  descendents, and will thus not work in most validation error situations.
+  Also, cleaned up identifiers and comments that suggested that we were
+  filtering rather than selecting.
+  [smcmahon]
 
 1.1b2 - 2010-06-03
 ------------------

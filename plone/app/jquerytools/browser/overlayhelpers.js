@@ -35,7 +35,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
     $.fn.prepOverlay = function(pbo) {
         return this.each(function() {
             var o, config, onBeforeLoad, onLoad, src, nt,
-                el, filter, parts;
+                el, selector, parts;
 
             o = $(this);
 
@@ -109,21 +109,21 @@ jQuery.tools.overlay.conf.oneInstance = false;
                         el.width(pbo.width);
                     }
 
-                    // We'll need the filter in the callback/click, so let's
+                    // We'll need the selector in the callback/click, so let's
                     // store it on the target element.
                     //
-                    // Filter may have been supplied in options, otherwise
+                    // A selector may have been supplied in options, otherwise
                     // anything in src after a space is going to be a
-                    // $ filter to use in an ajax load so that
+                    // $ selector to use in an ajax load so that
                     // we don't get a whole page.
-                    filter = pbo.filter;
-                    if (!filter) {
+                    selector = pbo.filter || pbo.selector;
+                    if (!selector) {
                         // see if one's been supplied in the src
                         parts = src.split(' ');
                         src = parts.shift();
-                        filter = parts.join(' ');
+                        selector = parts.join(' ');
                     }
-                    el.data('target', src).data('filter', filter);
+                    el.data('target', src).data('selector', selector);
 
                     // are we being asked to handle forms in an ajax overlay?
                     // save the form selector on the target element.
@@ -222,12 +222,12 @@ jQuery.tools.overlay.conf.oneInstance = false;
     /******
         pb.ajax_error_recover
         jQuery's ajax load function does not load error responses.
-        This routine returns the filtered error response.
+        This routine returns the cooked error response.
     ******/
-    pb.ajax_error_recover = function(responseText, filter) {
+    pb.ajax_error_recover = function(responseText, selector) {
         var tcontent = $('<div/>')
             .append(responseText.replace(/<script(.|\s)*?\/script>/gi, ""));
-        return filter ? tcontent.find(filter) : tcontent;
+        return selector ? tcontent.find(selector) : tcontent;
     };
 
 
@@ -243,7 +243,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
         var beforepost = data_parent.data('beforepost');
         var afterpost = data_parent.data('afterpost');
         var api = data_parent.overlay();
-        var filter = data_parent.data('filter');
+        var selector = data_parent.data('selector');
         var options = {};
 
         options.beforeSerialize = function() {
@@ -270,9 +270,9 @@ jQuery.tools.overlay.conf.oneInstance = false;
             // strip inline script tags
             responseText = responseText.replace(/<script(.|\s)*?\/script>/gi, "");
 
-            // filter response html and put it in a wrapper div
+            // select response html and put it in a wrapper div
             el = $('<div />')
-                .append($(responseText).filter(filter || 'body'));
+                .append($(responseText).find(selector || 'body'));
 
             // afterpost callback
             if (success && afterpost) {
@@ -354,7 +354,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
         var api = content.overlay();
         var src = content.data('target');
         var el = content.children('div.pb-ajax');
-        var filter = content.data('filter');
+        var selector = content.data('selector');
         var formtarget = content.data('formtarget');
         var closeselector = content.data('closeselector');
 
@@ -379,9 +379,9 @@ jQuery.tools.overlay.conf.oneInstance = false;
         var sep = (src.indexOf('?') >= 0) ? '&': '?';
         src += sep + "ajax_load=" + (new Date().getTime());
 
-        // add filter, if any
-        if (filter) {
-            src += ' ' + filter;
+        // add selector, if any
+        if (selector) {
+            src += ' ' + selector;
         }
 
         // and load the div
@@ -389,7 +389,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
             var el = $(this);
 
             if (errorText === 'error') {
-                el.append(pb.ajax_error_recover(responseText, filter));
+                el.append(pb.ajax_error_recover(responseText, selector));
             } else if (!responseText.length) {
                 el.append(ajax_noresponse_message || 'No response from server.');
             }
