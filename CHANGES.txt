@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.1b4 - unreleased
+------------------
+
+* The select technique used to filter ajax response in b1-b3 was not robust
+  if the responseText was not well-formed (think ZMI forms). Fixed by emulating
+  the technique used in jQuery's .load method.
+  [smcmahon]
+
 1.1b3 - 2010-06-03
 ------------------
 

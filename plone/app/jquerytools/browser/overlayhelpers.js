@@ -261,18 +261,26 @@ jQuery.tools.overlay.conf.oneInstance = false;
 
             var noform, el, myform, success;
 
-            success = statusText === 'success';
+            success = statusText === "success" || statusText === "notmodified";
 
             if (! success) {
-                // responseText parameter is actually xhr
+                // The responseText parameter is actually xhr
                 responseText = responseText.responseText;
             }
             // strip inline script tags
             responseText = responseText.replace(/<script(.|\s)*?\/script>/gi, "");
 
-            // select response html and put it in a wrapper div
-            el = $('<div />')
-                .append($(responseText).find(selector || 'body'));
+            // create a div containing the optionally filtered response
+            el = $('<div />').append(
+                selector ?
+                    // a lesson learned from the jQuery source: $(responseText)
+                    // will not work well unless responseText is well-formed;
+                    // appending to a div is more robust, and automagically
+                    // removes the html/head/body outer tagging.
+                    $('<div />').append(responseText).find(selector)
+                    :
+                    responseText
+                );
 
             // afterpost callback
             if (success && afterpost) {

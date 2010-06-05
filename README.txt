@@ -134,7 +134,8 @@ For AJAX overlays, add the following, form-oriented, options:
       'redirect' to redirect to another page. If you choose 'redirect', you
       must specify the URL in the redirect option. You may also supply a
       callback function that returns one of these strings. The overlay helper
-      will call the function with the overlay element as an argument.
+      will call the function with the overlay element as an argument. Default
+      action is to display the filtered response in the popup.
 
     * closeselector: use this to specify a JQuery selector that will be used
       to find elements within the overlay that should close the overlay if
