@@ -7,8 +7,8 @@
 
 *****************/
 
-/*jslint browser: true, laxbreak: true */
-/*global jQuery, ajax_noresponse_message */
+/*jslint browser: true, onevar: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, newcap: true, immed: true */
+/*global jQuery, ajax_noresponse_message, window */
 
 // Name space object for pipbox
 var pb = {spinner:{}};
@@ -19,7 +19,7 @@ pb.overlay_counter = 1;
 
 jQuery.tools.overlay.conf.oneInstance = false;
 
-(function($) {
+jQuery(function($) {
 
     pb.spinner.show = function () {
         $('body').css('cursor','wait');
@@ -236,15 +236,15 @@ jQuery.tools.overlay.conf.oneInstance = false;
         Set up form with ajaxForm, including success and error handlers.
     ******/
     pb.prep_ajax_form = function(form) {
-        var ajax_parent = form.closest('.pb-ajax');
-        var data_parent = ajax_parent.closest('.overlay-ajax');
-        var formtarget = data_parent.data('formtarget');
-        var closeselector = data_parent.data('closeselector');
-        var beforepost = data_parent.data('beforepost');
-        var afterpost = data_parent.data('afterpost');
-        var api = data_parent.overlay();
-        var selector = data_parent.data('selector');
-        var options = {};
+        var ajax_parent = form.closest('.pb-ajax'),
+            data_parent = ajax_parent.closest('.overlay-ajax'),
+            formtarget = data_parent.data('formtarget'),
+            closeselector = data_parent.data('closeselector'),
+            beforepost = data_parent.data('beforepost'),
+            afterpost = data_parent.data('afterpost'),
+            api = data_parent.overlay(),
+            selector = data_parent.data('selector'),
+            options = {};
 
         options.beforeSerialize = function() {
             pb.spinner.show();
@@ -259,7 +259,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
             // success comes in many forms, some of which are errors;
             //
 
-            var noform, el, myform, success;
+            var noform, el, myform, success, target;
 
             success = statusText === "success" || statusText === "notmodified";
 
@@ -330,7 +330,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
                 case 'redirect':
                     api.close();
                     pb.spinner.show();
-                    var target = data_parent.data('redir_url');
+                    target = data_parent.data('redir_url');
                     if (typeof(target) === "function") {
                         // get target from callback
                         target = target(this, responseText);
@@ -338,8 +338,12 @@ jQuery.tools.overlay.conf.oneInstance = false;
                     location.replace(target);
                     break;
                 default:
-                    // most likely we're displaying an error message
-                    ajax_parent.empty().append(el);
+                    if (el.children()) {
+                        // show what we've got
+                        ajax_parent.empty().append(el);
+                    } else {
+                        api.close();
+                    }
                 }
             }
             pb.spinner.hide();
@@ -358,13 +362,14 @@ jQuery.tools.overlay.conf.oneInstance = false;
         call the JQT overlay loader.
     ******/
     pb.ajax_click = function(event) {
-        var content = $($(this).attr('rel'));
-        var api = content.overlay();
-        var src = content.data('target');
-        var el = content.children('div.pb-ajax');
-        var selector = content.data('selector');
-        var formtarget = content.data('formtarget');
-        var closeselector = content.data('closeselector');
+        var content = $($(this).attr('rel')),
+            api = content.overlay(),
+            src = content.data('target'),
+            el = content.children('div.pb-ajax'),
+            selector = content.data('selector'),
+            formtarget = content.data('formtarget'),
+            closeselector = content.data('closeselector'),
+            sep;
 
         pb.spinner.show();
 
@@ -384,7 +389,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
 
         // affix a random query argument to prevent
         // loading from browser cache
-        var sep = (src.indexOf('?') >= 0) ? '&': '?';
+        sep = (src.indexOf('?') >= 0) ? '&': '?';
         src += sep + "ajax_load=" + (new Date().getTime());
 
         // add selector, if any
@@ -450,11 +455,11 @@ jQuery.tools.overlay.conf.oneInstance = false;
         content is loading.
     ******/
     pb.iframe = function() {
-        var src;
+        var content = this.getContent(),
+            src;
 
         pb.spinner.show();
 
-        var content = this.getContent();
         if (content.find('iframe').length === 0) {
             src = content.data('target');
             if (src) {
@@ -471,4 +476,4 @@ jQuery.tools.overlay.conf.oneInstance = false;
     };
 
 
-})(jQuery);
+});

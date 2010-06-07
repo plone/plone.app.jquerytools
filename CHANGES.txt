@@ -1,6 +1,15 @@
 Changelog
 =========
 
+1.0b5 - Unreleased
+------------------
+
+* Recode to one "var" per functions standard.
+  [smcmahon]
+
+* Don't show empty ajax form responses, even if "noform" is not set.
+  [smcmahon]
+
 1.1b4 - 2010-06-06
 ------------------
 
