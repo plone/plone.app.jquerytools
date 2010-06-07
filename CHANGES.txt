@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1b4 - unreleased
+1.1b4 - 2010-06-06
 ------------------
 
 * The select technique used to filter ajax response in b1-b3 was not robust
