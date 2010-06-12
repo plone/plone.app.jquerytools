@@ -1,10 +1,13 @@
 Changelog
 =========
 
-1.0b5 - Unreleased
+1.0b5 - 2010-06-12
 ------------------
 
-* Recode to one "var" per functions standard.
+* Update to jQuery Tools 1.2.3.
+  [smcmahon]
+
+* Recode to one "var" per function standard.
   [smcmahon]
 
 * Don't show empty ajax form responses, even if "noform" is not set.
