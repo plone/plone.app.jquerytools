@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0b6 (unreleased)
+------------------
+
+* Added experimental windmill browser integration tests.
+  [smcmahon]
+
 1.0b5 - 2010-06-12
 ------------------
 

@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '1.1b5'
+version = '1.1b6'
 
 setup(name='plone.app.jquerytools',
       version=version,
@@ -31,4 +31,7 @@ setup(name='plone.app.jquerytools',
           [z3c.autoinclude.plugin]
           target = plone
       """,
-      )
+      extras_require = {
+          'test': ['niteoweb.windmill',],
+      },
+)
