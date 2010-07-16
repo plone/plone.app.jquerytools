@@ -1,8 +1,11 @@
 Changelog
 =========
 
-1.0b6 (unreleased)
-------------------
+1.0 (unreleased)
+----------------
+
+* Update license to GPL version 2 only.
+  [hannosch]
 
 * Added experimental windmill browser integration tests.
   [smcmahon]

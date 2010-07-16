@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '1.1b6'
+version = '1.0'
 
 setup(name='plone.app.jquerytools',
       version=version,
@@ -8,14 +8,18 @@ setup(name='plone.app.jquerytools',
       long_description=open("README.txt").read() + "\n" +
                        open("CHANGES.txt").read(),
       classifiers=[
+          "Environment :: Web Environment",
           "Framework :: Plone",
+          "Framework :: Zope2",
+          "License :: OSI Approved :: GNU General Public License (GPL)",
+          "Operating System :: OS Independent",
           "Programming Language :: Python",
         ],
       keywords='Plone jQuery overlays AJAX',
       author='Plone Foundation',
       author_email='plone-developers@lists.sourceforge.net',
       url='http://pypi.python.org/pypi/plone.app.jquerytools',
-      license='GPL',
+      license='GPL version 2',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['plone', 'plone.app'],
       include_package_data=True,
