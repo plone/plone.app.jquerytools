@@ -4,6 +4,10 @@ Changelog
 1.1 (unreleased)
 ----------------
 
+* Add overlays.css. For Plone 3 only (it is disabled on installation in Plone
+  4, and on upgrade from Plone 3 to Plone 4).
+  [davisagli]
+
 * Update license to GPL version 2 only.
   [hannosch]
 

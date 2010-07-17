@@ -3,7 +3,6 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     >
 
-
 <resource 
     name="plone.app.jquerytools.js" 
     file="browser/jquery.tools.min.js"
@@ -34,6 +33,16 @@
     file="browser/testAJAXFormPopup.html"
     />
 
+<resource
+    name="plone.app.jquerytools.overlays.css"
+    file="browser/overlays.css"
+    />
+
+<resource
+    name="plone.app.jquerytools.pb_close.png"
+    file="browser/pb_close.png"
+    />
+
 <genericsetup:registerProfile
     name="default"
     title="Plone JQuery Tools Integration"
@@ -42,5 +51,16 @@
     provides="Products.GenericSetup.interfaces.EXTENSION"
     for="Products.CMFCore.interfaces.ISiteRoot"
     />
+
+<!-- custom steps for installation profile -->
+<genericsetup:importStep
+  name="jquerytools-various"
+  title="jquerytools custom setup steps"
+  description=""
+  handler=".setuphandlers.importVarious">
+  <depends name="cssregistry"/>
+</genericsetup:importStep>
+
+<include package=".upgrades"/>
 
 </configure>

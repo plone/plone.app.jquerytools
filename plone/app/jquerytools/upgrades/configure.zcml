@@ -1,0 +1,40 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup">
+  
+  <!-- Jquerytools upgrades -->
+  
+  <genericsetup:upgradeStep
+      source="*"
+      destination="1.0rc2"
+      title="Null upgrade step"
+      profile="plone.app.jquerytools:default"
+      handler="plone.app.jquerytools.upgrades.null_upgrade_step"
+      />
+
+  <genericsetup:upgradeSteps
+      source="1.0rc2"
+      destination="2"
+      profile="plone.app.jquerytools:default">
+      
+      <genericsetup:upgradeStep
+        title="Add overlays.css for Plone 3"
+        handler=".upgrade1to2"
+        />
+
+  </genericsetup:upgradeSteps>
+
+  <!-- steps on Plone upgrade -->
+  
+  <!-- disable overlays.css when upgrading from Plone 3 to 4 -->
+  <genericsetup:upgradeStep
+      source="4001"
+      destination="4002"
+      title="Disable plone.app.jquerytools' overlay CSS"
+      description=""
+      profile="Products.CMFPlone:plone"
+      handler="plone.app.jquerytools.setuphandlers.disable_css"
+      />
+
+</configure>
