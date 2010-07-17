@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0 (unreleased)
+1.1 (unreleased)
 ----------------
 
 * Update license to GPL version 2 only.
@@ -10,7 +10,7 @@ Changelog
 * Added experimental windmill browser integration tests.
   [smcmahon]
 
-1.0b5 - 2010-06-12
+1.1b5 - 2010-06-12
 ------------------
 
 * Update to jQuery Tools 1.2.3.
