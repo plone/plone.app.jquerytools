@@ -4,6 +4,9 @@ Changelog
 1.1.1 - unreleased
 ------------------
 
+* Add 'description' parameter to upgrade step directives to fix breakage on
+  Plone 3.
+  [davisagli]
 
 1.1 - 2010-07-18
 ----------------

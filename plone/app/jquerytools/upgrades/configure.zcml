@@ -9,6 +9,7 @@
       source="*"
       destination="1.0rc2"
       title="Null upgrade step"
+      description=""
       profile="plone.app.jquerytools:default"
       handler="plone.app.jquerytools.upgrades.null_upgrade_step"
       />
@@ -20,6 +21,7 @@
       
       <genericsetup:upgradeStep
         title="Add overlays.css for Plone 3"
+        description=""
         handler=".upgrade1to2"
         />
 
