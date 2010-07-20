@@ -14,18 +14,14 @@
       handler="plone.app.jquerytools.upgrades.null_upgrade_step"
       />
 
-  <genericsetup:upgradeSteps
+  <genericsetup:upgradeStep
       source="1.0rc2"
       destination="2"
-      profile="plone.app.jquerytools:default">
-      
-      <genericsetup:upgradeStep
-        title="Add overlays.css for Plone 3"
-        description=""
-        handler=".upgrade1to2"
-        />
-
-  </genericsetup:upgradeSteps>
+      title="Add overlays.css for Plone 3"
+      description=""
+      handler=".upgrade1to2"
+      profile="plone.app.jquerytools:default"
+      />
 
   <!-- steps on Plone upgrade -->
   
