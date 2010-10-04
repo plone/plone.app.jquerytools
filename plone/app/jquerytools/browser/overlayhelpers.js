@@ -455,7 +455,7 @@ jQuery(function($) {
         content is loading.
     ******/
     pb.iframe = function() {
-        var content = this.getContent(),
+        var content = this.getOverlay(),
             src;
 
         pb.spinner.show();
