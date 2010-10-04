@@ -4,6 +4,9 @@ Changelog
 1.1.3 - unreleased
 ------------------
 
+* getContent does not exist in jqtools. It has been replaced by getOverlay.
+  http://flowplayer.org/tools/forum/40/28687
+  [naro]
 
 1.1.2 - 2010-07-19
 ------------------
