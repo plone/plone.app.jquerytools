@@ -1,4 +1,19 @@
+#!/usr/bin/env python
 
+import os
+import shlex
+import shutil
+import urllib2
+import tarfile
+import tempfile
+import StringIO
+import subprocess
+import datetime
+#import argparse
+
+
+def call(*args, **kw):
+    return subprocess.Popen(*args, **kw).communicate()
 
 if __name__ == '__main__':
     """
@@ -8,3 +23,136 @@ if __name__ == '__main__':
          * merge files like its is done in README.txt and copy it to plone/app/jquerytools/browser folder
     """
 
+    # TODO: we could make get values bellow bia sys.args (argparse)
+    VERSION = '1.2.5'
+    DOWNLOAD_URL = 'http://github.com/jquerytools/jquerytools/tarball/v1.2.5'
+    DOWNLOAD_URL = 'file:///Users/rok/Projects/garbas/plone.app.jquerytools/jquerytools-jquerytools-v1.2.5-0-g85655d7.tar.gz'
+    PLONE_MAPPING = {
+        'jquery.tools.min.js': [
+                'overlay/overlay.js',
+                'scrollable/scrollable.js',
+                'tabs/tabs.js',
+                'toolbox/toolbox.history.js',
+                'toolbox/toolbox.expose.js'
+                'tooltip/tooltip.js',
+            ],
+        'jquery.tools.plugins.js': [
+                'tabs/tabs.slideshow.js',
+                'overlay/overlay.apple.js',
+                'scrollable/scrollable.autoscroll.js',
+                'scrollable/scrollable.navigator.js',
+                'tabs/tabs.slideshow.js',
+                'toolbox/toolbox.flashembed.js',
+                'toolbox/toolbox.mousewheel.js',
+                'tooltip/tooltip.dynamic.js',
+                'tooltip/tooltip.slide.js',
+            ],
+        'jquery.tools.input.js': [
+                'dateinput/dateinput.js',
+            ],
+        'jquery.tools.rangeinput.js': [
+                'rangeinput/rangeinput.js',
+            ],
+
+    }
+
+    # create temporary directory
+    TMP_DIR = tempfile.mkdtemp(prefix='build-jquerytools-' + VERSION)
+
+    archive = urllib2.urlopen(DOWNLOAD_URL).fp.read()
+
+    f = StringIO.StringIO()
+    f.write(archive)
+    f.seek(0)
+
+    archive_tar = tarfile.open(fileobj=f)
+    for member in archive_tar.getmembers():
+        if member.path.startswith('/') or \
+           member.path.startswith('..'):
+            raise Exception('Somebody want to harm your coputer.')
+    archive_tar.extractall(TMP_DIR)
+    f.close()
+
+    try:
+        # prepare config
+        out = os.listdir(TMP_DIR)
+        if len(out) != 1:
+            raise Exception('There should only be one folder')
+
+        source_dir_name = out[0]
+        source_dir = os.path.join(TMP_DIR, source_dir_name)
+        build_dir = os.path.join(TMP_DIR, source_dir_name+'-build')
+
+        shutil.copytree(os.path.join(source_dir, 'src'), build_dir)
+        # FIXME: this should actually copy all *.js files from lib directory
+        shutil.copy2(os.path.join(source_dir, 'lib', 'jslint.js'),
+                     os.path.join(build_dir, 'jslint.js'))
+
+        today = datetime.datetime.today().strftime("%Y-%m-%d %H:%M")
+        for dirpath, dirnames, filenames in os.walk(build_dir):
+            for filename in filenames:
+                filename = os.path.join(dirpath, filename)
+                short_filename = filename[len(build_dir):]
+                if filename.endswith('.js') and \
+                   not filename.endswith('jslint.js'):
+
+                    print '-' * 20
+                    print 'FILE: ' + short_filename
+
+
+                    # replace version number
+                    subprocess.check_call(
+                            shlex.split('sed -i "" "s/@VERSION/%(version)s/g" %(filename)s' % \
+                                    dict(version=VERSION, filename=filename,)))
+
+                    # date
+                    # FIXME: should be date from git log
+                    subprocess.check_call(
+                            shlex.split('sed -i "" "s/@DATE/%(date)s/g" %(filename)s' % \
+                                    dict(date=today, filename=filename,)))
+
+
+                    # lint (http://www.jslint.com/lint.html)
+                    output = call(
+                            shlex.split('java -jar %(rhino)s %(jslint)s %(filename)s ' % \
+                                    dict(date=today, filename=filename,
+                                         jslint=os.path.join(source_dir, 'lib', 'jslint.js'),
+                                         rhino=os.path.join(source_dir, 'lib', 'rhino.jar'),
+                                        )), stdout=subprocess.PIPE)
+                    if output[0].startswith('jslint: No problems found in'):
+                        print '  |-> jslint status: OK'
+                    else:
+                        print '  |-> jslint status: ERROR'
+                        print '\n'.join([(' '*6)+i for i in output[0].split('\n')])
+
+                    # minify with Closure Compiler (default mode)
+                    subprocess.check_call(
+                            shlex.split('java -jar %(compiler)s '
+                                             '--js %(filename)s '
+                                             '--js_output_file %(output_file)s' % \
+                                    dict(filename=filename,
+                                         compiler=os.path.join(source_dir, 'lib', 'compiler.jar'),
+                                         output_file=filename[:-3] + '.min.js'
+                                        )))
+                    print '  |-> minified to: ' + 
+
+                    # plone.app.jquerytools specific
+                    plone_dir = os.path.join(os.path.dirname(__file__),
+                                             'plone', 'app', 'jquerytools', 'browser')
+                    for script in PLONE_MAPPING:
+                        if short_filename in PLONE_MAPPING[script]:
+                            source_filename = os.path.join(build_dir, short_filename[:-3] + '.min.js')
+                            build_filename = os.path.join(plone_dir, script)
+
+                            subprocess.check_call(
+                                    shlex.split('cat %(source_filename)s >> %(build_filename)s' % \
+                                            dict(source_filename=source_filename,
+                                                 build_filename=build_filename))
+                            subprocess.check_call('echo "\n" >> %(build_filename)s' % \
+                                            dict(build_filename=build_filename))
+
+
+
+    finally:
+        # remove temporary directory
+        shutil.rmtree(TMP_DIR)
