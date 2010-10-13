@@ -130,7 +130,11 @@ def main():
     # run build for all libs
 
     build('jquery.tools', JQ_TOOLS_DOWNLOAD_URL,
-          version=JQ_FORM_VERSION, plone_mapping=PLONE_MAPPING,
+          version=JQ_FORM_VERSION,
+          plone_mapping=PLONE_MAPPING,
+          today=datetime.datetime.today().strftime("%Y-%m-%d %H:%M"),
+          jslint=os.path.join(os.path.abspath(os.path.dirname(__file__)), 'lib', 'jslint.js'),
+          rhino=os.path.join(os.path.abspath(os.path.dirname(__file__)), 'lib', 'rhino.jar'),
           hooks = {'before': [
                         jq_tools_before_hook,
                         plone_before_hook],
@@ -158,7 +162,7 @@ def jq_tools_before_hook(**kw):
             os.path.join(kw['source_dir'], 'lib', 'jslint.js'),
             os.path.join(kw['build_dir'], 'jslint.js'))
 
-    kw['today'] = datetime.datetime.today().strftime("%Y-%m-%d %H:%M")
+
     return kw
 
 def plone_before_hook(**kw):
@@ -193,10 +197,6 @@ def lint_hook(**kw):
     output = subprocess.Popen(
             shlex.split('java -jar %(rhino)s %(jslint)s %(filename)s ' % kw),
             stdout=subprocess.PIPE).communicate()
-                        dict(date=today, filename=filename,
-                                         jslint=os.path.join(source_dir, 'lib', 'jslint.js'),
-                                         rhino=os.path.join(source_dir, 'lib', 'rhino.jar'),
-                                        )), stdout=subprocess.PIPE)
     if output[0].startswith('jslint: No problems found in'):
         print '  |-> jslint status: OK'
     else:
