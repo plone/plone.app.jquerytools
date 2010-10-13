@@ -147,9 +147,9 @@ if __name__ == '__main__':
                             subprocess.check_call(
                                     shlex.split('cat %(source_filename)s >> %(build_filename)s' % \
                                             dict(source_filename=source_filename,
-                                                 build_filename=build_filename))
+                                                 build_filename=build_filename)))
                             subprocess.check_call('echo "\n" >> %(build_filename)st ' % \
-                                            dict(build_filename=build_filename))
+                                            dict(build_filename=build_filename)))
 
 
 
