@@ -87,9 +87,8 @@ def main():
 
     JQ_TOOLS_VERSION = 'v1.2.5'
     JQ_TOOLS_DOWNLOAD_URL = 'http://github.com/jquerytools/jquerytools/tarball/'+JQ_TOOLS_VERSION
-    JQ_TOOLS_DOWNLOAD_URL = 'file:///Users/rok/Projects/garbas/jquerytools-jquerytools-v1.2.5-0-g85655d7.tar.gz'
 
-    JQ_FORM_VERSION = 'master'
+    JQ_FORM_VERSION = 'master' # there is no tag
     JQ_FORM_URL= 'http://github.com/malsup/form/tarball/'+JQ_FORM_VERSION
 
     PLONE_MAPPING = {
@@ -129,7 +128,7 @@ def main():
     #
     # run build for all libs
     build('jquery.tools', JQ_TOOLS_DOWNLOAD_URL,
-          version=JQ_FORM_VERSION,
+          version=JQ_TOOLS_VERSION,
           plone_mapping=PLONE_MAPPING,
           today=datetime.datetime.today().strftime("%Y-%m-%d %H:%M"),
           jslint=os.path.join(os.path.abspath(os.path.dirname(__file__)), 'lib', 'jslint.js'),
