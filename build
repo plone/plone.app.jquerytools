@@ -47,7 +47,7 @@ if __name__ == '__main__':
                 'tooltip/tooltip.dynamic.js',
                 'tooltip/tooltip.slide.js',
             ],
-        'jquery.tools.input.js': [
+        'jquery.tools.dateinput.js': [
                 'dateinput/dateinput.js',
             ],
         'jquery.tools.rangeinput.js': [
@@ -148,11 +148,11 @@ if __name__ == '__main__':
                             content = g.read()+'\n'
                             g.close()
 
-                            f.open(build_filename, 'w+')
+                            f = open(build_filename, 'a+')
                             f.write(content)
                             f.close()
 
-                            print '  |-> plone.app.jquerytools: ' + build_filename[len(plone_dir):]
+                            print '  |-> plone.app.jquerytools: ' + build_filename[len(plone_dir) + 1:]
 
 
 
