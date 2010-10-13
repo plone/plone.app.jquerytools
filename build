@@ -134,7 +134,7 @@ if __name__ == '__main__':
                                          compiler=os.path.join(source_dir, 'lib', 'compiler.jar'),
                                          output_file=filename[:-3] + '.min.js'
                                         )))
-                    print '  |-> minified to: ' + 
+                    print '  |-> minified to: ' + filename[:-3] + '.min.js'
 
                     # plone.app.jquerytools specific
                     plone_dir = os.path.join(os.path.dirname(__file__),
