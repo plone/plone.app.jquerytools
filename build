@@ -11,70 +11,25 @@ import subprocess
 import datetime
 
 
-def call(*args, **kw):
-    return subprocess.Popen(*args, **kw).communicate()
 
+def run_hooks(name, hooks, kw):
+    if name in hooks.keys():
+        for hook in hooks[name]:
+            kw = hooks(**kw)
+    return kw
 
-if __name__ == '__main__':
-    """
-        master plan:
-         * pull version from http://github.com/jquerytools/jquerytools/tarball/v${VERSION}
-         * untar and make usual build it like ant is doing it (look build.xml)
-         * merge files like its is done in README.txt and copy it to plone/app/jquerytools/browser folder
-    """
-
-    # TODO: we could make get values bellow bia sys.args (argparse)
-    VERSION = '1.2.5'
-    DOWNLOAD_URL = 'http://github.com/jquerytools/jquerytools/tarball/v1.2.5'
-    DOWNLOAD_URL = 'file:///Users/rok/Projects/garbas/jquerytools-jquerytools-v1.2.5-0-g85655d7.tar.gz'
-    PLONE_MAPPING = {
-        'jquery.tools.min.js': [
-                'overlay/overlay.js',
-                'scrollable/scrollable.js',
-                'tabs/tabs.js',
-                'toolbox/toolbox.history.js',
-                'toolbox/toolbox.expose.js'
-                'tooltip/tooltip.js',
-            ],
-        'jquery.tools.plugins.min.js': [
-                'tabs/tabs.slideshow.js',
-                'overlay/overlay.apple.js',
-                'scrollable/scrollable.autoscroll.js',
-                'scrollable/scrollable.navigator.js',
-                'tabs/tabs.slideshow.js',
-                'toolbox/toolbox.flashembed.js',
-                'toolbox/toolbox.mousewheel.js',
-                'tooltip/tooltip.dynamic.js',
-                'tooltip/tooltip.slide.js',
-            ],
-        'jquery.tools.dateinput.min.js': [
-                'dateinput/dateinput.js',
-            ],
-        'jquery.tools.rangeinput.min.js': [
-                'rangeinput/rangeinput.js',
-            ],
-        'jquery.tools.validator.min.js': [
-                'validator/validator.js',
-            ],
-
-    }
-
-    plone_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)),
-                             'plone', 'app', 'jquerytools', 'browser')
-    for script in PLONE_MAPPING:
-        f = open(os.path.join(plone_dir, script), 'w+')
-        f.write('')
-        f.close()
+def build(name, download_url, hooks=dict(), **kw):
 
     # create temporary directory
-    TMP_DIR = tempfile.mkdtemp(prefix='build-jquerytools-' + VERSION)
+    TMP_DIR = tempfile.mkdtemp(prefix='build--'+name + VERSION)
 
+    # download the archive
     archive = urllib2.urlopen(DOWNLOAD_URL).fp.read()
-
     f = StringIO.StringIO()
     f.write(archive)
     f.seek(0)
 
+    # extract it to temporary folder 
     archive_tar = tarfile.open(fileobj=f)
     for member in archive_tar.getmembers():
         if member.path.startswith('/') or \
@@ -84,86 +39,200 @@ if __name__ == '__main__':
     f.close()
 
     try:
-        # prepare config
+
+        # defaults
         out = os.listdir(TMP_DIR)
         if len(out) != 1:
             raise Exception('There should only be one folder')
 
-        source_dir_name = out[0]
-        source_dir = os.path.join(TMP_DIR, source_dir_name)
-        build_dir = os.path.join(TMP_DIR, source_dir_name+'-build')
+        kw['source_dir_name'] = out[0]
+        kw['source_dir'] = os.path.join(TMP_DIR, source_dir_name)
+        kw['build_dir'] = os.path.join(TMP_DIR, source_dir_name+'-build')
+        kw['download_url'] = download_url
+        kw['tmp_dir'] = TMP_DIR
+        kw['name'] = name
 
-        shutil.copytree(os.path.join(source_dir, 'src'), build_dir)
-        # FIXME: this should actually copy all *.js files from lib directory
-        shutil.copy2(os.path.join(source_dir, 'lib', 'jslint.js'),
-                     os.path.join(build_dir, 'jslint.js'))
+        # before hooks
+        kw = run_hooks('before', hooks, kw)
 
-        today = datetime.datetime.today().strftime("%Y-%m-%d %H:%M")
         for dirpath, dirnames, filenames in os.walk(build_dir):
             for filename in filenames:
-                filename = os.path.join(dirpath, filename)
-                short_filename = filename[len(build_dir) + 1:]
-                if filename.endswith('.js') and \
-                   not filename.endswith('jslint.js'):
+                kw['filename'] = os.path.join(dirpath, filename)
+                kw['short_filename'] = filename[len(build_dir) + 1:]
 
-                    print '-' * 20
-                    print 'FILE: ' + short_filename
+                print '-' * 80
+                print 'FILE: ' + kw['short_filename']
 
+                # per_file hooks
+                kw = run_hooks('per_file', hooks, kw)
 
-                    # replace version number
-                    subprocess.check_call(
-                            shlex.split('sed -i "" "s/@VERSION/%(version)s/g" %(filename)s' % \
-                                    dict(version=VERSION, filename=filename,)))
+        # after hooks
+        kw = run_hooks('file', hooks, kw)
 
-                    # date
-                    # FIXME: should be date from git log
-                    subprocess.check_call(
-                            shlex.split('sed -i "" "s/@DATE/%(date)s/g" %(filename)s' % \
-                                    dict(date=today, filename=filename,)))
+    finally:
+
+        # remove temporary directory
+        shutil.rmtree(TMP_DIR)
 
 
-                    # lint (http://www.jslint.com/lint.html)
-                    output = call(
-                            shlex.split('java -jar %(rhino)s %(jslint)s %(filename)s ' % \
-                                    dict(date=today, filename=filename,
+def main():
+    """
+        master plan:
+         * pull version from http://github.com/jquerytools/jquerytools/tarball/v${VERSION}
+         * untar and make usual build it like ant is doing it (look build.xml)
+         * merge files like its is done in README.txt and copy it to plone/app/jquerytools/browser folder
+    """
+
+    # TODO: we could make get values bellow bia sys.args (argparse)
+
+    JQ_TOOLS_VERSION = 'v1.2.5'
+    JQ_TOOLS_DOWNLOAD_URL = 'http://github.com/jquerytools/jquerytools/tarball/'+JQ_TOOLS_VERSION
+    JQ_TOOLS_DOWNLOAD_URL = 'file:///Users/rok/Projects/garbas/jquerytools-jquerytools-v1.2.5-0-g85655d7.tar.gz'
+
+    JQ_FORM_VERSION = 'master'
+    JQ_FORM_URL= 'http://github.com/malsup/form/tarball/'+JQ_FORM_VERSION
+
+    PLONE_MAPPING = {
+        'jquery.tools.min.js': [
+                'jquery.tools:overlay/overlay.js',
+                'jquery.tools:scrollable/scrollable.js',
+                'jquery.tools:tabs/tabs.js',
+                'jquery.tools:toolbox/toolbox.history.js',
+                'jquery.tools:toolbox/toolbox.expose.js'
+                'jquery.tools:tooltip/tooltip.js',
+            ],
+        'jquery.tools.plugins.min.js': [
+                'jquery.tools:tabs/tabs.slideshow.js',
+                'jquery.tools:overlay/overlay.apple.js',
+                'jquery.tools:scrollable/scrollable.autoscroll.js',
+                'jquery.tools:scrollable/scrollable.navigator.js',
+                'jquery.tools:tabs/tabs.slideshow.js',
+                'jquery.tools:toolbox/toolbox.flashembed.js',
+                'jquery.tools:toolbox/toolbox.mousewheel.js',
+                'jquery.tools:tooltip/tooltip.dynamic.js',
+                'jquery.tools:tooltip/tooltip.slide.js',
+            ],
+        'jquery.tools.dateinput.min.js': [
+                'jquery.tools:dateinput/dateinput.js',
+            ],
+        'jquery.tools.rangeinput.min.js': [
+                'jquery.tools:rangeinput/rangeinput.js',
+            ],
+        'jquery.tools.validator.min.js': [
+                'jquery.tools:validator/validator.js',
+            ],
+        'jquery.form.min.js': [
+                'jquery.form:jquery.form.js',
+                ]
+    }
+
+    #
+    # run build for all libs
+
+    build('jquery.tools', JQ_TOOLS_DOWNLOAD_URL,
+          version=JQ_FORM_VERSION, plone_mapping=PLONE_MAPPING,
+          hooks = {'before': [
+                        jq_tools_before_hook,
+                        plone_before_hook],
+                   'per_file': [
+                        version_hook,
+                        date_hook,
+                        lint_hook,
+                        minify_hook,
+                        plone_file_hook],
+                  })
+    build('jquery.form', JQ_FORM_URL, plone_app_jquerytools,
+          version=JQ_FORM_URL, plone_mapping=PLONE_MAPPING,
+          hooks = {'before': [plone_before_hook],
+                   'per_file': [minify_hook],
+                  })
+
+
+def jq_tools_before_hook(**kw):
+    shutil.copytree(
+            os.path.join(kw['source_dir'], 'src'),
+            kw['build_dir'])
+
+    # FIXME: this should actually copy all *.js files from lib directory
+    shutil.copy2(
+            os.path.join(kw['source_dir'], 'lib', 'jslint.js'),
+            os.path.join(kw['build_dir'], 'jslint.js'))
+
+    kw['today'] = datetime.datetime.today().strftime("%Y-%m-%d %H:%M")
+    return kw
+
+def plone_before_hook(**kw):
+    plone_dir = os.path.join(
+                    os.path.abspath(
+                    os.path.dirname(__file__)),
+                        'plone', 'app', 'jquerytools')
+    kw['plone_dir']= plone_dir
+
+    for script in kw['plone_mapping']:
+        script_path = os.path.join(plone_dir, script)
+        if os.path.exists(script_path):
+            f = open(script_path, 'w+')
+            f.write('')
+            f.close()
+
+    return kw
+
+def version_hook(**kw):
+    args = shlex.split('sed -i "" "s/@VERSION/%(version)s/g" %(filename)s' % kw)
+    subprocess.check_call(args)
+    return kw
+
+def date_hook(**kw):
+    # FIXME: should be date from git log
+    args = shlex.split('sed -i "" "s/@DATE/%(today)s/g" %(filename)s' % kw)
+    subprocess.check_call(args)
+    return kw
+
+def lint_hook(**kw):
+    # lint (http://www.jslint.com/lint.html)
+    output = subprocess.Popen(
+            shlex.split('java -jar %(rhino)s %(jslint)s %(filename)s ' % kw),
+            stdout=subprocess.PIPE).communicate()
+                        dict(date=today, filename=filename,
                                          jslint=os.path.join(source_dir, 'lib', 'jslint.js'),
                                          rhino=os.path.join(source_dir, 'lib', 'rhino.jar'),
                                         )), stdout=subprocess.PIPE)
-                    if output[0].startswith('jslint: No problems found in'):
-                        print '  |-> jslint status: OK'
-                    else:
-                        print '  |-> jslint status: ERROR'
-                        print '\n'.join([(' '*6)+i for i in output[0].split('\n')])
+    if output[0].startswith('jslint: No problems found in'):
+        print '  |-> jslint status: OK'
+    else:
+        print '  |-> jslint status: ERROR'
+        print '\n'.join([(' '*6)+i for i in output[0].split('\n')])
+    return kw
 
-                    # minify with Closure Compiler (default mode)
-                    subprocess.check_call(
-                            shlex.split('java -jar %(compiler)s '
-                                             '--js %(filename)s '
-                                             '--js_output_file %(output_file)s' % \
-                                    dict(filename=filename,
-                                         compiler=os.path.join(source_dir, 'lib', 'compiler.jar'),
-                                         output_file=filename[:-3] + '.min.js'
-                                        )))
-                    print '  |-> minified to: ' + short_filename[:-3] + '.min.js'
+def minify_hook(**kw):
+    # minify with Closure Compiler (default mode)
+    subprocess.check_call(
+        shlex.split('java -jar %(compiler)s '
+                    '--js %(filename)s '
+                    '--js_output_file %(output_file)s' % \
+                    dict(filename=filename,
+                         compiler=os.path.join(source_dir, 'lib', 'compiler.jar'),
+                         output_file=filename[:-3] + '.min.js'
+                        )))
+    print '  |-> minified to: ' + short_filename[:-3] + '.min.js'
+    return kw
 
-                    # plone.app.jquerytools specific
-                    for script in PLONE_MAPPING:
-                        if short_filename in PLONE_MAPPING[script]:
-                            source_filename = os.path.join(build_dir, short_filename[:-3] + '.min.js')
-                            build_filename = os.path.join(plone_dir, script)
+def plone_file_hook(**kw):
+    for script in kw['plone_mapping']:
+        if kw['short_filename'] in kw['plone_mapping'][script]:
+            source_filename = os.path.join(kw['build_dir'], kw['short_filename'][:-3] + '.min.js')
+            build_filename = os.path.join(kw['plone_dir'], script)
 
-                            g = open(source_filename)
-                            content = g.read()+'\n'
-                            g.close()
+            g = open(source_filename)
+            content = g.read()+'\n'
+            g.close()
 
-                            f = open(build_filename, 'a+')
-                            f.write(content)
-                            f.close()
+            f = open(build_filename, 'a+')
+            f.write(content)
+            f.close()
 
-                            print '  |-> plone: ' + build_filename[len(plone_dir) + 1:]
+            print '  |-> plone: ' + build_filename[len(kw['plone_dir']) + 1:]
 
 
-
-    finally:
-        # remove temporary directory
-        shutil.rmtree(TMP_DIR)
+if __name__ == '__main__':
+    main()
