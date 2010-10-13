@@ -26,7 +26,7 @@ if __name__ == '__main__':
     # TODO: we could make get values bellow bia sys.args (argparse)
     VERSION = '1.2.5'
     DOWNLOAD_URL = 'http://github.com/jquerytools/jquerytools/tarball/v1.2.5'
-    DOWNLOAD_URL = 'file:///Users/rok/Projects/garbas/plone.app.jquerytools/jquerytools-jquerytools-v1.2.5-0-g85655d7.tar.gz'
+    DOWNLOAD_URL = 'file:///Users/rok/Projects/garbas/jquerytools-jquerytools-v1.2.5-0-g85655d7.tar.gz'
     PLONE_MAPPING = {
         'jquery.tools.min.js': [
                 'overlay/overlay.js',
@@ -148,7 +148,7 @@ if __name__ == '__main__':
                                     shlex.split('cat %(source_filename)s >> %(build_filename)s' % \
                                             dict(source_filename=source_filename,
                                                  build_filename=build_filename))
-                            subprocess.check_call('echo "\n" >> %(build_filename)s' % \
+                            subprocess.check_call('echo "\n" >> %(build_filename)st ' % \
                                             dict(build_filename=build_filename))
 
 
