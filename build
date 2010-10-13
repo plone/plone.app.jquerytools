@@ -15,16 +15,19 @@ import datetime
 def run_hooks(name, hooks, kw):
     if name in hooks.keys():
         for hook in hooks[name]:
-            kw = hooks(**kw)
+            kw = hook(**kw)
     return kw
 
 def build(name, download_url, hooks=dict(), **kw):
 
+    kw['name'] = name
+    kw['download_url'] = download_url
+
     # create temporary directory
-    TMP_DIR = tempfile.mkdtemp(prefix='build--'+name + VERSION)
+    kw['tmp_dir'] = tempfile.mkdtemp(prefix='build--'+name)
 
     # download the archive
-    archive = urllib2.urlopen(DOWNLOAD_URL).fp.read()
+    archive = urllib2.urlopen(download_url).fp.read()
     f = StringIO.StringIO()
     f.write(archive)
     f.seek(0)
@@ -35,30 +38,27 @@ def build(name, download_url, hooks=dict(), **kw):
         if member.path.startswith('/') or \
            member.path.startswith('..'):
             raise Exception('Somebody want to harm your coputer.')
-    archive_tar.extractall(TMP_DIR)
+    archive_tar.extractall(kw['tmp_dir'])
     f.close()
 
     try:
 
         # defaults
-        out = os.listdir(TMP_DIR)
+        out = os.listdir(kw['tmp_dir'])
         if len(out) != 1:
             raise Exception('There should only be one folder')
 
         kw['source_dir_name'] = out[0]
-        kw['source_dir'] = os.path.join(TMP_DIR, source_dir_name)
-        kw['build_dir'] = os.path.join(TMP_DIR, source_dir_name+'-build')
-        kw['download_url'] = download_url
-        kw['tmp_dir'] = TMP_DIR
-        kw['name'] = name
+        kw['source_dir'] = os.path.join(kw['tmp_dir'], kw['source_dir_name'])
+        kw['build_dir'] = os.path.join(kw['tmp_dir'], kw['source_dir_name']+'-build')
 
         # before hooks
         kw = run_hooks('before', hooks, kw)
 
-        for dirpath, dirnames, filenames in os.walk(build_dir):
+        for dirpath, dirnames, filenames in os.walk(kw['build_dir']):
             for filename in filenames:
                 kw['filename'] = os.path.join(dirpath, filename)
-                kw['short_filename'] = filename[len(build_dir) + 1:]
+                kw['short_filename'] = kw['filename'][len(kw['build_dir']) + 1:]
 
                 print '-' * 80
                 print 'FILE: ' + kw['short_filename']
@@ -72,7 +72,7 @@ def build(name, download_url, hooks=dict(), **kw):
     finally:
 
         # remove temporary directory
-        shutil.rmtree(TMP_DIR)
+        shutil.rmtree(kw['tmp_dir'])
 
 
 def main():
@@ -98,7 +98,7 @@ def main():
                 'jquery.tools:scrollable/scrollable.js',
                 'jquery.tools:tabs/tabs.js',
                 'jquery.tools:toolbox/toolbox.history.js',
-                'jquery.tools:toolbox/toolbox.expose.js'
+                'jquery.tools:toolbox/toolbox.expose.js',
                 'jquery.tools:tooltip/tooltip.js',
             ],
         'jquery.tools.plugins.min.js': [
@@ -128,13 +128,14 @@ def main():
 
     #
     # run build for all libs
-
     build('jquery.tools', JQ_TOOLS_DOWNLOAD_URL,
           version=JQ_FORM_VERSION,
           plone_mapping=PLONE_MAPPING,
           today=datetime.datetime.today().strftime("%Y-%m-%d %H:%M"),
           jslint=os.path.join(os.path.abspath(os.path.dirname(__file__)), 'lib', 'jslint.js'),
           rhino=os.path.join(os.path.abspath(os.path.dirname(__file__)), 'lib', 'rhino.jar'),
+          compiler=os.path.join(os.path.abspath(os.path.dirname(__file__)), 'lib', 'compiler.jar'),
+          plone_dir=os.path.join(os.path.abspath(os.path.dirname(__file__)), 'plone', 'app', 'jquerytools', 'browser'),
           hooks = {'before': [
                         jq_tools_before_hook,
                         plone_before_hook],
@@ -145,10 +146,20 @@ def main():
                         minify_hook,
                         plone_file_hook],
                   })
-    build('jquery.form', JQ_FORM_URL, plone_app_jquerytools,
-          version=JQ_FORM_URL, plone_mapping=PLONE_MAPPING,
-          hooks = {'before': [plone_before_hook],
-                   'per_file': [minify_hook],
+    build('jquery.form', JQ_FORM_URL,
+          plone_mapping=PLONE_MAPPING,
+          today=datetime.datetime.today().strftime("%Y-%m-%d %H:%M"),
+          jslint=os.path.join(os.path.abspath(os.path.dirname(__file__)), 'lib', 'jslint.js'),
+          rhino=os.path.join(os.path.abspath(os.path.dirname(__file__)), 'lib', 'rhino.jar'),
+          compiler=os.path.join(os.path.abspath(os.path.dirname(__file__)), 'lib', 'compiler.jar'),
+          plone_dir=os.path.join(os.path.abspath(os.path.dirname(__file__)), 'plone', 'app', 'jquerytools', 'browser'),
+          hooks = {'before': [
+                        jq_form_before_hook,
+                        plone_before_hook],
+                   'per_file': [
+                        lint_hook,
+                        minify_hook,
+                        plone_file_hook],
                   })
 
 
@@ -165,15 +176,17 @@ def jq_tools_before_hook(**kw):
 
     return kw
 
-def plone_before_hook(**kw):
-    plone_dir = os.path.join(
-                    os.path.abspath(
-                    os.path.dirname(__file__)),
-                        'plone', 'app', 'jquerytools')
-    kw['plone_dir']= plone_dir
+def jq_form_before_hook(**kw):
+    shutil.copytree(
+            os.path.join(kw['source_dir']),
+            kw['build_dir'])
+    return kw
 
+def plone_before_hook(**kw):
     for script in kw['plone_mapping']:
-        script_path = os.path.join(plone_dir, script)
+        if not script.startswith(kw['name']):
+            continue
+        script_path = os.path.join(kw['plone_dir'], script)
         if os.path.exists(script_path):
             f = open(script_path, 'w+')
             f.write('')
@@ -182,17 +195,26 @@ def plone_before_hook(**kw):
     return kw
 
 def version_hook(**kw):
+    if not kw['filename'].endswith('.js') or \
+       kw['filename'].endswith('jslint.js'):
+        return kw
     args = shlex.split('sed -i "" "s/@VERSION/%(version)s/g" %(filename)s' % kw)
     subprocess.check_call(args)
     return kw
 
 def date_hook(**kw):
+    if not kw['filename'].endswith('.js') or \
+       kw['filename'].endswith('jslint.js'):
+        return kw
     # FIXME: should be date from git log
     args = shlex.split('sed -i "" "s/@DATE/%(today)s/g" %(filename)s' % kw)
     subprocess.check_call(args)
     return kw
 
 def lint_hook(**kw):
+    if not kw['filename'].endswith('.js') or \
+       kw['filename'].endswith('jslint.js'):
+        return kw
     # lint (http://www.jslint.com/lint.html)
     output = subprocess.Popen(
             shlex.split('java -jar %(rhino)s %(jslint)s %(filename)s ' % kw),
@@ -205,21 +227,25 @@ def lint_hook(**kw):
     return kw
 
 def minify_hook(**kw):
+    if not kw['filename'].endswith('.js') or \
+       kw['filename'].endswith('jslint.js'):
+        return kw
     # minify with Closure Compiler (default mode)
+    custom_kw = kw
+    custom_kw['output_file'] = kw['filename'][:-3] + '.min.js'
     subprocess.check_call(
         shlex.split('java -jar %(compiler)s '
                     '--js %(filename)s '
-                    '--js_output_file %(output_file)s' % \
-                    dict(filename=filename,
-                         compiler=os.path.join(source_dir, 'lib', 'compiler.jar'),
-                         output_file=filename[:-3] + '.min.js'
-                        )))
-    print '  |-> minified to: ' + short_filename[:-3] + '.min.js'
+                    '--js_output_file %(output_file)s' % custom_kw))
+    print '  |-> minified to: ' + kw['short_filename'][:-3] + '.min.js'
     return kw
 
 def plone_file_hook(**kw):
+    if not kw['filename'].endswith('.js') or \
+       kw['filename'].endswith('jslint.js'):
+        return kw
     for script in kw['plone_mapping']:
-        if kw['short_filename'] in kw['plone_mapping'][script]:
+        if kw['name'] + ':' + kw['short_filename'] in kw['plone_mapping'][script]:
             source_filename = os.path.join(kw['build_dir'], kw['short_filename'][:-3] + '.min.js')
             build_filename = os.path.join(kw['plone_dir'], script)
 
@@ -232,6 +258,7 @@ def plone_file_hook(**kw):
             f.close()
 
             print '  |-> plone: ' + build_filename[len(kw['plone_dir']) + 1:]
+    return kw
 
 
 if __name__ == '__main__':
