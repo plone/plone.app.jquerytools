@@ -27,6 +27,8 @@ if __name__ == '__main__':
     VERSION = '1.2.5'
     DOWNLOAD_URL = 'http://github.com/jquerytools/jquerytools/tarball/v1.2.5'
     DOWNLOAD_URL = 'file:///Users/rok/Projects/garbas/jquerytools-jquerytools-v1.2.5-0-g85655d7.tar.gz'
+
+
     PLONE_MAPPING = {
         'jquery.tools.min.js': [
                 'overlay/overlay.js',
@@ -36,7 +38,7 @@ if __name__ == '__main__':
                 'toolbox/toolbox.expose.js'
                 'tooltip/tooltip.js',
             ],
-        'jquery.tools.plugins.js': [
+        'jquery.tools.plugins.min.js': [
                 'tabs/tabs.slideshow.js',
                 'overlay/overlay.apple.js',
                 'scrollable/scrollable.autoscroll.js',
@@ -47,14 +49,23 @@ if __name__ == '__main__':
                 'tooltip/tooltip.dynamic.js',
                 'tooltip/tooltip.slide.js',
             ],
-        'jquery.tools.dateinput.js': [
+        'jquery.tools.dateinput.min.js': [
                 'dateinput/dateinput.js',
             ],
-        'jquery.tools.rangeinput.js': [
+        'jquery.tools.rangeinput.min.js': [
                 'rangeinput/rangeinput.js',
+            ],
+        'jquery.tools.validator.min.js': [
+                'validator/validator.js',
             ],
 
     }
+    plone_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                             'plone', 'app', 'jquerytools', 'browser')
+    for script in PLONE_MAPPING:
+        f = open(os.path.join(plone_dir, script), 'w+')
+        f.write('')
+        f.close()
 
     # create temporary directory
     TMP_DIR = tempfile.mkdtemp(prefix='build-jquerytools-' + VERSION)
@@ -134,11 +145,9 @@ if __name__ == '__main__':
                                          compiler=os.path.join(source_dir, 'lib', 'compiler.jar'),
                                          output_file=filename[:-3] + '.min.js'
                                         )))
-                    print '  |-> minified to: ' + filename[:-3] + '.min.js'
+                    print '  |-> minified to: ' + short_filename[:-3] + '.min.js'
 
                     # plone.app.jquerytools specific
-                    plone_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)),
-                                             'plone', 'app', 'jquerytools', 'browser')
                     for script in PLONE_MAPPING:
                         if short_filename in PLONE_MAPPING[script]:
                             source_filename = os.path.join(build_dir, short_filename[:-3] + '.min.js')
@@ -152,7 +161,7 @@ if __name__ == '__main__':
                             f.write(content)
                             f.close()
 
-                            print '  |-> plone.app.jquerytools: ' + build_filename[len(plone_dir) + 1:]
+                            print '  |-> plone: ' + build_filename[len(plone_dir) + 1:]
 
 
 
