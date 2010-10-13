@@ -9,11 +9,11 @@ import tempfile
 import StringIO
 import subprocess
 import datetime
-#import argparse
 
 
 def call(*args, **kw):
     return subprocess.Popen(*args, **kw).communicate()
+
 
 if __name__ == '__main__':
     """
@@ -27,8 +27,6 @@ if __name__ == '__main__':
     VERSION = '1.2.5'
     DOWNLOAD_URL = 'http://github.com/jquerytools/jquerytools/tarball/v1.2.5'
     DOWNLOAD_URL = 'file:///Users/rok/Projects/garbas/jquerytools-jquerytools-v1.2.5-0-g85655d7.tar.gz'
-
-
     PLONE_MAPPING = {
         'jquery.tools.min.js': [
                 'overlay/overlay.js',
@@ -60,6 +58,7 @@ if __name__ == '__main__':
             ],
 
     }
+
     plone_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)),
                              'plone', 'app', 'jquerytools', 'browser')
     for script in PLONE_MAPPING:
