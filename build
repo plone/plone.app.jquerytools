@@ -101,7 +101,6 @@ def main():
                 'jquery.tools:tooltip/tooltip.js',
             ],
         'jquery.tools.plugins.min.js': [
-                'jquery.tools:tabs/tabs.slideshow.js',
                 'jquery.tools:overlay/overlay.apple.js',
                 'jquery.tools:scrollable/scrollable.autoscroll.js',
                 'jquery.tools:scrollable/scrollable.navigator.js',
