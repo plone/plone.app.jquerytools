@@ -1,0 +1,10 @@
+
+
+if __name__ == '__main__':
+    """
+        master plan:
+         * pull version from http://github.com/jquerytools/jquerytools/tarball/v${VERSION}
+         * untar and make usual build it like ant is doing it (look build.xml)
+         * merge files like its is done in README.txt and copy it to plone/app/jquerytools/browser folder
+    """
+
