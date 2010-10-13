@@ -92,7 +92,7 @@ if __name__ == '__main__':
         for dirpath, dirnames, filenames in os.walk(build_dir):
             for filename in filenames:
                 filename = os.path.join(dirpath, filename)
-                short_filename = filename[len(build_dir):]
+                short_filename = filename[len(build_dir) + 1:]
                 if filename.endswith('.js') and \
                    not filename.endswith('jslint.js'):
 
@@ -137,7 +137,7 @@ if __name__ == '__main__':
                     print '  |-> minified to: ' + filename[:-3] + '.min.js'
 
                     # plone.app.jquerytools specific
-                    plone_dir = os.path.join(os.path.dirname(__file__),
+                    plone_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)),
                                              'plone', 'app', 'jquerytools', 'browser')
                     for script in PLONE_MAPPING:
                         if short_filename in PLONE_MAPPING[script]:
@@ -150,6 +150,7 @@ if __name__ == '__main__':
                                                  build_filename=build_filename)))
                             subprocess.check_call('echo "\n" >> %(build_filename)st ' % \
                                             dict(build_filename=build_filename))
+                            print '  |-> PLONE: content of this script lays in ' + build_filename[len(plone_dir):]
 
 
 
