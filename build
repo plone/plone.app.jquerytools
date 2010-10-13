@@ -144,13 +144,15 @@ if __name__ == '__main__':
                             source_filename = os.path.join(build_dir, short_filename[:-3] + '.min.js')
                             build_filename = os.path.join(plone_dir, script)
 
-                            subprocess.check_call(
-                                    shlex.split('cat %(source_filename)s >> %(build_filename)s' % \
-                                            dict(source_filename=source_filename,
-                                                 build_filename=build_filename)))
-                            subprocess.check_call('echo "\n" >> %(build_filename)st ' % \
-                                            dict(build_filename=build_filename))
-                            print '  |-> PLONE: content of this script lays in ' + build_filename[len(plone_dir):]
+                            g = open(source_filename)
+                            content = g.read()+'\n'
+                            g.close()
+
+                            f.open(build_filename, 'w+')
+                            f.write(content)
+                            f.close()
+
+                            print '  |-> plone.app.jquerytools: ' + build_filename[len(plone_dir):]
 
 
 
