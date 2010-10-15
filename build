@@ -117,9 +117,6 @@ def main():
         'jquery.tools.dateinput.min.js': [
                 'jquery.tools:dateinput/dateinput.js',
             ],
-        'jquery.tools.dateinput.': [
-                'jquery.tools:dateinput/dateinput.js',
-            ],
         'jquery.tools.rangeinput.min.js': [
                 'jquery.tools:rangeinput/rangeinput.js',
             ],
@@ -198,7 +195,8 @@ def plone_before_hook(**kw):
             f.close()
 
     # FIXME: probably a better way to do this
-    shutil.copy(
+    if os.path.exists(os.path.join(kw['source_dir'], 'test', 'dateinput', 'skin1.css')):
+        shutil.copy(
             os.path.join(kw['source_dir'], 'test', 'dateinput', 'skin1.css'),
             os.path.join(kw['build_dir'], 'dateinput'))
     return kw
