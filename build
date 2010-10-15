@@ -87,6 +87,7 @@ def main():
 
     JQ_TOOLS_VERSION = 'v1.2.5'
     JQ_TOOLS_DOWNLOAD_URL = 'http://github.com/jquerytools/jquerytools/tarball/'+JQ_TOOLS_VERSION
+    JQ_TOOLS_DOWNLOAD_URL = 'file:///Users/rok/Projects/garbas/jquerytools-jquerytools-v1.2.5-0-g85655d7.tar.gz'
 
     JQ_FORM_VERSION = 'master' # there is no tag
     JQ_FORM_URL= 'http://github.com/malsup/form/tarball/'+JQ_FORM_VERSION
@@ -110,7 +111,13 @@ def main():
                 'jquery.tools:tooltip/tooltip.dynamic.js',
                 'jquery.tools:tooltip/tooltip.slide.js',
             ],
+        'jquery.tools.dateinput.css': [
+                'jquery.tools:dateinput/skin1.css',
+            ],
         'jquery.tools.dateinput.min.js': [
+                'jquery.tools:dateinput/dateinput.js',
+            ],
+        'jquery.tools.dateinput.': [
                 'jquery.tools:dateinput/dateinput.js',
             ],
         'jquery.tools.rangeinput.min.js': [
@@ -190,6 +197,10 @@ def plone_before_hook(**kw):
             f.write('')
             f.close()
 
+    # FIXME: probably a better way to do this
+    shutil.copy(
+            os.path.join(kw['source_dir'], 'test', 'dateinput', 'skin1.css'),
+            os.path.join(kw['build_dir'], 'dateinput'))
     return kw
 
 def version_hook(**kw):
@@ -239,12 +250,16 @@ def minify_hook(**kw):
     return kw
 
 def plone_file_hook(**kw):
-    if not kw['filename'].endswith('.js') or \
+    if (not kw['filename'].endswith('.js') and \
+        not kw['filename'].endswith('.css')) or \
        kw['filename'].endswith('jslint.js'):
         return kw
     for script in kw['plone_mapping']:
         if kw['name'] + ':' + kw['short_filename'] in kw['plone_mapping'][script]:
-            source_filename = os.path.join(kw['build_dir'], kw['short_filename'][:-3] + '.min.js')
+            if kw['filename'].endswith('.js'):
+                source_filename = os.path.join(kw['build_dir'], kw['short_filename'][:-3] + '.min.js')
+            else:
+                source_filename = os.path.join(kw['build_dir'], kw['short_filename'])
             build_filename = os.path.join(kw['plone_dir'], script)
 
             g = open(source_filename)

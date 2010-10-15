@@ -1,4 +1,8 @@
 *.swp
+*.pyc
+*.pyo
+
 /bin
 /include
 /lib
+/plone.app.jquerytools.egg-info/
