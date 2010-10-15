@@ -25,6 +25,11 @@
         />
 
     <resource 
+        name="plone.app.jquerytools.dateinput.css" 
+        file="browser/jquery.tools.dateinput.css"
+        />
+
+    <resource 
         name="plone.app.jquerytools.rangeinput.js" 
         file="browser/jquery.tools.rangeinput.min.js"
         />
