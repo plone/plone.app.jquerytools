@@ -2,7 +2,8 @@
 *.pyc
 *.pyo
 
-/bin
-/include
-/lib
+/bin/
+/dist/
+/include/
+/lib/
 /plone.app.jquerytools.egg-info/

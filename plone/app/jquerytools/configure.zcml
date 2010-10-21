@@ -1,5 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/browser"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup">
 
 
@@ -56,17 +57,20 @@
         file="browser/pb_close.png"
         />
 
-    <!-- FIXME: this should be done differently -->
-    <resource
-        name="plone.app.jquerytools.testForm.html"
-        file="browser/testForm.html"
-        />
+    <configure zcml:condition="installed plone.app.testing">
+    <!-- TODO: need to rewrite those few test to use plone.app.testing -->
 
-    <resource
-        name="plone.app.jquerytools.testAJAXFormPopup.html"
-        file="browser/testAJAXFormPopup.html"
-        />
+        <resource
+            name="plone.app.jquerytools.testForm.html"
+            file="browser/testForm.html"
+            />
 
+        <resource
+            name="plone.app.jquerytools.testAJAXFormPopup.html"
+            file="browser/testAJAXFormPopup.html"
+            />
+
+    </configure>
 
     <genericsetup:registerProfile
         name="default"
@@ -85,7 +89,6 @@
         handler=".setuphandlers.importVarious">
         <depends name="cssregistry"/>
     </genericsetup:importStep>
-
 
     <include package=".upgrades"/>
 
