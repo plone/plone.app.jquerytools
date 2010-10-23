@@ -1,11 +1,22 @@
 Changelog
 =========
 
-1.1.3 - unreleased
-------------------
+1.2 - 2010-XX-XX
+----------------
 
-* getContent does not exist in jqtools. It has been replaced by getOverlay.
-  http://flowplayer.org/tools/forum/40/28687
+* Updated documentation so it reflect changes.
+  [garbas]
+
+* Updated jquerytools to 1.2.5. dateinput, rangeinput and validator
+  plugins added as additional browser resources. Now all plugins from
+  jquerytools are added with this package.
+  [garbas]
+
+* Added build script which builds js files from source (from github).
+  [garbas]
+
+* getContent does not exist in jqtools. It has been replaced by
+  getOverlay. http://flowplayer.org/tools/forum/40/28687
   [naro]
 
 1.1.2 - 2010-07-19

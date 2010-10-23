@@ -1,42 +1,72 @@
 Introduction
 ============
 
-plone.app.jquerytools does five things:
-
-* It adds jQuery Tools to Plone's JavaScript resources. Included with the
-  base kit is tabs, tooltip, scrollable, overlay, toolbox.history, 
-  and toolbox.expose.
-
-* Integrates the jQuery Form plugin <http://malsup.com/jquery/form/> to add
-  support for AJAX form handling.
-
-* Adds helper code for loading overlays dynamically and for handling AJAX
-  forms based on existing pages with minimal setup.
-
-* Adds several jQuery Tools plugins to the JavaScript resources.
-  The plugins registry entry is disabled by default. Applications
-  that need it and can justify a little more js bloat may turn it on.
-
-  Plugins included in the disabled resource are:
-
-  tools.tabs.slideshow, 
-  tools.tooltip.dynamic,
-  tools.scrollable.autoscroll,
-  tools.scrollable.navigator
-
-For information on using jQuery tools, see http://flowplayer.org/tools/ .
-
-For information on using the jQuery Form plugin, see
-http://malsup.com/jquery/form/ .
-
-
-plone.app.jquerytools was developed for Plone 4. However, it can
+``plone.app.jquerytools`` was developed for Plone 4. However, it can
 be used in Plone 3.x by adding a zcml slug and running it's
 GS Setup extension profile, or by adding a product like Products.pipbox
 that will load the GS profile for you.
 
-Overlay Helpers
----------------
+.. contents::
+
+Avaliable resources
+===================
+
+``plone.app.jquerytools`` brings `jquery.tools`_ closer to `Plone`_. It
+packs `jquery.tools`_ plugins and widgets in zope's browser resoures:
+
+    * ``++resource++plone.app.jquerytools.js`` (Size: 17KB)
+
+        Default plugins and widgets used by plone. This resource is enabled
+        by default with ``plone.app.jquerytools:default`` profile.
+
+        Included scripts: `overlay.js`_, `scrollable.js`_, `tabs.js`_,
+        `toolbox.history.js`_, `toolbox.expose.js`_, `tooltip.js`_
+
+    * ``++resource++plone.app.jquerytools.plugins.js`` (Size: 13KB)
+
+        Additional plugin and widgets which does not take much space and for
+        this reason are packed together. This plugins are not enabled by
+        default.
+
+        Included scripts: `overlay.apple.js`_, `scrollable.autoscroll.js`_,
+        `scrollable.navigator.js`_, `tabs.slideshow.js`_,
+        `toolbox.flashembed.js`_, `toolbox.mousewheel.js`_,
+        `tooltip.dynamic.js`_, `tooltip.slide.js`_
+
+    * ``++resource++plone.app.jquerytools.dateinput.js`` (Size: 8KB) and
+      ``++resource++plone.app.jquerytools.dateinput.css`` (Size: 2.2KB)
+
+        `jquerytools dateinput`_ widget with style from `first demo`_. Both
+        scripts are added to portal_javascript and portal_css but disabled by
+        default.
+
+    * ``++resource++plone.app.jquerytools.rangeinput.js`` (Size: 4.5KB)
+
+        `jquerytools rangeinput`_ widget. Added to portal_javascript tool, but
+        disabled byt default.
+
+    * ``++resource++plone.app.jquerytools.validator.js`` (Size: 6.5KB)
+
+        `jquerytools validator`_ script, which should help you with nice
+        validation of your forms. Added to portal_javascript tool, but
+        disabled byt default.
+
+    * ``++resource++plone.app.jquerytools.form.js`` (Size: 9.3KB)
+
+        Integrates the `jquery form plugin`_ to add support for AJAX form
+        handling. More about this bellow.
+
+    * ``++resource++plone.app.jquerytools.overlayhelpers.js`` (Size: 17KB,
+      not yet minimized) and ``++resource++plone.app.jquerytools.overlays.css``
+      (Size: 1.9KB, not yet minimized)
+
+        Adds helper code for loading overlays dynamically and for handling AJAX
+        forms based on existing pages with minimal setup. More about this in 
+        instructions bellow.
+
+
+Overlay helpers
+===============
 
 plone.app.jquerytools provides a helper for handling various kinds of dynamic
 overlays, including overlays with forms you wish handled by AJAX.
@@ -48,23 +78,24 @@ a selection of trigger elements.
 prepOverlay should be passed one parameter: a options object, which will often
 be constructed as a Javascript literal object.
 
-Overlay examples
-----------------
+
+Examples
+--------
 
 Let's say, for example, that you want to make clicking on news-item photos
 open a lightbox-style larger version of the image. To do this, you'll need to
 specify:
 
- * A jQuery style selector for a Plone element, e.g., ".newsImageContainer a"
+    * A jQuery style selector for a Plone element, e.g., ".newsImageContainer a"
 
- * "image" for the load method ("ajax" and "iframe" are other alternatives)
+    * "image" for the load method ("ajax" and "iframe" are other alternatives)
 
- * A regular expression search/replace to transform the href or src URL.
-   In this example, we're changing the URL to point to the preview-sized
-   image. So, our search/replace pair is "/image_view_fullscreen"
-   and "_preview".
+    * A regular expression search/replace to transform the href or src URL.
+      In this example, we're changing the URL to point to the preview-sized
+      image. So, our search/replace pair is "/image_view_fullscreen"
+      and "_preview".
 
- * You could also specify additional overlay configuration parameters.
+    * You could also specify additional overlay configuration parameters.
 
 The code::
 
@@ -105,21 +136,21 @@ Options
 
 The complete options list:
 
- * subtype: 'image' | 'iframe' | 'ajax'
+    * subtype: 'image' | 'iframe' | 'ajax'
 
- * selector: the jQuery selector to find your elements
+    * selector: the jQuery selector to find your elements
 
- * urlmatch: Regular expression for a portion of the target URL
+    * urlmatch: Regular expression for a portion of the target URL
 
- * urlreplace: Replacement expression for the matched expression
+    * urlreplace: Replacement expression for the matched expression
 
- * width: Width of the popup. Leave unset to determine through CSS.
-   Overriden by image width for image overlays.
- 
- * cssclass: A custom css class to apply to the overlay. Ignored
-   for inline overlays.
+    * width: Width of the popup. Leave unset to determine through CSS.
+      Overriden by image width for image overlays.
 
- * config: jQuery Tools configuration options in a dictionary
+    * cssclass: A custom css class to apply to the overlay. Ignored
+      for inline overlays.
+
+    * config: jQuery Tools configuration options in a dictionary
 
 For AJAX overlays, add the following, form-oriented, options:
 
@@ -224,8 +255,29 @@ when we may be renaming or deleting the displayed object. Second, we specify
 a close selector so that pushing the cancel button will close the overlay
 without bothering to submit the form.
 
-See Products/CMFPlone/skins/plone_ecmascript/popupform.js for several examples
-of using callbacks to handle tricky cases.
+See ``Products/CMFPlone/skins/plone_ecmascript/popupform.js`` for several
+examples of using callbacks to handle tricky cases.
 
-Limitations: Forms may not include file fields, as the current marshaling
+**Limitations:** Forms may not include file fields, as the current marshaling
 strategy isn't adequate to deal with them.
+
+
+.. _`overlay.js`: http://flowplayer.org/tools/overlay/index.html
+.. _`scrollable.js`: http://flowplayer.org/tools/scrollable/index.html
+.. _`tabs.js`: http://flowplayer.org/tools/tabs/index.html
+.. _`toolbox.history.js`: http://flowplayer.org/tools/toolbox/history.html
+.. _`toolbox.expose.js`: http://flowplayer.org/tools/toolbox/expose.html
+.. _`tooltip.js`: http://flowplayer.org/tools/tooltip/index.html
+.. _`overlay.apple.js`: http://flowplayer.org/tools/overlay/apple.html
+.. _`scrollable.autoscroll.js`: http://flowplayer.org/tools/scrollable/autoscroll.html
+.. _`scrollable.navigator.js`: http://flowplayer.org/tools/scrollable/navigator.html
+.. _`tabs.slideshow.js`: http://flowplayer.org/tools/tabs/slideshow.html
+.. _`toolbox.flashembed.js`: http://flowplayer.org/tools/toolbox/flashembed.html
+.. _`toolbox.mousewheel.js`: http://flowplayer.org/tools/toolbox/mousewheel.html
+.. _`tooltip.dynamic.js`: http://flowplayer.org/tools/tooltip/dynamic.html
+.. _`tooltip.slide.js`: http://flowplayer.org/tools/tooltip/slide.html 
+.. _`jquerytools dateinput`: http://flowplayer.org/tools/dateinput/index.html
+.. _`first demo`: http://flowplayer.org/tools/demos/dateinput/index.html
+.. _`jquerytools rangeinput`: http://flowplayer.org/tools/rangeinput/index.html
+.. _`jquerytools validator`: http://flowplayer.org/tools/validator/index.html
+.. _`jquery form plugin`: http://malsup.com/jquery/form

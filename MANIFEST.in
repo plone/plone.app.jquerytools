@@ -1,0 +1,3 @@
+include *.txt docs/*.txt
+recursive-include plone/app/jquerytools *
+global-exclude *.pyc *~ *.mo *.jar
