@@ -1,6 +1,9 @@
 Introduction
 ============
 
+plone.app.jquerytools adds `jquery.tools`_ and some related
+overlay and form-handling JavaScript libraries to Plone.
+
 ``plone.app.jquerytools`` was developed for Plone 4. However, it can
 be used in Plone 3.x by adding a zcml slug and running it's
 GS Setup extension profile, or by adding a product like Products.pipbox
@@ -11,10 +14,9 @@ that will load the GS profile for you.
 Avaliable resources
 ===================
 
-``plone.app.jquerytools`` brings `jquery.tools`_ closer to `Plone`_. It
-packs `jquery.tools`_ plugins and widgets in zope's browser resoures:
+`jquery.tools`_ plugins and widgets are packed into Zope browser resources:
 
-    * ``++resource++plone.app.jquerytools.js`` (Size: 17KB)
+    * ``++resource++plone.app.jquerytools.js``
 
         Default plugins and widgets used by plone. This resource is enabled
         by default with ``plone.app.jquerytools:default`` profile.
@@ -22,7 +24,7 @@ packs `jquery.tools`_ plugins and widgets in zope's browser resoures:
         Included scripts: `overlay.js`_, `scrollable.js`_, `tabs.js`_,
         `toolbox.history.js`_, `toolbox.expose.js`_, `tooltip.js`_
 
-    * ``++resource++plone.app.jquerytools.plugins.js`` (Size: 13KB)
+    * ``++resource++plone.app.jquerytools.plugins.js``
 
         Additional plugin and widgets which does not take much space and for
         this reason are packed together. This plugins are not enabled by
@@ -33,36 +35,36 @@ packs `jquery.tools`_ plugins and widgets in zope's browser resoures:
         `toolbox.flashembed.js`_, `toolbox.mousewheel.js`_,
         `tooltip.dynamic.js`_, `tooltip.slide.js`_
 
-    * ``++resource++plone.app.jquerytools.dateinput.js`` (Size: 8KB) and
-      ``++resource++plone.app.jquerytools.dateinput.css`` (Size: 2.2KB)
+    * ``++resource++plone.app.jquerytools.dateinput.js``
+      ``++resource++plone.app.jquerytools.dateinput.css``
 
         `jquerytools dateinput`_ widget with style from `first demo`_. Both
         scripts are added to portal_javascript and portal_css but disabled by
         default.
 
-    * ``++resource++plone.app.jquerytools.rangeinput.js`` (Size: 4.5KB)
+    * ``++resource++plone.app.jquerytools.rangeinput.js``
 
         `jquerytools rangeinput`_ widget. Added to portal_javascript tool, but
-        disabled byt default.
+        disabled by default.
 
-    * ``++resource++plone.app.jquerytools.validator.js`` (Size: 6.5KB)
+    * ``++resource++plone.app.jquerytools.validator.js``
 
         `jquerytools validator`_ script, which should help you with nice
         validation of your forms. Added to portal_javascript tool, but
         disabled byt default.
 
-    * ``++resource++plone.app.jquerytools.form.js`` (Size: 9.3KB)
+    * ``++resource++plone.app.jquerytools.form.js``
 
         Integrates the `jquery form plugin`_ to add support for AJAX form
-        handling. More about this bellow.
+        handling. More about this below.
 
-    * ``++resource++plone.app.jquerytools.overlayhelpers.js`` (Size: 17KB,
+    * ``++resource++plone.app.jquerytools.overlayhelpers.js``
       not yet minimized) and ``++resource++plone.app.jquerytools.overlays.css``
       (Size: 1.9KB, not yet minimized)
 
         Adds helper code for loading overlays dynamically and for handling AJAX
         forms based on existing pages with minimal setup. More about this in 
-        instructions bellow.
+        instructions below.
 
 
 Overlay helpers
@@ -76,7 +78,7 @@ used as a method of a jQuery selection object. The selection object is always
 a selection of trigger elements.
 
 prepOverlay should be passed one parameter: a options object, which will often
-be constructed as a Javascript literal object.
+be constructed as a JavaScript literal object.
 
 
 Examples
@@ -101,34 +103,34 @@ The code::
 
     jq('.newsImageContainer a')
         .prepOverlay({
-             subtype:'image',
-             urlmatch:'/image_view_fullscreen$',
-             urlreplace:'_preview'
+             subtype: 'image',
+             urlmatch: '/image_view_fullscreen$',
+             urlreplace: '_preview'
             });
 
 Another quick example, one that provides full-image popups for images placed
 via kupu::
 
-    jq('img.image-right,img.image-left,img.image-inline')
+    jq('img.image-right, img.image-left, img.image-inline')
         .prepOverlay({
-            subtype:'image',
-            urlmatch:'/image_.+$',
-            urlreplace:''
+            subtype: 'image',
+            urlmatch: '/image_.+$',
+            urlreplace: ''
             });
 
 What's different? We're targeting <img ... /> tags, which don't have href
-attributes. the helper picks up the target URL from the src attribute, so that
-we can have a popup view of image elements that aren't linked to that view.
-Note also that we're using a real regular expression in the search/replace so
-that we can strip off image_preview, image_mini, etc.
+attributes. The helper automatically picks up the target URL from the src 
+attribute, so that we can have a popup view of image elements that aren't
+linked to that view. Note also that we're using a real regular expression 
+in the search/replace so that we can strip off image_preview, image_mini, etc.
 
 And, a configuration to put the site map in an iframe popup with expose
 settings, picking up the target from an href::
 
     jq('#siteaction-sitemap a')
         .prepOverlay({
-            subtype:'iframe',
-            config:{expose:{color:'#00f'}}
+            subtype: 'iframe',
+            config: {expose:{color:'#00f'}}
             });
 
 Options
@@ -138,11 +140,13 @@ The complete options list:
 
     * subtype: 'image' | 'iframe' | 'ajax'
 
-    * selector: the jQuery selector to find your elements
+    * urlmatch: Regular expression for a portion of the target URL. Target
+      URL is determined by checking href, src or action attributes.
 
-    * urlmatch: Regular expression for a portion of the target URL
+    * urlreplace: Replacement expression for the matched expression.
 
-    * urlreplace: Replacement expression for the matched expression
+    * filter: (ajax only) the jQuery selector used to find the elements of
+      the ajax loaded resource that you wish to use in the overlay.
 
     * width: Width of the popup. Leave unset to determine through CSS.
       Overriden by image width for image overlays.
@@ -150,23 +154,30 @@ The complete options list:
     * cssclass: A custom css class to apply to the overlay. Ignored
       for inline overlays.
 
-    * config: jQuery Tools configuration options in a dictionary
+    * config: jQuery Tools configuration options in a dictionary.
 
-For AJAX overlays, add the following, form-oriented, options:
+For AJAX overlay forms, add the following, form-oriented, options:
 
     * formselector: Used to specify the JQuery selector for any
       forms inside the loaded content that you want to be handled
-      inside the overlay by doing an AJAX load to replace the overlay
+      inside the overlay by doing an AJAX load to get the overlay
       content.
+      
+      When a form is submitted, the overlay handler checks the response
+      for formselector. If it's found, the result is displayed in the
+      overlay and form handlers are bound. If not, the 'noform' action
+      is carried out.
 
     * noform: the action to take if an ajax form is submitted and the returned
       content has nothing matching the formselector. Available actions include
       'close' to simply close the overlay, 'reload' to reload the page, and
       'redirect' to redirect to another page. If you choose 'redirect', you
-      must specify the URL in the redirect option. You may also supply a
-      callback function that returns one of these strings. The overlay helper
-      will call the function with the overlay element as an argument. Default
+      must specify the URL in the redirect option. Default
       action is to display the filtered response in the popup.
+      
+      You may also supply as the 'noform' argument a
+      callback function that returns one of these strings. The overlay helper
+      will call the function with the overlay element as an argument.
 
     * closeselector: use this to specify a JQuery selector that will be used
       to find elements within the overlay that should close the overlay if
@@ -199,7 +210,7 @@ loading content into an overlay or tab via AJAX, you're nearly always
 going to want only part of the loaded content. For example, if you're
 picking up a Plone page, you may only want the #content div's contents.
 
-To do this, just add a CSS (or JQuery) selector to the target URL.
+To do this, just add a CSS (or JQuery) selector as a 'filter' option.
 JQuery's load method (which pipbox uses) will only pick up the content inside
 the selection.
 
@@ -207,24 +218,29 @@ For example, let's say that you wish to display the standard Plone site map
 in an overlay. You could use::
 
     jq('#siteaction-sitemap a').prepOverlay({
-        subtype:'ajax',
-        urlmatch:'$',urlreplace:' #content > *'
+        subtype: 'ajax',
+        filter: '#content > *'
         });
 
-The urlmatch/urlreplace code adds a selector to the end of the URL when it
-calls JQuery's load to get the content, picking up only what's inside the
-#content div.
+The filter code causes the overlay handler to load only a portion of the
+AJAX-loaded HTML into the overlay, picking up only what's inside the
+#content div. If you don't specify a filter, you'll get
+everything inside the body section of the page -- not usually what you
+want.
 
-If you don't specify a selection from the loaded page's DOM, you'll get
-everything inside the body section of the page.
+Some browsers cache AJAX loads, so a random argument is automatically 
+added to URLs.
 
-Some browsers cache AJAX loads, so a random argument is added to URLs.
+NOTE: the  "ajax_load" query string argument is automatically added to AJAX
+urls and may be used in templates to determine which resources are shipped
+for AJAX overlays. Plone 4's main template uses this to exclude nearly
+all elements of the page outside the content area.
 
 
 AJAX Forms
 ----------
 
-The overlay helper can automatically handle having forms that are within the
+The overlay helper can automatically handle forms that are within the
 overlay by making an AJAX post action, then replacing the overlay content with
 the results.
 
@@ -235,18 +251,18 @@ For example, if you wished to handle the standard Plone contact form in an
 overlay, you could specify::
 
     jq('#siteaction-contact a').prepOverlay({
-        subtype:'ajax',
-        urlmatch:'$', urlreplace:' #content>*',
-        formselector:'form'
+        subtype: 'ajax',
+        filter: '#content>*',
+        formselector: 'form'
         });
 
 Another example: using popups for the delete confirmation and rename forms
 (from the action menu)::
 
     jq('a#delete,a#rename').prepOverlay({
-        subtype:'ajax',
-        urlmatch:'$', urlreplace:' #region-content',
-        'closeselector':'[name=form.button.Cancel]'
+        subtype: 'ajax',
+        filter: '#content>*',
+        closeselector: '[name=form.button.Cancel]'
         });
 
 There are a couple of differences here. First, there is no form selector
@@ -256,10 +272,12 @@ a close selector so that pushing the cancel button will close the overlay
 without bothering to submit the form.
 
 See ``Products/CMFPlone/skins/plone_ecmascript/popupform.js`` for several
-examples of using callbacks to handle tricky cases.
+examples of using callbacks to handle tricky cases like confirming deletion of
+the current content item.
 
-**Limitations:** Forms may not include file fields, as the current marshaling
-strategy isn't adequate to deal with them.
+The `jquery form plugin`_ is used to do the data serialization for form posts.
+It provides a more complete serialization, including submit name/value and file
+data, than jQuery alone.
 
 
 .. _`overlay.js`: http://flowplayer.org/tools/overlay/index.html
