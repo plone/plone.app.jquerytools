@@ -66,6 +66,11 @@ Avaliable resources
         forms based on existing pages with minimal setup. More about this in 
         instructions below.
 
+JS resources are minified, but uncompressed versions are available in 
+plone/app/jquerytools/browser for reading/debugging purposes. To use them
+for debugging, edit plone/app/jquerytools/configure.zcml to temporarily
+specify files ending with .js rather than .min.js.
+
 
 Overlay helpers
 ===============

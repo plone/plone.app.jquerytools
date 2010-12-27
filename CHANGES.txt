@@ -4,6 +4,10 @@ Changelog
 1.2 - 2010-XX-XX
 ----------------
 
+* Avoid creating overlay divs until needed; remove ajax overlay divs
+  on close. Less DOM clutter.
+  [smcmahon]
+
 * Include both .min.js and .js versions of js resources to make life
   a little easier for folks who want to read the source. The .min.js
   versions will go into the browser resources.

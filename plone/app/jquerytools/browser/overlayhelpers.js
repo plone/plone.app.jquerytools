@@ -7,35 +7,30 @@
 
 *****************/
 
-/*jslint browser: true, onevar: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, newcap: true, immed: true */
+/*jslint browser: true, onevar: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, newcap: true, immed: true, regexp: false, white:true */
 /*global jQuery, ajax_noresponse_message, window */
 
 // Name space object for pipbox
-var pb = {spinner:{}};
-
-// We may be creating multiple targets per page. We need to be able to
-// tell them apart. We'll do it by counting.
-pb.overlay_counter = 1;
+var pb = {spinner: {}, overlay_counter: 1};
 
 jQuery.tools.overlay.conf.oneInstance = false;
 
-jQuery(function($) {
+jQuery(function ($) {
 
     pb.spinner.show = function () {
-        $('body').css('cursor','wait');
+        $('body').css('cursor', 'wait');
     };
     pb.spinner.hide = function () {
-        $('body').css('cursor','');
+        $('body').css('cursor', '');
     };
 
     /******
         $.fn.prepOverlay jQuery plugin to inject overlay target into DOM and
         annotate it with the data we'll need in order to display it.
     ******/
-    $.fn.prepOverlay = function(pbo) {
-        return this.each(function() {
-            var o, config, onBeforeLoad, onLoad, src, nt,
-                el, selector, parts;
+    $.fn.prepOverlay = function (pbo) {
+        return this.each(function () {
+            var o, config, onBeforeLoad, onLoad, src, parts;
 
             o = $(this);
 
@@ -48,7 +43,7 @@ jQuery(function($) {
                 config.onBeforeLoad = onBeforeLoad;
             }
             onLoad = config.onLoad;
-            config.onLoad = function() {
+            config.onLoad = function () {
                 if (onLoad) {
                     onLoad.apply(this, arguments);
                 }
@@ -84,57 +79,27 @@ jQuery(function($) {
                     // this is not inline, so in one fashion or another
                     // we'll be loading it via the beforeLoad callback.
                     // create a unique id for a target element
-                    nt = 'pb_' + pb.overlay_counter;
+                    pbo.nt = 'pb_' + pb.overlay_counter;
                     pb.overlay_counter += 1;
 
-                    // mark the source with a rel attribute so we can find
-                    // the overlay, and a special class for styling
-                    o.attr('rel', '#' + nt);
-                    o.addClass('link-overlay');
-
-                    // create a target element; a div with markers;
-                    // content will be inserted here by the callback
-                    el = $(
-                    '<div id="' + nt +
-                        '" class="overlay overlay-' + pbo.subtype +
-                        ' ' + (pbo.cssclass || '') +
-                        '"><div class="close"><span>Close</span></div>'
-                    );
-
-                    // add the target element at the end of the body.
-                    el.appendTo($("body"));
-
-                    // if we've a width specified, set it on the overlay div
-                    if (pbo.width) {
-                        el.width(pbo.width);
-                    }
-
-                    // We'll need the selector in the callback/click, so let's
-                    // store it on the target element.
-                    //
-                    // A selector may have been supplied in options, otherwise
-                    // anything in src after a space is going to be a
-                    // $ selector to use in an ajax load so that
-                    // we don't get a whole page.
-                    selector = pbo.filter || pbo.selector;
-                    if (!selector) {
+                    pbo.selector = pbo.filter || pbo.selector;
+                    if (!pbo.selector) {
                         // see if one's been supplied in the src
                         parts = src.split(' ');
                         src = parts.shift();
-                        selector = parts.join(' ');
+                        pbo.selector = parts.join(' ');
                     }
-                    el.data('target', src).data('selector', selector);
 
-                    // are we being asked to handle forms in an ajax overlay?
-                    // save the form selector on the target element.
-                    el.data('formtarget', pbo.formselector);
-                    el.data('noform', pbo.noform);
-                    el.data('redir_url', pbo.redirect);
-                    el.data('closeselector', pbo.closeselector);
-                    el.data('beforepost', pbo.beforepost);
-                    el.data('afterpost', pbo.afterpost);
-                    // o = jquery element which raised the overlay window.
-                    el.data('source', o);
+                    pbo.src = src;
+                    pbo.config = config;
+                    
+                    // save options on trigger element
+                    o.data('pbo', pbo);
+
+                    // mark the source with a rel attribute so we can find
+                    // the overlay, and a special class for styling
+                    o.attr('rel', '#' + pbo.nt);
+                    o.addClass('link-overlay');
 
                     // for some subtypes, we're setting click handlers
                     // and attaching overlay to the target element. That's
@@ -143,13 +108,12 @@ jQuery(function($) {
                     switch (pbo.subtype) {
                     case 'image':
                         o.click(pb.image_click);
-                        el.overlay(config);
                         break;
                     case 'ajax':
                         o.click(pb.ajax_click);
-                        el.overlay(config);
                         break;
                     case 'iframe':
+                        pb.create_content_div(pbo);
                         o.overlay(config);
                         break;
                     default:
@@ -166,35 +130,66 @@ jQuery(function($) {
 
 
     /******
+        pb.create_content_div
+        create a div to act as an overlay; append it to
+        the body; return it
+    ******/
+    pb.create_content_div = function (pbo) {
+        var content;
+
+        content = $(
+            '<div id="' + pbo.nt +
+            '" class="overlay overlay-' + pbo.subtype +
+            ' ' + (pbo.cssclass || '') +
+            '"><div class="close"><span>Close</span></div></div>'
+        );
+
+        // if we've a width specified, set it on the overlay div
+        if (pbo.width) {
+            content.width(pbo.width);
+        }
+
+        // add the target element at the end of the body.
+        content.appendTo($("body"));
+
+        return content;
+    };
+
+
+    /******
         pb.image_click
         click handler for ajax sources.
     ******/
-    pb.image_click = function(event) {
-        var content, api, src, img, el;
+    pb.image_click = function (event) {
+        var ethis, content, api, img, el, pbo;
+
+        ethis = $(this);
+        pbo = ethis.data('pbo');
 
         // find target container
-        content = $($(this).attr('rel'));
-        // and its JQT api
+        content = $(ethis.attr('rel'));
+        if (!content.length) {
+            content = pb.create_content_div(pbo);
+            content.overlay(pbo.config);
+        }
         api = content.overlay();
 
         // is the image loaded yet?
         if (content.find('img').length === 0) {
-            // load the image. first, get the
-            // src information out of the stored data.
-            src = content.data('target');
-            if (src) {
+            // load the image.
+            if (pbo.src) {
                 pb.spinner.show();
 
                 // create the image and stuff it
                 // into our target
                 img = new Image();
-                img.src = src;
+                img.src = pbo.src;
                 el = $(img);
                 content.append(el.addClass('pb-image'));
 
                 // Now, we'll cause the overlay to
                 // load when the image is loaded.
-                el.load( function() {
+                el.load(function () {
                     pb.spinner.hide();
                     api.load();
                 });
@@ -212,7 +207,7 @@ jQuery(function($) {
         pb.fi_focus
         First-input focus inside $ selection.
     ******/
-    pb.fi_focus = function(jqo) {
+    pb.fi_focus = function (jqo) {
         if (! jqo.find("form div.error :input:first").focus().length) {
             jqo.find("form :input:visible:first").focus();
         }
@@ -224,7 +219,7 @@ jQuery(function($) {
         jQuery's ajax load function does not load error responses.
         This routine returns the cooked error response.
     ******/
-    pb.ajax_error_recover = function(responseText, selector) {
+    pb.ajax_error_recover = function (responseText, selector) {
         var tcontent = $('<div/>')
             .append(responseText.replace(/<script(.|\s)*?\/script>/gi, ""));
         return selector ? tcontent.find(selector) : tcontent;
@@ -235,7 +230,7 @@ jQuery(function($) {
         pb.prep_ajax_form
         Set up form with ajaxForm, including success and error handlers.
     ******/
-    pb.prep_ajax_form = function(form) {
+    pb.prep_ajax_form = function (form) {
         var ajax_parent = form.closest('.pb-ajax'),
             data_parent = ajax_parent.closest('.overlay-ajax'),
             formtarget = data_parent.data('formtarget'),
@@ -246,16 +241,16 @@ jQuery(function($) {
             selector = data_parent.data('selector'),
             options = {};
 
-        options.beforeSerialize = function() {
+        options.beforeSerialize = function () {
             pb.spinner.show();
         };
 
         if (beforepost) {
-            options.beforeSubmit = function(arr, form, options) {
+            options.beforeSubmit = function (arr, form, options) {
                 return beforepost(form, arr, options);
             };
         }
-        options.success = function(responseText, statusText, xhr, form) {
+        options.success = function (responseText, statusText, xhr, form) {
             // success comes in many forms, some of which are errors;
             //
 
@@ -297,7 +292,7 @@ jQuery(function($) {
 
                 // attach close to element id'd by closeselector
                 if (closeselector) {
-                    el.find(closeselector).click(function(event) {
+                    el.find(closeselector).click(function (event) {
                         api.close();
                         return false;
                     });
@@ -361,31 +356,38 @@ jQuery(function($) {
         is to do the ajax load of the overlay element, then
         call the JQT overlay loader.
     ******/
-    pb.ajax_click = function(event) {
-        var content = $($(this).attr('rel')),
-            api = content.overlay(),
-            src = content.data('target'),
-            el = content.children('div.pb-ajax'),
-            selector = content.data('selector'),
-            formtarget = content.data('formtarget'),
-            closeselector = content.data('closeselector'),
+    pb.ajax_click = function (event) {
+        var ethis = $(this),
+            pbo,
+            content,
+            api,
+            src,
+            el,
+            selector,
+            formtarget,
+            closeselector,
             sep;
+
+        pbo = ethis.data('pbo');
+
+        content = pb.create_content_div(pbo);
+        api = content.overlay();
+        src = pbo.src;
+        selector = pbo.selector;
+        formtarget = pbo.formtarget;
+        closeselector = pbo.closeselector;
 
         pb.spinner.show();
 
         // prevent double click warning for this form
         $(this).find("input.submitting").removeClass('submitting');
 
-        // see if we already have a container to load
-        if (!el.length) {
-            // we don't, so create it
-            el = $('<div class="pb-ajax" />');
-            if (api.getConf().fixed) {
-                // don't let it be over 75% of the viewport's height
-                el.css('max-height', Math.floor($(window).height() * 0.75));
-            }
-            content.append(el);
+        el = $('<div class="pb-ajax" />');
+        if (api.getConf().fixed) {
+            // don't let it be over 75% of the viewport's height
+            el.css('max-height', Math.floor($(window).height() * 0.75));
         }
+        content.append(el);
 
         // affix a random query argument to prevent
         // loading from browser cache
@@ -398,7 +400,7 @@ jQuery(function($) {
         }
 
         // and load the div
-        el.load(src, null, function(responseText, errorText) {
+        el.load(src, null, function (responseText, errorText) {
             var el = $(this);
 
             if (errorText === 'error') {
@@ -419,7 +421,7 @@ jQuery(function($) {
             // if a closeselector has been specified, tie it to the overlay's
             // close method via closure
             if (closeselector) {
-                el.find(closeselector).click(function(event) {
+                el.find(closeselector).click(function (event) {
                     api.close();
                     return false;
                 });
@@ -431,7 +433,9 @@ jQuery(function($) {
             }
 
             // remove element on close so that it doesn't congest the DOM
-            api.onClose = function () { el.remove(); };
+            api.onClose = function () {
+                content.remove();
+            };
 
             // Now, it's all ready to display; hide the
             // spinner and call JQT overlay load.
@@ -454,26 +458,24 @@ jQuery(function($) {
         so that we can keep it displayed while the iframe's
         content is loading.
     ******/
-    pb.iframe = function() {
-        var content = this.getOverlay(),
-            src;
+    pb.iframe = function () {
+        var content, pbo;
 
         pb.spinner.show();
 
-        if (content.find('iframe').length === 0) {
-            src = content.data('target');
-            if (src) {
-                content.append(
-                '<iframe src="' + src + '" width="' +
-                 content.width() + '" height="' + content.height() + 
+        content = this.getOverlay();
+        pbo = this.getTrigger().data('pbo');
+
+        if (content.find('iframe').length === 0 && pbo.src) {
+            content.append(
+                '<iframe src="' + pbo.src + '" width="' +
+                 content.width() + '" height="' + content.height() +
                  '" onload="pb.spinner.hide()"/>'
-                );
-            }
+            );
         } else {
             pb.spinner.hide();
         }
         return true;
     };
-
 
 });
