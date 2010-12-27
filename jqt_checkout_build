@@ -1,5 +1,14 @@
 #!/usr/bin/env python
 
+# Check out jQuery Tools and jquery from from source repositories;
+# run jslint, minify and repackage into plone.app.jquerytools
+# resources.
+# 
+# Uses Google's closure compiler for the minification.
+# 
+# Added to p.a.jqt by Rok Garbas
+
+
 import os
 import shlex
 import shutil
@@ -10,6 +19,12 @@ import StringIO
 import subprocess
 import datetime
 
+JQ_TOOLS_VERSION = 'v1.2.5'
+JQ_TOOLS_DOWNLOAD_URL = 'http://github.com/jquerytools/jquerytools/tarball/'+JQ_TOOLS_VERSION
+# JQ_TOOLS_DOWNLOAD_URL = 'file:///Users/rok/Projects/garbas/jquerytools-jquerytools-v1.2.5-0-g85655d7.tar.gz'
+
+JQ_FORM_VERSION = 'master' # there is no tag
+JQ_FORM_URL= 'http://github.com/malsup/form/tarball/'+JQ_FORM_VERSION
 
 
 def run_hooks(name, hooks, kw):
@@ -37,7 +52,7 @@ def build(name, download_url, hooks=dict(), **kw):
     for member in archive_tar.getmembers():
         if member.path.startswith('/') or \
            member.path.startswith('..'):
-            raise Exception('Somebody want to harm your coputer.')
+            raise Exception('Somebody wants to harm your coputer.')
     archive_tar.extractall(kw['tmp_dir'])
     f.close()
 
@@ -85,15 +100,9 @@ def main():
 
     # TODO: we could make get values bellow bia sys.args (argparse)
 
-    JQ_TOOLS_VERSION = 'v1.2.5'
-    JQ_TOOLS_DOWNLOAD_URL = 'http://github.com/jquerytools/jquerytools/tarball/'+JQ_TOOLS_VERSION
-    JQ_TOOLS_DOWNLOAD_URL = 'file:///Users/rok/Projects/garbas/jquerytools-jquerytools-v1.2.5-0-g85655d7.tar.gz'
-
-    JQ_FORM_VERSION = 'master' # there is no tag
-    JQ_FORM_URL= 'http://github.com/malsup/form/tarball/'+JQ_FORM_VERSION
 
     PLONE_MAPPING = {
-        'jquery.tools.min.js': [
+        'jquery.tools.js': [
                 'jquery.tools:overlay/overlay.js',
                 'jquery.tools:scrollable/scrollable.js',
                 'jquery.tools:tabs/tabs.js',
@@ -101,7 +110,7 @@ def main():
                 'jquery.tools:toolbox/toolbox.expose.js',
                 'jquery.tools:tooltip/tooltip.js',
             ],
-        'jquery.tools.plugins.min.js': [
+        'jquery.tools.plugins.js': [
                 'jquery.tools:overlay/overlay.apple.js',
                 'jquery.tools:scrollable/scrollable.autoscroll.js',
                 'jquery.tools:scrollable/scrollable.navigator.js',
@@ -114,16 +123,16 @@ def main():
         'jquery.tools.dateinput.css': [
                 'jquery.tools:dateinput/skin1.css',
             ],
-        'jquery.tools.dateinput.min.js': [
+        'jquery.tools.dateinput.js': [
                 'jquery.tools:dateinput/dateinput.js',
             ],
-        'jquery.tools.rangeinput.min.js': [
+        'jquery.tools.rangeinput.js': [
                 'jquery.tools:rangeinput/rangeinput.js',
             ],
-        'jquery.tools.validator.min.js': [
+        'jquery.tools.validator.js': [
                 'jquery.tools:validator/validator.js',
             ],
-        'jquery.form.min.js': [
+        'jquery.form.js': [
                 'jquery.form:jquery.form.js',
                 ]
     }
@@ -254,11 +263,11 @@ def plone_file_hook(**kw):
         return kw
     for script in kw['plone_mapping']:
         if kw['name'] + ':' + kw['short_filename'] in kw['plone_mapping'][script]:
+            build_filename = os.path.join(kw['plone_dir'], script)
             if kw['filename'].endswith('.js'):
-                source_filename = os.path.join(kw['build_dir'], kw['short_filename'][:-3] + '.min.js')
+                source_filename = os.path.join(kw['build_dir'], kw['short_filename'][:-3] + '.js')
             else:
                 source_filename = os.path.join(kw['build_dir'], kw['short_filename'])
-            build_filename = os.path.join(kw['plone_dir'], script)
 
             g = open(source_filename)
             content = g.read()+'\n'
@@ -269,6 +278,21 @@ def plone_file_hook(**kw):
             f.close()
 
             print '  |-> plone: ' + build_filename[len(kw['plone_dir']) + 1:]
+
+            if kw['filename'].endswith('.js'):
+                # also do .min.js
+                source_filename = os.path.join(kw['build_dir'], kw['short_filename'][:-3] + '.min.js')
+
+                g = open(source_filename)
+                content = g.read()+'\n'
+                g.close()
+
+                build_filename = build_filename[:-3] + '.min.js'
+                f = open(build_filename, 'a+')
+                f.write(content)
+                f.close()
+
+                print '  |-> plone: ' + build_filename[len(kw['plone_dir']) + 1:]
     return kw
 
 
