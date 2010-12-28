@@ -7,7 +7,7 @@
  * http://flowplayer.org/tools/overlay/apple.html
  *
  * Since: July 2009
- * Date: 2010-12-26 15:57 
+ * Date: 2010-12-27 15:01 
  */
 (function($) { 
 
@@ -163,7 +163,7 @@
  * http://flowplayer.org/tools/scrollable/autoscroll.html
  *
  * Since: September 2009
- * Date: 2010-12-26 15:57 
+ * Date: 2010-12-27 15:01 
  */
 (function($) {		
 
@@ -245,7 +245,7 @@
  * http://flowplayer.org/tools/scrollable/navigator.html
  *
  * Since: September 2009
- * Date: 2010-12-26 15:57 
+ * Date: 2010-12-27 15:01 
  */
 (function($) {
 		
@@ -385,7 +385,7 @@
  * http://flowplayer.org/tools/tabs/slideshow.html
  *
  * Since: September 2009
- * Date: 2010-12-26 15:57 
+ * Date: 2010-12-27 15:01 
  */
 (function($) {
 	
@@ -564,7 +564,7 @@
  * http://flowplayer.org/tools/toolbox/flashembed.html
  *
  * Since : March 2008
- * Date  : 2010-12-26 15:57 
+ * Date  : 2010-12-27 15:01 
  */ 
 (function() {
 		
@@ -870,7 +870,7 @@
  * http://threedubmedia.com 
  *
  * Since: Mar 2010
- * Date: 2010-12-26 15:57 
+ * Date: 2010-12-27 15:01 
  */
 (function($) { 
 	
@@ -932,7 +932,7 @@
  * http://flowplayer.org/tools/tooltip/dynamic.html
  *
  * Since: July 2009
- * Date: 2010-12-26 15:57 
+ * Date: 2010-12-27 15:01 
  */
 (function($) { 
 
@@ -1083,7 +1083,7 @@
  * http://flowplayer.org/tools/tooltip/slide.html
  *
  * Since: September 2009
- * Date: 2010-12-26 15:57 
+ * Date: 2010-12-27 15:01 
  */
 (function($) { 
 

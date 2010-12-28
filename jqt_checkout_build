@@ -202,6 +202,11 @@ def plone_before_hook(**kw):
             f = open(script_path, 'w+')
             f.write('')
             f.close()
+        if script_path.endswith('.js'):
+            script_path = script_path[0:-3] + '.min.js'
+            f = open(script_path, 'w+')
+            f.write('')
+            f.close()
 
     # FIXME: probably a better way to do this
     if os.path.exists(os.path.join(kw['source_dir'], 'test', 'dateinput', 'skin1.css')):
