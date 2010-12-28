@@ -285,6 +285,7 @@ It provides a more complete serialization, including submit name/value and file
 data, than jQuery alone.
 
 
+.. _`jquery.tools`: http://flowplayer.org/tools
 .. _`overlay.js`: http://flowplayer.org/tools/overlay/index.html
 .. _`scrollable.js`: http://flowplayer.org/tools/scrollable/index.html
 .. _`tabs.js`: http://flowplayer.org/tools/tabs/index.html
