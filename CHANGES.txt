@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.2b2 - 2010-12-29
+------------------
+
+* AJAX overlays broken in b1 due to plain stupidity. Will try to remember
+  to always test after editing.
+  [smcmahon]
+
 1.2b1 - 2010-12-27
 ------------------
 

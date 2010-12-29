@@ -371,6 +371,7 @@ jQuery(function ($) {
         pbo = ethis.data('pbo');
 
         content = pb.create_content_div(pbo);
+        content.overlay(pbo.config);
         api = content.overlay();
         src = pbo.src;
         selector = pbo.selector;
@@ -477,5 +478,12 @@ jQuery(function ($) {
         }
         return true;
     };
+
+    $('.newsImageContainer a')
+        .prepOverlay({
+             subtype: 'image',
+             urlmatch: '/image_view_fullscreen$',
+             urlreplace: '_preview'
+            });
 
 });
