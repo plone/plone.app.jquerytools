@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.2b3 - 2010-12-30
+------------------
+
+* Some options not passed to ajax form handlers in b1, b2. Fixed.
+  [smcmahon]
+
 1.2b2 - 2010-12-29
 ------------------
 

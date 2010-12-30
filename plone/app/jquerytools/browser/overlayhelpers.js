@@ -28,11 +28,15 @@ jQuery(function ($) {
         $.fn.prepOverlay jQuery plugin to inject overlay target into DOM and
         annotate it with the data we'll need in order to display it.
     ******/
-    $.fn.prepOverlay = function (pbo) {
+    $.fn.prepOverlay = function (pba) {
         return this.each(function () {
-            var o, config, onBeforeLoad, onLoad, src, parts;
+            var o, pbo, config, onBeforeLoad, onLoad, src, parts;
 
             o = $(this);
+
+            // copy options so that it's not just a reference
+            // to the parameter.
+            pbo = $.extend(true, {}, pba);
 
             // set overlay configuration
             config = pbo.config || {};
@@ -143,6 +147,8 @@ jQuery(function ($) {
             ' ' + (pbo.cssclass || '') +
             '"><div class="close"><span>Close</span></div></div>'
         );
+        
+        content.data('pbo', pbo);
 
         // if we've a width specified, set it on the overlay div
         if (pbo.width) {
@@ -233,12 +239,13 @@ jQuery(function ($) {
     pb.prep_ajax_form = function (form) {
         var ajax_parent = form.closest('.pb-ajax'),
             data_parent = ajax_parent.closest('.overlay-ajax'),
-            formtarget = data_parent.data('formtarget'),
-            closeselector = data_parent.data('closeselector'),
-            beforepost = data_parent.data('beforepost'),
-            afterpost = data_parent.data('afterpost'),
+            pbo = data_parent.data('pbo'),
+            formtarget = pbo.formtarget,
+            closeselector = pbo.closeselector,
+            beforepost = pbo.beforepost,
+            afterpost = pbo.afterpost,
             api = data_parent.overlay(),
-            selector = data_parent.data('selector'),
+            selector = pbo.selector,
             options = {};
 
         options.beforeSerialize = function () {
@@ -375,7 +382,7 @@ jQuery(function ($) {
         api = content.overlay();
         src = pbo.src;
         selector = pbo.selector;
-        formtarget = pbo.formtarget;
+        formtarget = pbo.formselector;
         closeselector = pbo.closeselector;
 
         pb.spinner.show();
@@ -479,11 +486,11 @@ jQuery(function ($) {
         return true;
     };
 
-    $('.newsImageContainer a')
-        .prepOverlay({
-             subtype: 'image',
-             urlmatch: '/image_view_fullscreen$',
-             urlreplace: '_preview'
-            });
+    // $('.newsImageContainer a')
+    //     .prepOverlay({
+    //          subtype: 'image',
+    //          urlmatch: '/image_view_fullscreen$',
+    //          urlreplace: '_preview'
+    //         });
 
 });
