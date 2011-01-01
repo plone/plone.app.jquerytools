@@ -37,7 +37,8 @@ And, make sure it's got our code in it::
 
     >>> print browser.contents
     /*
-     * jQuery Tools ... - The missing UI library for the Web
+    ...
+     jQuery Tools v...
     ...
 
 Open the overlay helper code item as a resource::
