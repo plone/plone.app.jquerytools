@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '1.2b3'
+version = '1.2b4'
 
 setup(name='plone.app.jquerytools',
       version=version,
@@ -36,6 +36,7 @@ setup(name='plone.app.jquerytools',
           target = plone
       """,
       extras_require = {
-          'test': ['niteoweb.windmill',],
+          # 'test': ['niteoweb.windmill',],
+          'test': ['plone.app.testing', 'selenium'],
       },
 )

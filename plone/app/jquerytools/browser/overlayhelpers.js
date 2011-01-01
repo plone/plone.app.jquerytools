@@ -240,10 +240,11 @@ jQuery(function ($) {
         var ajax_parent = form.closest('.pb-ajax'),
             data_parent = ajax_parent.closest('.overlay-ajax'),
             pbo = data_parent.data('pbo'),
-            formtarget = pbo.formtarget,
+            formtarget = pbo.formselector,
             closeselector = pbo.closeselector,
             beforepost = pbo.beforepost,
             afterpost = pbo.afterpost,
+            noform = pbo.noform,
             api = data_parent.overlay(),
             selector = pbo.selector,
             options = {};
@@ -261,7 +262,7 @@ jQuery(function ($) {
             // success comes in many forms, some of which are errors;
             //
 
-            var noform, el, myform, success, target;
+            var el, myform, success, target;
 
             success = statusText === "success" || statusText === "notmodified";
 
@@ -307,7 +308,6 @@ jQuery(function ($) {
             } else {
                 // there's no form in our new content or there's been an error
                 if (success) {
-                    noform = data_parent.data('noform');
                     if (typeof(noform) === "function") {
                         // get action from callback
                         noform = noform(this);
@@ -332,7 +332,7 @@ jQuery(function ($) {
                 case 'redirect':
                     api.close();
                     pb.spinner.show();
-                    target = data_parent.data('redir_url');
+                    target = pbo.redirect;
                     if (typeof(target) === "function") {
                         // get target from callback
                         target = target(this, responseText);
