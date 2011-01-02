@@ -5,7 +5,7 @@
 
     <browser:page
         for="*"
-        name="plone.app.jquerytools.testForm"
+        name="p.a.jqt.testForm"
         class=".tests.browser.TestForm"
         template="templates/testForm.pt"
         permission="zope2.View"
@@ -13,9 +13,9 @@
 
     <browser:page
         for="*"
-        name="plone.app.jquerytools.testAJAXFormPopup"
+        name="p.a.jqt.testPage"
         class=".tests.browser.TestForm"
-        template="templates/testAJAXFormPopup.pt"
+        template="templates/testPage.pt"
         permission="zope2.View"
         />
 

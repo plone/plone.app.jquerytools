@@ -11,7 +11,7 @@
     <metal:content-core define-macro="content-core">
     <script>
     jQuery(function($){
-        $('a').prepOverlay({
+        $('a#taform').prepOverlay({
             subtype: 'ajax',
             filter: '#stuff2',
             formselector: 'form',
@@ -22,7 +22,7 @@
     </script>
 
 
-    <a href="@@plone.app.jquerytools.testForm">test AJAX Form Popup</a>
+    <a id="taform" href="@@p.a.jqt.testForm">Test AJAX Form Popup</a>
     
     </metal:content-core>
 </metal:content-core>

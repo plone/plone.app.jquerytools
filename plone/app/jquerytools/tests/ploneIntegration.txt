@@ -4,7 +4,7 @@ Introduction
 Setup the test framework::
 
     >>> from zope.component import getMultiAdapter
-    >>> from Products.Five.testbrowser import Browser
+    >>> from Testing.testbrowser import Browser
     >>> browser = Browser()
     >>> portal_url = 'http://nohost/plone'
 
@@ -65,3 +65,10 @@ And, make sure it's got our code in it::
      jQuery Tools ...
     ...
 
+Open the test page::
+
+    >>> browser.open(portal_url+'/@@p.a.jqt.testPage')
+    
+    >>> browser.contents.find("Test AJAX Form Popup") > 0
+    True
+    
