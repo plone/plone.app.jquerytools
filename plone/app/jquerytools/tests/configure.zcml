@@ -1,0 +1,23 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:zcml="http://namespaces.zope.org/zcml"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           >
+
+    <browser:page
+        for="*"
+        name="plone.app.jquerytools.testForm"
+        class=".tests.browser.TestForm"
+        template="templates/testForm.pt"
+        permission="zope2.View"
+        />
+
+    <browser:page
+        for="*"
+        name="plone.app.jquerytools.testAJAXFormPopup"
+        class=".tests.browser.TestForm"
+        template="templates/testAJAXFormPopup.pt"
+        permission="zope2.View"
+        />
+
+
+</configure>

@@ -57,20 +57,12 @@
         file="browser/pb_close.png"
         />
 
-    <configure zcml:condition="installed plone.app.testing">
-    <!-- TODO: need to rewrite those few test to use plone.app.testing -->
-
-        <resource
-            name="plone.app.jquerytools.testForm.html"
-            file="browser/testForm.html"
-            />
-
-        <resource
-            name="plone.app.jquerytools.testAJAXFormPopup.html"
-            file="browser/testAJAXFormPopup.html"
-            />
-
-    </configure>
+    <!-- TODO: turn on condition zcml:condition="installed plone.app.testing"
+         when finished drafting selenium tests
+    -->
+    <include
+        file="tests/configure.zcml"
+        />
 
     <genericsetup:registerProfile
         name="default"
