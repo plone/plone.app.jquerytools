@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2b4 - unreleased
+1.2b4 - 2010-12-05
 ------------------
 
 * Add plone.app.testing / Selenium testing framework based on esteele's

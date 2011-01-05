@@ -33,9 +33,6 @@ class SeleniumLayer(PloneSandboxLayer):
 
     def setUpPloneSite(self, portal):
         
-        # Install Products
-        quickInstallProduct(portal, 'assessmentmanagement.core')
-
         # Start up Selenium 
         url = "http://%s:%s/%s" % (self['host'], self['port'], PLONE_SITE_ID)
         self['selenium'] = selenium.selenium(self.seleniumHost, self.seleniumPort, self.seleniumBrowser, url)
@@ -54,6 +51,7 @@ class SeleniumTestCase(unittest.TestCase):
 
     def setUp(self):
         self.selenium = self.layer['selenium']
+        applyProfile(self.layer['portal'], 'Products.CMFPlone:plone-content')
 
     def open(self, path="/", site_name=PLONE_SITE_ID):
         # ensure we have a clean starting point

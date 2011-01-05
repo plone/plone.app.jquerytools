@@ -2,6 +2,8 @@ import time
 
 from base import SeleniumTestCase
 from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD, TEST_USER_ROLES
+from plone.app.testing.helpers import applyProfile
+
 
 # Note the various time.sleep(...) statements. They're necessary to get
 # these tests to run reliably. Is selenium running in an async thread that
@@ -16,7 +18,7 @@ class OverlayTestCase(SeleniumTestCase):
 
         self.open("/")
         self.wait()
-
+        
         # test that click on log in opens overlay
         sel.click("id=personaltools-login")
         self.waitForElement('form#login_form')
