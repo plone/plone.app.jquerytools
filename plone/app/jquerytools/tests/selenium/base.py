@@ -9,6 +9,7 @@ from plone.app.testing import PLONE_SITE_ID
 from plone.app.testing import FunctionalTesting
 from plone.app.testing.layers import PLONE_FIXTURE
 from plone.testing.z2 import ZServer
+from plone.app.testing.helpers import applyProfile
 # from zope.configuration import xmlconfig
 
 class HostAdjustableZServer(ZServer):
@@ -51,7 +52,6 @@ class SeleniumTestCase(unittest.TestCase):
 
     def setUp(self):
         self.selenium = self.layer['selenium']
-        applyProfile(self.layer['portal'], 'Products.CMFPlone:plone-content')
 
     def open(self, path="/", site_name=PLONE_SITE_ID):
         # ensure we have a clean starting point
