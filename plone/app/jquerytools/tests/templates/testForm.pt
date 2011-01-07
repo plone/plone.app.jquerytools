@@ -16,7 +16,7 @@
     <div id="stuff2">
         <h3>Test Form</h3>
         <form tal:condition="not:request/form/submitButton6 | nothing"
-              id="myForm1" action="@@plone.app.jquerytools.testForm" method="post"><div>
+              id="myForm1" action="@@p.a.jqt.testForm" method="post"><div>
                 <input type="hidden" name="Hidden" value="hiddenValue" />
                 <table>
 
