@@ -19,7 +19,6 @@ class OverlayTestCase(SeleniumTestCase):
         sel = self.selenium
 
         self.open("/")
-        self.wait()
         
         # test that click on log-in opens overlay
         sel.click("id=personaltools-login")
@@ -56,7 +55,6 @@ class OverlayTestCase(SeleniumTestCase):
         self.failIf(sel.is_element_present("css=div.overlay-ajax form#login_form"))
 
         self.open("logout")
-        self.wait()
         time.sleep(0.5)
 
     def test_delete_confirm(self):
@@ -68,7 +66,7 @@ class OverlayTestCase(SeleniumTestCase):
 
         sel = self.selenium
         self.open("/")
-        self.wait()
+
         # log in
         sel.click("id=personaltools-login")
         self.waitForElement("#login-form")
@@ -101,5 +99,4 @@ class OverlayTestCase(SeleniumTestCase):
         self.failIf(sel.is_element_present("id=portaltab-f1"))
         
         self.open("logout")
-        self.wait()
         time.sleep(0.5)

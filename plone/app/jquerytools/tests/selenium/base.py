@@ -1,3 +1,5 @@
+import sys
+import time
 import selenium
 import os
 import transaction
@@ -11,6 +13,8 @@ from plone.app.testing.layers import PLONE_FIXTURE
 from plone.testing.z2 import ZServer
 from plone.app.testing.helpers import applyProfile
 # from zope.configuration import xmlconfig
+
+XHR_RETRIES = 5
 
 class HostAdjustableZServer(ZServer):
     host = os.environ.get('ZSERVER_HOST', 'localhost')
@@ -53,10 +57,23 @@ class SeleniumTestCase(unittest.TestCase):
     def setUp(self):
         self.selenium = self.layer['selenium']
 
-    def open(self, path="/", site_name=PLONE_SITE_ID):
+    def open(self, path="/", site_name=PLONE_SITE_ID, look_for='css=BODY'):
         # ensure we have a clean starting point
         transaction.commit()
-        self.selenium.open("/%s/%s" % (site_name, path,))
+        count = 0
+        while True:
+            count += 1
+            try:
+                self.selenium.open("/%s/%s" % (site_name, path,))
+            except:
+                if str(sys.exc_value).count('XHR ERROR') :
+                    print "Nasty selenium XHR bug; retry %d/%d" % (count, XHR_RETRIES)
+                else:
+                    raise
+            time.sleep(2)
+            if (count > XHR_RETRIES) or self.selenium.is_element_present(look_for):
+                break      
+        
 
     def wait(self, timeout="30000"):
         self.selenium.wait_for_page_to_load(timeout)

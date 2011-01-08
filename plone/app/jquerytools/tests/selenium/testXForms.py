@@ -11,19 +11,7 @@ class FormTestCase(SeleniumTestCase):
 
         sel = self.selenium
 
-        count = 0
-        while True:
-            count += 1
-            try:
-                self.open("@@p.a.jqt.testPage/")
-            except:
-                if str(sys.exc_value).count('XHR ERROR') :
-                    print "Nasty selenium XHR bug!"
-                else:
-                    raise
-            time.sleep(2)
-            if (count == 5) or sel.is_element_present("id=taform"):
-                break
+        self.open("@@p.a.jqt.testPage/")
 
         self.waitForElement("#taform")
         time.sleep(1)
@@ -39,6 +27,7 @@ class FormTestCase(SeleniumTestCase):
         sel.click("submitButton")
         time.sleep(3)
 
+        self.failUnless(sel.is_text_present("exact:ajax_load:"))
         self.failUnless(sel.is_text_present("exact:Multiple:one"))
         self.failUnless(sel.is_text_present("exact:Name:MyName1"))
         self.failUnless(sel.is_text_present("exact:Single2:A"))
@@ -49,6 +38,9 @@ class FormTestCase(SeleniumTestCase):
         self.failUnless(sel.is_text_present("exact:Hidden:hiddenValue"))
         self.failUnless(sel.is_text_present("exact:Password:xxx"))
         self.failUnless(sel.is_text_present("exact:Check:3"))
+        
+        # Make sure we can handle other submit methods, and that the
+        # value of the submit button is in the request
         sel.click("//input[@name='submitButton' and @value='Submit2']")
         time.sleep(3)
         self.failUnless(sel.is_text_present("exact:submitButton:Submit2"))
