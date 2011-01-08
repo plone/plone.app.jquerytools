@@ -18,11 +18,16 @@
             noform: 'close'
             });
 
+        $('a#testimage').prepOverlay({
+            subtype: 'image',
+            });
     });
     </script>
 
 
-    <a id="taform" href="@@p.a.jqt.testForm">Test AJAX Form Popup</a>
+    <p><a id="taform" href="@@p.a.jqt.testForm">Test AJAX Form Popup</a></p>
+    
+    <p><a id="testimage" href="logo.png">Test Image Popup</a></p>
     
     </metal:content-core>
 </metal:content-core>

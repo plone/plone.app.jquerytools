@@ -71,7 +71,7 @@ class SeleniumTestCase(unittest.TestCase):
                 else:
                     raise
             time.sleep(2)
-            if (count > XHR_RETRIES) or self.selenium.is_element_present(look_for):
+            if (count == XHR_RETRIES) or self.selenium.is_element_present(look_for):
                 break      
         
 

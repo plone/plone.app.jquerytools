@@ -11,14 +11,13 @@ class FormTestCase(SeleniumTestCase):
 
         sel = self.selenium
 
-        self.open("@@p.a.jqt.testPage/")
-
-        self.waitForElement("#taform")
-        time.sleep(1)
+        self.open("@@p.a.jqt.testPage/", look_for="id=taform")
 
         sel.click("taform")
-        time.sleep(2)
+        self.waitForElement("div.overlay-ajax form")
+        time.sleep(1)
         self.failUnless(sel.is_text_present("Test Form"))
+        self.failIf(sel.is_text_present("exact:Should not show"))        
         self.failUnless(sel.is_text_present("exact:ajax_load:"))
 
         sel.type("Password", "xxx")
