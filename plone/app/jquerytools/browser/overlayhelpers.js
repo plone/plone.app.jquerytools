@@ -295,6 +295,10 @@ jQuery(function ($) {
                 ajax_parent.empty().append(el);
                 pb.fi_focus(ajax_parent);
 
+                if (myform.find('input[name=ajax_load]').length === 0) {
+                    myform.prepend($('<input type="hidden" name="ajax_load" value="1" />'));
+                }
+
                 // attach submit handler with the same options
                 myform.ajaxForm(options);
 
@@ -352,6 +356,11 @@ jQuery(function ($) {
         };
         // error and success callbacks are the same
         options.error = options.success;
+        
+        if (form.find('input[name=ajax_load]').length === 0) {
+            form.prepend($('<input type="hidden" name="ajax_load" value="1" />'));
+        }
+
         form.ajaxForm(options);
     };
 
