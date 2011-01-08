@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.2b5 - unreleased
+------------------
+
+* Add ajax_load hidden input to loaded forms.
+  [smcmahon]
+
 1.2b4 - 2010-12-05
 ------------------
 

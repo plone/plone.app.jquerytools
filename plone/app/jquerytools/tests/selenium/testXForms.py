@@ -47,3 +47,8 @@ class FormTestCase(SeleniumTestCase):
         sel.click("//button[@name='submitButton']")
         time.sleep(3)
         self.failUnless(sel.is_text_present("exact:submitButton:Submit5"))
+
+        # pushing submit6 should close the overlay
+        sel.click("//input[@name='submitButton6']")
+        time.sleep(3)
+        self.failIf(sel.is_text_present("Test Form"))

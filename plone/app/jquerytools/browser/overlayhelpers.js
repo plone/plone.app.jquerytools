@@ -96,7 +96,7 @@ jQuery(function ($) {
 
                     pbo.src = src;
                     pbo.config = config;
-                    
+
                     // save options on trigger element
                     o.data('pbo', pbo);
 
@@ -147,7 +147,7 @@ jQuery(function ($) {
             ' ' + (pbo.cssclass || '') +
             '"><div class="close"><span>Close</span></div></div>'
         );
-        
+
         content.data('pbo', pbo);
 
         // if we've a width specified, set it on the overlay div
@@ -233,6 +233,18 @@ jQuery(function ($) {
 
 
     /******
+        pb.add_ajax_load
+        Adds a hidden ajax_load input to form
+    ******/
+    pb.add_ajax_load = function (form) {
+        if (form.find('input[name=ajax_load]').length === 0) {
+            form.prepend($('<input type="hidden" name="ajax_load" value="' +
+                (new Date().getTime()) +
+                '" />'));
+        }
+    };
+
+    /******
         pb.prep_ajax_form
         Set up form with ajaxForm, including success and error handlers.
     ******/
@@ -295,10 +307,7 @@ jQuery(function ($) {
                 ajax_parent.empty().append(el);
                 pb.fi_focus(ajax_parent);
 
-                if (myform.find('input[name=ajax_load]').length === 0) {
-                    myform.prepend($('<input type="hidden" name="ajax_load" value="1" />'));
-                }
-
+                pb.add_ajax_load(myform);
                 // attach submit handler with the same options
                 myform.ajaxForm(options);
 
@@ -356,11 +365,8 @@ jQuery(function ($) {
         };
         // error and success callbacks are the same
         options.error = options.success;
-        
-        if (form.find('input[name=ajax_load]').length === 0) {
-            form.prepend($('<input type="hidden" name="ajax_load" value="1" />'));
-        }
 
+        pb.add_ajax_load(form);
         form.ajaxForm(options);
     };
 
