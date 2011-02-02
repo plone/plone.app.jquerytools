@@ -56,6 +56,16 @@
         name="plone.app.jquerytools.pb_close.png"
         file="browser/pb_close.png"
         />
+    
+    <resource
+        name="plone.app.jquerytools.prev.gif"
+        file="browser/prev.gif"
+        />
+    
+    <resource
+        name="plone.app.jquerytools.next.gif"
+        file="browser/next.gif"
+        />
 
     <!-- TODO: turn on condition zcml:condition="installed plone.app.testing"
          when finished drafting selenium tests
