@@ -19,22 +19,25 @@ class OverlayTestCase(SeleniumTestCase):
         sel = self.selenium
 	portal = self.portal
 
+        # Selenium 2.0 uses implicit waits for each find_element_by... calls
 	self.setWaitTimeout(5)
 
         self.open(portal.absolute_url())
         
         # test that click on log-in opens overlay
         sel.find_element_by_id('personaltools-login').click()
-	time.sleep(0.5)
+	time.sleep(0.5) # sleep necessary after clicks
         sel.find_element_by_css_selector('form#login_form')
         sel.find_element_by_css_selector('div.overlay-ajax form#login_form')
         sel.find_element_by_css_selector('#exposeMask')
-	time.sleep(0.5)
+#	time.sleep(0.5)
         
         # clicking anywhere else should close overlay
         sel.find_element_by_id('exposeMask').click()
-        time.sleep(5)
-#        self.failIf(sel.is_element_present("id=login_form"))
+        time.sleep(0.5)
+        # Instead of ...
+        #     self.failIf(sel.is_element_present("id=login_form"))
+        # use ...
         self.failIf(self.isElementPresent("login_form"))
 
         # reload overlay
@@ -55,11 +58,11 @@ class OverlayTestCase(SeleniumTestCase):
         # Now, try a real login
         sel.find_element_by_name("__ac_name").send_keys(TEST_USER_NAME)
         sel.find_element_by_name("__ac_password").send_keys(TEST_USER_PASSWORD)
-#        sel.click("submit")
+        # Instead of ...
+        #     sel.click("submit")
+        # find the element and then click, as in ...
         sel.find_element_by_name("submit").click()
-#        self.wait()
         time.sleep(5)
-#        sel.find_element_by_css_selector("#personaltools-logout")
         sel.find_element_by_id("personaltools-logout")
         time.sleep(0.5)
         # overlay should be gone
@@ -67,16 +70,13 @@ class OverlayTestCase(SeleniumTestCase):
 #        self.failIf(sel.find_element_by_css_selector("div.overlay-ajax form#login_form"))
         self.failIf(self.isElementPresent("login_form"))
 
-#        self.open("logout")
         sel.find_element_by_id('user-name').click()
         time.sleep(0.5)
-#        sel.find_element_by_id('personaltools-logout').click()
         sel.find_element_by_link_text('Log out').click()
         time.sleep(5)
 
     def test_delete_confirm(self):
         # create a test target
-#        portal = self.layer['portal']
         portal = self.portal
         helpers.setRoles(portal, TEST_USER_ID, ['Manager'])
         portal.invokeFactory('Folder', 'f1')
@@ -103,40 +103,45 @@ class OverlayTestCase(SeleniumTestCase):
         sel.find_element_by_link_text("f1").click()
         time.sleep(5)
 
-#        sel.find_element_by_id("plone-contentmenu-actions").click()
-#        sel.find_element_by_css_selector("dt.actionMenuHeader").click()
-#        sel.find_element_by_css_selector("dl#plone-contentmenu-actions.actionMenu").click()
+        # Note the following three examples fail to properly test the
+        # content menu Actions drop down
+        #     sel.find_element_by_id("plone-contentmenu-actions").click()
+        #     sel.find_element_by_css_selector("dt.actionMenuHeader").click()
+        #     sel.find_element_by_css_selector("dl#plone-contentmenu-actions.actionMenu").click()
+        # instead we find all the drop down menus and ...
         contentActionMenus = sel.find_elements_by_class_name("arrowDownAlternative")
+        # ... click on the Actions menu
         contentActionMenus[-1].click()
         time.sleep(2)
         sel.find_element_by_id('delete').click()
         time.sleep(2)
         sel.find_element_by_css_selector("div.overlay-ajax form#delete_confirmation")
         sel.find_element_by_css_selector("#exposeMask")
-#        sel.find_element_by_css_selector("div.overlay-ajax form#delete_confirmation form.button.Cancel")
-#        sel.find_element_by_id("form.button.Cancel").click()
         sel.find_element_by_name("form.button.Cancel").click()
         time.sleep(2)
-                
-#        sel.find_element_by_id("plone-contentmenu-actions").click()
+
+        # Alternatively we can search on the partial link text.
+        # Note you have to use the partial text in this case as
+        # the full link text includes the <span> element
         sel.find_element_by_partial_link_text("Actions").click()
         time.sleep(0.5)
         sel.find_element_by_id('delete').click()
         time.sleep(2)
 #        sel.find_element_by_css_selector("div.formControls form#delete_confirmation form.button.Cancel")
-#        sel.click("//input[@value='Delete']")
+        # Instead of ...
+#       #     sel.click("//input[@value='Delete']")
+        # use ...
         sel.find_element_by_css_selector("input[value='Delete']").click()
 
-#        self.wait()
         time.sleep(5)
-        
-#        self.failUnless(sel.get_location().rstrip('/').split('/')[-1] == PLONE_SITE_ID)
+
+        # Instead of ...
+        #  sel.get_location()
+        # use ...
         self.failUnless(sel.current_url.rstrip('/').split('/')[-1] == PLONE_SITE_ID)
 
-#        self.failIf(sel.is_element_present("id=portaltab-f1"))
         self.failIf(self.isElementPresent("portaltab-f1"))
         
-#        self.open("logout")
         sel.find_element_by_id('user-name').click()
         time.sleep(0.5)
         sel.find_element_by_link_text('Log out').click()
