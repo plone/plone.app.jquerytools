@@ -14,72 +14,95 @@ from plone.testing.z2 import ZServer
 from plone.app.testing.helpers import applyProfile
 # from zope.configuration import xmlconfig
 
-XHR_RETRIES = 5
-
-class HostAdjustableZServer(ZServer):
-    host = os.environ.get('ZSERVER_HOST', 'localhost')
-    port = int(os.environ.get('ZSERVER_PORT', 55001))
-    
-HOST_ADJUSTABLE_ZSERVER_FIXTURE = HostAdjustableZServer()
-
-class SeleniumLayer(PloneSandboxLayer):
-    defaultBases = (HOST_ADJUSTABLE_ZSERVER_FIXTURE, PLONE_FIXTURE)
-
-    # Connection parameters
-    seleniumHost = os.environ.get('SELENIUM_HOST', 'localhost')
-    seleniumPort = os.environ.get('SELENIUM_PORT', '4444')
-    seleniumBrowser = os.environ.get('SELENIUM_BROWSER', '*firefox')
-
-    # def setUpZope(self, app, configurationContext):
-    #     # load ZCML
-    #     import assessmentmanagement.core
-    #     xmlconfig.file('meta.zcml', assessmentmanagement.core, context=configurationContext)
-    #     xmlconfig.file('configure.zcml', assessmentmanagement.core, context=configurationContext)
-
-    def setUpPloneSite(self, portal):
-        
-        # Start up Selenium 
-        url = "http://%s:%s/%s" % (self['host'], self['port'], PLONE_SITE_ID)
-        self['selenium'] = selenium.selenium(self.seleniumHost, self.seleniumPort, self.seleniumBrowser, url)
-        self['selenium'].start()
-
-    def tearDownPloneSite(self, portal):
-        self['selenium'].stop()
-        del self['selenium']
-
-SELENIUM_FIXTURE = SeleniumLayer()
-SELENIUM_TESTING = FunctionalTesting(bases=(SELENIUM_FIXTURE,), name="SeleniumTesting:Functional")
-
+#XHR_RETRIES = 5
+#
+#class HostAdjustableZServer(ZServer):
+#    host = os.environ.get('ZSERVER_HOST', 'localhost')
+#    port = int(os.environ.get('ZSERVER_PORT', 55001))
+#    
+#HOST_ADJUSTABLE_ZSERVER_FIXTURE = HostAdjustableZServer()
+#
+#class SeleniumLayer(PloneSandboxLayer):
+#    defaultBases = (HOST_ADJUSTABLE_ZSERVER_FIXTURE, PLONE_FIXTURE)
+#
+#    # Connection parameters
+#    seleniumHost = os.environ.get('SELENIUM_HOST', 'localhost')
+#    seleniumPort = os.environ.get('SELENIUM_PORT', '4444')
+#    seleniumBrowser = os.environ.get('SELENIUM_BROWSER', '*firefox')
+#
+#    # def setUpZope(self, app, configurationContext):
+#    #     # load ZCML
+#    #     import assessmentmanagement.core
+#    #     xmlconfig.file('meta.zcml', assessmentmanagement.core, context=configurationContext)
+#    #     xmlconfig.file('configure.zcml', assessmentmanagement.core, context=configurationContext)
+#
+#    def setUpPloneSite(self, portal):
+#        
+#        # Start up Selenium 
+#        url = "http://%s:%s/%s" % (self['host'], self['port'], PLONE_SITE_ID)
+#        self['selenium'] = selenium.selenium(self.seleniumHost, self.seleniumPort, self.seleniumBrowser, url)
+#        self['selenium'].start()
+#
+#    def tearDownPloneSite(self, portal):
+#        self['selenium'].stop()
+#        del self['selenium']
+#
+#SELENIUM_FIXTURE = SeleniumLayer()
+#SELENIUM_TESTING = FunctionalTesting(bases=(SELENIUM_FIXTURE,), name="SeleniumTesting:Functional")
+#
+from plone.app.testing import selenium_layers as layers
+from selenium.webdriver.common.exceptions import NoSuchElementException
 
 class SeleniumTestCase(unittest.TestCase):
-    layer = SELENIUM_TESTING
-
+#    layer = SELENIUM_TESTING
+    layer = layers.SELENIUM_PLONE_FUNCTIONAL_TESTING
+    
     def setUp(self):
         self.selenium = self.layer['selenium']
+	time.sleep(2)
+        self.portal   = self.layer['portal']
 
-    def open(self, path="/", site_name=PLONE_SITE_ID, look_for='css=BODY'):
+#    def open(self, path="/", site_name=PLONE_SITE_ID, look_for='css=BODY'):
+    def open(self, url):
         # ensure we have a clean starting point
         transaction.commit()
-        count = 0
-        while True:
-            count += 1
-            try:
-                self.selenium.open("/%s/%s" % (site_name, path,))
-            except:
-                if str(sys.exc_value).count('XHR ERROR') :
-                    print "Nasty selenium XHR bug; retry %d/%d" % (count, XHR_RETRIES)
-                else:
-                    raise
-            time.sleep(2)
-            if (count == XHR_RETRIES) or self.selenium.is_element_present(look_for):
-                break      
-        
+        self.selenium.get(url)
+#        count = 0
+#        while True:
+#            count += 1
+#            try:
+#                self.selenium.open("/%s/%s" % (site_name, path,))
+#            except:
+#                if str(sys.exc_value).count('XHR ERROR') :
+#                    print "Nasty selenium XHR bug; retry %d/%d" % (count, XHR_RETRIES)
+#                else:
+#                    raise
+#            time.sleep(2)
+#            if (count == XHR_RETRIES) or self.selenium.is_element_present(look_for):
+#                break      
+#        
 
-    def wait(self, timeout="30000"):
-        self.selenium.wait_for_page_to_load(timeout)
-        
-    def waitForElement(self, selector, timeout="30000"):
-        """Continue checking for the element matching the provided CSS
-        selector."""
-        self.selenium.wait_for_condition("""css="%s" """ % selector, timeout)
-        
+    def setWaitTimeout(self, timeout=30):
+        """
+        """
+        self.selenium.implicitly_wait(timeout)
+
+#    def isElementPresent(self, identifyBy, element):
+    def isElementPresent(self, element):
+        """
+        """
+        try:
+            self.selenium.find_element_by_id(element)
+        except NoSuchElementException:
+            return False
+
+        return True
+            
+                
+#    def wait(self, timeout="30000"):
+#        self.selenium.wait_for_page_to_load(timeout)
+#        
+#    def waitForElement(self, selector, timeout="30000"):
+#        """Continue checking for the element matching the provided CSS
+#        selector."""
+#        self.selenium.wait_for_condition("""css="%s" """ % selector, timeout)
