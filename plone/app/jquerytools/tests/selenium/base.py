@@ -8,12 +8,10 @@ from selenium.webdriver.common.exceptions import NoSuchElementException
 
 
 class SeleniumTestCase(unittest.TestCase):
-#    layer = SELENIUM_TESTING
     layer = layers.SELENIUM_PLONE_FUNCTIONAL_TESTING
     
     def setUp(self):
         self.selenium = self.layer['selenium']
-	time.sleep(2)
         self.portal   = self.layer['portal']
 
     def open(self, url):
