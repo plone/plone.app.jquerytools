@@ -14,52 +14,47 @@ class FormTestCase(SeleniumTestCase):
         sel = self.selenium
 	portal = self.portal
 
-#        self.open("@@p.a.jqt.testPage/", look_for="id=taform")
         self.open(portal.absolute_url()+"/p.a.jqt.testPage")
         time.sleep(2)
 
-#        sel.click("taform")
         sel.find_element_by_id("taform").click()
 #?        self.waitForElement("div.overlay-ajax form")
         time.sleep(2)
-# ToDo        self.failUnless(sel.is_text_present("Test Form"))
-# ToDo        self.failIf(sel.is_text_present("exact:Should not show"))        
-# ToDo        self.failUnless(sel.is_text_present("exact:ajax_load:"))
+        # Instead of ...
+        #     self.failUnless(sel.is_text_present("Test Form"))
+        # use ...
+        self.failUnless(self.isTextPresent("Test Form"))
+        self.failIf(self.isTextPresent("Should not show"))        
+        self.failUnless(self.isTextPresent("ajax_load:"))
 
-#        sel.type("Password", "xxx")
         sel.find_element_by_name("Password").send_keys("xxx")
-#        sel.click("//input[@name='Check' and @value='3']")
         sel.find_element_by_css_selector("input[name='Check'][value='3']").click()
-#        sel.click("//input[@name='Radio' and @value='3']")
         sel.find_element_by_css_selector("input[name='Radio'][value='3']").click()
-#        sel.click("submitButton")
         sel.find_element_by_css_selector("input[name='submitButton'][value='Submit1']").click()
         time.sleep(3)
 
-# ToDo        self.failUnless(sel.is_text_present("exact:ajax_load:"))
-# ToDo        self.failUnless(sel.is_text_present("exact:Multiple:one"))
-# ToDo        self.failUnless(sel.is_text_present("exact:Name:MyName1"))
-# ToDo        self.failUnless(sel.is_text_present("exact:Single2:A"))
-# ToDo        self.failUnless(sel.is_text_present("exact:Single:one"))
-# ToDo        self.failUnless(sel.is_text_present("exact:Radio:3"))
-# ToDo        self.failUnless(sel.is_text_present("exact:Text:This is Form1"))
-# ToDo        self.failUnless(sel.is_text_present("exact:submitButton:Submit1"))
-# ToDo        self.failUnless(sel.is_text_present("exact:Hidden:hiddenValue"))
-# ToDo        self.failUnless(sel.is_text_present("exact:Password:xxx"))
-# ToDo        self.failUnless(sel.is_text_present("exact:Check:3"))
+        self.failUnless(self.isTextPresent("ajax_load:"))
+        self.failUnless(self.isTextPresent("Multiple:one"))
+        self.failUnless(self.isTextPresent("Name:MyName1"))
+        self.failUnless(self.isTextPresent("Single2:A"))
+        self.failUnless(self.isTextPresent("Single:one"))
+        self.failUnless(self.isTextPresent("Radio:3"))
+        self.failUnless(self.isTextPresent("Text:This is Form1"))
+        self.failUnless(self.isTextPresent("submitButton:Submit1"))
+        self.failUnless(self.isTextPresent("Hidden:hiddenValue"))
+        self.failUnless(self.isTextPresent("Password:xxx"))
+        self.failUnless(self.isTextPresent("Check:3"))
         
         # Make sure we can handle other submit methods, and that the
         # value of the submit button is in the request
         sel.find_element_by_css_selector("input[name='submitButton'][value='Submit2']").click()
         time.sleep(3)
-# ToDo        self.failUnless(sel.is_text_present("exact:submitButton:Submit2"))
-#        sel.click("//button[@name='submitButton']")
+        self.failUnless(self.isTextPresent("submitButton:Submit2"))
         sel.find_element_by_css_selector("button[name='submitButton']").click()
         time.sleep(3)
-# ToDo        self.failUnless(sel.is_text_present("exact:submitButton:Submit5"))
+        self.failUnless(self.isTextPresent("submitButton:Submit5"))
 
         # pushing submit6 should close the overlay
-#        sel.click("//input[@name='submitButton6']")
         sel.find_element_by_css_selector("input[name='submitButton6']").click()
         time.sleep(3)
-# ToDo        self.failIf(sel.is_text_present("Test Form"))
+        self.failIf(self.isTextPresent("Test Form"))
