@@ -1,3 +1,4 @@
+import string
 import time
 import selenium
 import transaction
@@ -36,7 +37,15 @@ class SeleniumTestCase(unittest.TestCase):
             return False
 
         return True
-            
+
+    def isTextPresent(self, text):
+        """
+        """
+        if string.find(self.selenium.get_page_source(),text) == -1:
+            return False
+        else:
+            return True
+
 #    def wait(self, timeout="30000"):
 #        self.selenium.wait_for_page_to_load(timeout)
 #        
