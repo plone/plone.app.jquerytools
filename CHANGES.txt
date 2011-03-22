@@ -4,6 +4,9 @@ Changelog
 1.2b5 - unreleased
 ------------------
 
+* Added next.gif and prev.gif for the dateinput widget.
+  [vincentfretin]
+
 * Add ajax_load hidden input to loaded forms.
   [smcmahon]
 
