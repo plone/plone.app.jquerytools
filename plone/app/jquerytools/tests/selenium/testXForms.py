@@ -1,60 +1,63 @@
 import sys
 import time
+import unittest2 as unittest
 
-from base import SeleniumTestCase
+from plone.app.testing import selenium_layers as layers
+from plone.app.testing.selenium_layers import open, click, type
 from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD, TEST_USER_ROLES
 
-class FormTestCase(SeleniumTestCase):
+class FormTestCase(unittest.TestCase):
     """Tests form input marshaling for complex forms
     *** Note: These test are currently incomplete. ***
     """
+    layer = layers.SELENIUM_PLONE_FUNCTIONAL_TESTING
+    
+    def setUp(self):
+        self.driver = self.layer['selenium']
+        self.portal = self.layer['portal']
+        self.driver.implicitly_wait(5)
+
     def test_afancy_form(self):
         """ test basic form functions on a complex form """
 
-        sel = self.selenium
-	portal = self.portal
-
-        self.open(portal.absolute_url()+"/p.a.jqt.testPage")
+        open(self.driver, self.portal.absolute_url()+"/p.a.jqt.testPage")
         time.sleep(2)
 
-        sel.find_element_by_id("taform").click()
+        click(self.driver, "#taform")
 #?        self.waitForElement("div.overlay-ajax form")
         time.sleep(2)
-        # Instead of ...
-        #     self.failUnless(sel.is_text_present("Test Form"))
-        # use ...
-        self.failUnless(self.isTextPresent("Test Form"))
-        self.failIf(self.isTextPresent("Should not show"))        
-        self.failUnless(self.isTextPresent("ajax_load:"))
+        self.failUnless("Test Form" in self.driver.get_page_source())
+        self.failIf("Should not show" in self.driver.get_page_source())        
+        self.failUnless("ajax_load:" in self.driver.get_page_source())
 
-        sel.find_element_by_name("Password").send_keys("xxx")
-        sel.find_element_by_css_selector("input[name='Check'][value='3']").click()
-        sel.find_element_by_css_selector("input[name='Radio'][value='3']").click()
-        sel.find_element_by_css_selector("input[name='submitButton'][value='Submit1']").click()
+        type(self.driver, "Password", "xxx")
+        self.driver.find_element_by_css_selector("input[name='Check'][value='3']").click()
+        self.driver.find_element_by_css_selector("input[name='Radio'][value='3']").click()
+        self.driver.find_element_by_css_selector("input[name='submitButton'][value='Submit1']").click()
         time.sleep(3)
 
-        self.failUnless(self.isTextPresent("ajax_load:"))
-        self.failUnless(self.isTextPresent("Multiple:one"))
-        self.failUnless(self.isTextPresent("Name:MyName1"))
-        self.failUnless(self.isTextPresent("Single2:A"))
-        self.failUnless(self.isTextPresent("Single:one"))
-        self.failUnless(self.isTextPresent("Radio:3"))
-        self.failUnless(self.isTextPresent("Text:This is Form1"))
-        self.failUnless(self.isTextPresent("submitButton:Submit1"))
-        self.failUnless(self.isTextPresent("Hidden:hiddenValue"))
-        self.failUnless(self.isTextPresent("Password:xxx"))
-        self.failUnless(self.isTextPresent("Check:3"))
+        self.failUnless("ajax_load:" in self.driver.get_page_source())
+        self.failUnless("Multiple:one" in self.driver.get_page_source())
+        self.failUnless("Name:MyName1" in self.driver.get_page_source())
+        self.failUnless("Single2:A" in self.driver.get_page_source())
+        self.failUnless("Single:one" in self.driver.get_page_source())
+        self.failUnless("Radio:3" in self.driver.get_page_source())
+        self.failUnless("Text:This is Form1" in self.driver.get_page_source())
+        self.failUnless("submitButton:Submit1" in self.driver.get_page_source())
+        self.failUnless("Hidden:hiddenValue" in self.driver.get_page_source())
+        self.failUnless("Password:xxx" in self.driver.get_page_source())
+        self.failUnless("Check:3" in self.driver.get_page_source())
         
         # Make sure we can handle other submit methods, and that the
         # value of the submit button is in the request
-        sel.find_element_by_css_selector("input[name='submitButton'][value='Submit2']").click()
+        self.driver.find_element_by_css_selector("input[name='submitButton'][value='Submit2']").click()
         time.sleep(3)
-        self.failUnless(self.isTextPresent("submitButton:Submit2"))
-        sel.find_element_by_css_selector("button[name='submitButton']").click()
+        self.failUnless("submitButton:Submit2" in self.driver.get_page_source())
+        self.driver.find_element_by_css_selector("button[name='submitButton']").click()
         time.sleep(3)
-        self.failUnless(self.isTextPresent("submitButton:Submit5"))
+        self.failUnless("submitButton:Submit5" in self.driver.get_page_source())
 
         # pushing submit6 should close the overlay
-        sel.find_element_by_css_selector("input[name='submitButton6']").click()
+        self.driver.find_element_by_css_selector("input[name='submitButton6']").click()
         time.sleep(3)
-        self.failIf(self.isTextPresent("Test Form"))
+        self.failIf("Test Form" in self.driver.get_page_source())
