@@ -4,20 +4,21 @@ Changelog
 1.2b5 - unreleased
 ------------------
 
-* Added next.gif and prev.gif for the dateinput widget.
+- Added next.gif and prev.gif for the dateinput widget.
   [vincentfretin]
 
-* Add ajax_load hidden input to loaded forms.
+- Add ajax_load hidden input to loaded forms.
   [smcmahon]
+
 
 1.2b4 - 2010-12-05
 ------------------
 
-* Add plone.app.testing / Selenium testing framework based on esteele's
+- Add plone.app.testing / Selenium testing framework based on esteele's
   example.
   [smcmahon]
 
-* noform and redirect options not passed to ajax form handlers in
+- noform and redirect options not passed to ajax form handlers in
   b1, b2, b3. Fixed.
   [smcmahon]
 
@@ -25,281 +26,310 @@ Changelog
 1.2b3 - 2010-12-30
 ------------------
 
-* Some options not passed to ajax form handlers in b1, b2. Fixed.
+- Some options not passed to ajax form handlers in b1, b2. Fixed.
   [smcmahon]
+
 
 1.2b2 - 2010-12-29
 ------------------
 
-* AJAX overlays broken in b1 due to plain stupidity. Will try to remember
+- AJAX overlays broken in b1 due to plain stupidity. Will try to remember
   to always test after editing.
   [smcmahon]
+
 
 1.2b1 - 2010-12-27
 ------------------
 
-* Avoid creating overlay divs until needed; remove ajax overlay divs
+- Avoid creating overlay divs until needed; remove ajax overlay divs
   on close. Less DOM clutter.
   [smcmahon]
 
-* Include both .min.js and .js versions of js resources to make life
+- Include both .min.js and .js versions of js resources to make life
   a little easier for folks who want to read the source. The .min.js
   versions will go into the browser resources.
   [smcmahon]
 
-* Updated documentation so it reflect changes.
+- Updated documentation so it reflect changes.
   [garbas]
 
-* Updated jquerytools to 1.2.5. dateinput, rangeinput and validator
+- Updated jquerytools to 1.2.5. dateinput, rangeinput and validator
   plugins added as additional browser resources. Now all plugins from
   jquerytools are added with this package.
   [garbas]
 
-* Added build script which builds js files from source (from github).
+- Added build script which builds js files from source (from github).
   [garbas]
 
-* getContent does not exist in jqtools. It has been replaced by
+- getContent does not exist in jqtools. It has been replaced by
   getOverlay. http://flowplayer.org/tools/forum/40/28687
   [naro]
+
 
 1.1.2 - 2010-07-19
 ------------------
 
-* Avoid use of genericsetup:upgradeSteps (plural), which doesn't work in Plone
+- Avoid use of genericsetup:upgradeSteps (plural), which doesn't work in Plone
   3.
   [davisagli]
+
 
 1.1.1 - 2010-07-19
 ------------------
 
-* Add 'description' parameter to upgrade step directives to fix breakage on
+- Add 'description' parameter to upgrade step directives to fix breakage on
   Plone 3.
   [davisagli]
+
 
 1.1 - 2010-07-18
 ----------------
 
-* Add overlays.css. For Plone 3 only (it is disabled on installation in Plone
+- Add overlays.css. For Plone 3 only (it is disabled on installation in Plone
   4, and on upgrade from Plone 3 to Plone 4).
   [davisagli]
 
-* Update license to GPL version 2 only.
+- Update license to GPL version 2 only.
   [hannosch]
 
-* Added experimental windmill browser integration tests.
+- Added experimental windmill browser integration tests.
   [smcmahon]
+
 
 1.1b5 - 2010-06-12
 ------------------
 
-* Update to jQuery Tools 1.2.3.
+- Update to jQuery Tools 1.2.3.
   [smcmahon]
 
-* Recode to one "var" per function standard.
+- Recode to one "var" per function standard.
   [smcmahon]
 
-* Don't show empty ajax form responses, even if "noform" is not set.
+- Don't show empty ajax form responses, even if "noform" is not set.
   [smcmahon]
+
 
 1.1b4 - 2010-06-06
 ------------------
 
-* The select technique used to filter ajax response in b1-b3 was not robust
+- The select technique used to filter ajax response in b1-b3 was not robust
   if the responseText was not well-formed (think ZMI forms). Fixed by emulating
   the technique used in jQuery's .load method.
   [smcmahon]
 
+
 1.1b3 - 2010-06-03
 ------------------
 
-* Switch back to "find", undoing 1.1b2 change. 'filter' does not find
+- Switch back to "find", undoing 1.1b2 change. 'filter' does not find
   descendents, and will thus not work in most validation error situations.
   Also, cleaned up identifiers and comments that suggested that we were
   filtering rather than selecting.
   [smcmahon]
 
+
 1.1b2 - 2010-06-03
 ------------------
 
-* Fix regression in filtering introduced in 1.1b1.
+- Fix regression in filtering introduced in 1.1b1.
   [davisagli]
+
 
 1.1b1
 -----
 
-* Integrate jQuery form plugin http://malsup.com/jquery/form/ so that we
+- Integrate jQuery form plugin http://malsup.com/jquery/form/ so that we
   can handle file uploads. Bump version # to reflect significant change.
   [davisagli, smcmahon]
+
 
 1.0rc3
 ------
 
-* Update to tools 1.2.2. (Trivial changes)
+- Update to tools 1.2.2. (Trivial changes)
   [smcmahon]
 
-* Set max-height on ajax overlays to 75% of the viewport's height; switch
+- Set max-height on ajax overlays to 75% of the viewport's height; switch
   to fixed positioning on everything but IE6.
   [smcmahon]
 
-* Updated to tools 1.2.1; removed jqt image resources (too bulky
+- Updated to tools 1.2.1; removed jqt image resources (too bulky
   to justify as part of main distribution).
   [smcmahon]
+
 
 1.0rc2
 ------
 
-* Change query string variable for ajax loads from "rand" to "ajax_load"
+- Change query string variable for ajax loads from "rand" to "ajax_load"
   to clarify its purpose.
-  
-* Added cssclass option for prepOverlay.
+
+- Added cssclass option for prepOverlay.
+
 
 1.0rc1
 ------
 
-* Add responseText to parameters passed in the redirect callback; this
+- Add responseText to parameters passed in the redirect callback; this
   enables smarter redirects in cases where pages may have disappeared.
   [smcmahon]
 
-* Add 'link-overlay' class to overlay triggers.
+- Add 'link-overlay' class to overlay triggers.
   [davisagli]
 
-* Made the closing of an ajax overlay delete the loaded content so that it
+- Made the closing of an ajax overlay delete the loaded content so that it
   doesn't muddy up the DOM. [smcmahon]
 
-* Added 'source' to data_parent to be able to access source element (element
+- Added 'source' to data_parent to be able to access source element (element
   on original page, which raised the overlay window) eg. in afterpost handler.
   [naro]
 
-* Add message for ajax no response from server.
+- Add message for ajax no response from server.
   [smcmahon]
 
-* Insert overlays in the DOM at the end of body rather than visual
+- Insert overlays in the DOM at the end of body rather than visual
   portal wrapper. Fixes #10307.
   [smcmahon]
+
 
 1.0b17
 ------
 
-* 1.0b16 fix to click-outside-overlay cause *any* click to close the overlay.
+- 1.0b16 fix to click-outside-overlay cause *any- click to close the overlay.
   Fixed. [smcmahon]
+
 
 1.0b16
 ------
 
-* Patched jquery.tools.min.js to fix close on click outside overlay.
+- Patched jquery.tools.min.js to fix close on click outside overlay.
   [smcmahon]
 
-* Improved logic for finding the submit button via a click handler.
+- Improved logic for finding the submit button via a click handler.
   [smcmahon]
+
 
 1.0b15 - 2010-02-17
 -------------------
 
-* AJAX form handling was busted in Safari by submit button marshaling
+- AJAX form handling was busted in Safari by submit button marshaling
   fix. Found a hopefully more general solution for finding submit
   button name and value.
   [smcmahon]
 
-* beforepost and afterpost callback options weren't working. fixed.
+- beforepost and afterpost callback options weren't working. fixed.
   [smcmahon]
 
-* Recover when jQuery tries to throw away error responses in ajax loads.
+- Recover when jQuery tries to throw away error responses in ajax loads.
   [smcmahon]
 
-* Circumvent double-submit warning for AJAX forms.
+- Circumvent double-submit warning for AJAX forms.
   [smcmahon]
-  
-* Use the $ convention for jQuery.
+
+- Use the $ convention for jQuery.
   [smcmahon]
+
 
 1.0b14 - 2010-10-27
 -------------------
 
-* Add beforepost and afterpost callback options for ajax forms.
+- Add beforepost and afterpost callback options for ajax forms.
   [smcmahon]
 
-* Change reload strategy to set location to current href rather than using
+- Change reload strategy to set location to current href rather than using
   reload, which can cause repost queries on some browsers.
   [smcmahon]
+
 
 1.0b13 - 2010-01-22
 -------------------
 
-* Fixed marshaling of submit buttons on AJAX submit when form has multiple
+- Fixed marshaling of submit buttons on AJAX submit when form has multiple
   buttons.
   [smcmahon]
+
 
 1.0b12 - 2010-01-11
 -------------------
 
-* Allow noform and redirect options to be specified as callback functions.
+- Allow noform and redirect options to be specified as callback functions.
   This will allow building in more smarts about what to do when ajax
   forms finish.
   [smcmahon]
 
-* Avoid clobbering the onLoad config option if it is passed to prepOverlay.
+- Avoid clobbering the onLoad config option if it is passed to prepOverlay.
   [davisagli]
+
 
 1.0b11 - 2009-12-27
 -------------------
 
-* Declared all package dependencies and avoid unused imports inside tests.
+- Declared all package dependencies and avoid unused imports inside tests.
   [hannosch]
+
 
 1.0b10 - 2009-12-18
 -------------------
 
-* Add plugins resource and graphics directory.
+- Add plugins resource and graphics directory.
 
-* Update jqtools to use tooltips 1.1.3
+- Update jqtools to use tooltips 1.1.3
+
 
 1.0b9
 -----
 
-* Avoid overlay helper errors in Plone 3.x when trying to handle tabbed
+- Avoid overlay helper errors in Plone 3.x when trying to handle tabbed
   forms.
+
 
 1.0b8
 -----
 
-* Check 'action' attribute for url, enabling simple forms to open overlays.
+- Check 'action' attribute for url, enabling simple forms to open overlays.
+
 
 1.0b7
 -----
 
-* Initialize form tabbing on ajax form load.
+- Initialize form tabbing on ajax form load.
 
-* Marshall submit button values in ajax form submit, since jQuery
+- Marshall submit button values in ajax form submit, since jQuery
   doesn't include them.
+
 
 1.0b6
 -----
 
- * Document use of overlay helper.
+- Document use of overlay helper.
+
 
 1.0b5
 -----
 
- * Integrate overlay helpers originally developed in pipbox. These
-   provide support for AJAX loads and forms.
+- Integrate overlay helpers originally developed in pipbox. These
+  provide support for AJAX loads and forms.
+
 
 1.0b4
 -----
 
- * Advance to jQuery Tools 1.2.1
+- Advance to jQuery Tools 1.2.1
+
 
 1.0b3
 -----
 
- * Fix packaging problem that prevented easy_install of 1.0b2.
+- Fix packaging problem that prevented easy_install of 1.0b2.
+
 
 1.0b2
 -----
 
- * Move to jQuery Tools 1.1.1.
+- Move to jQuery Tools 1.1.1.
 
 
 1.0b1
 -----
 
- * Initial release
+- Initial release
