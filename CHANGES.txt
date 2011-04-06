@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2b5 - unreleased
+1.2b5 - 2011-04-06
 ------------------
 
 - Added next.gif and prev.gif for the dateinput widget.
