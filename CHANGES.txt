@@ -4,6 +4,9 @@ Changelog
 1.2.1 - Unreleased
 ------------------
 
+- Add documentation in README for using jQuery Tools event handlers.
+  [smcmahon]
+
 1.2 - 2011-05-13
 ------------------
 
@@ -204,7 +207,7 @@ Changelog
 1.0b17
 ------
 
-- 1.0b16 fix to click-outside-overlay cause *any- click to close the overlay.
+- 1.0b16 fix to click-outside-overlay cause *any* click to close the overlay.
   Fixed. [smcmahon]
 
 

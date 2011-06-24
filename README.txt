@@ -63,10 +63,10 @@ Avaliable resources
       (Size: 1.9KB, not yet minimized)
 
         Adds helper code for loading overlays dynamically and for handling AJAX
-        forms based on existing pages with minimal setup. More about this in 
+        forms based on existing pages with minimal setup. More about this in
         instructions below.
 
-JS resources are minified, but uncompressed versions are available in 
+JS resources are minified, but uncompressed versions are available in
 plone/app/jquerytools/browser for reading/debugging purposes. To use them
 for debugging, edit plone/app/jquerytools/configure.zcml to temporarily
 specify files ending with .js rather than .min.js.
@@ -106,7 +106,7 @@ specify:
 
 The code::
 
-    jq('.newsImageContainer a')
+    $('.newsImageContainer a')
         .prepOverlay({
              subtype: 'image',
              urlmatch: '/image_view_fullscreen$',
@@ -116,7 +116,7 @@ The code::
 Another quick example, one that provides full-image popups for images placed
 via kupu::
 
-    jq('img.image-right, img.image-left, img.image-inline')
+    $('img.image-right, img.image-left, img.image-inline')
         .prepOverlay({
             subtype: 'image',
             urlmatch: '/image_.+$',
@@ -124,15 +124,15 @@ via kupu::
             });
 
 What's different? We're targeting <img ... /> tags, which don't have href
-attributes. The helper automatically picks up the target URL from the src 
+attributes. The helper automatically picks up the target URL from the src
 attribute, so that we can have a popup view of image elements that aren't
-linked to that view. Note also that we're using a real regular expression 
+linked to that view. Note also that we're using a real regular expression
 in the search/replace so that we can strip off image_preview, image_mini, etc.
 
 And, a configuration to put the site map in an iframe popup with expose
 settings, picking up the target from an href::
 
-    jq('#siteaction-sitemap a')
+    $('#siteaction-sitemap a')
         .prepOverlay({
             subtype: 'iframe',
             config: {expose:{color:'#00f'}}
@@ -167,7 +167,7 @@ For AJAX overlay forms, add the following, form-oriented, options:
       forms inside the loaded content that you want to be handled
       inside the overlay by doing an AJAX load to get the overlay
       content.
-      
+
       When a form is submitted, the overlay handler checks the response
       for formselector. If it's found, the result is displayed in the
       overlay and form handlers are bound. If not, the 'noform' action
@@ -179,7 +179,7 @@ For AJAX overlay forms, add the following, form-oriented, options:
       'redirect' to redirect to another page. If you choose 'redirect', you
       must specify the URL in the redirect option. Default
       action is to display the filtered response in the popup.
-      
+
       You may also supply as the 'noform' argument a
       callback function that returns one of these strings. The overlay helper
       will call the function with the overlay element as an argument.
@@ -222,7 +222,7 @@ the selection.
 For example, let's say that you wish to display the standard Plone site map
 in an overlay. You could use::
 
-    jq('#siteaction-sitemap a').prepOverlay({
+    $('#siteaction-sitemap a').prepOverlay({
         subtype: 'ajax',
         filter: '#content > *'
         });
@@ -233,7 +233,7 @@ AJAX-loaded HTML into the overlay, picking up only what's inside the
 everything inside the body section of the page -- not usually what you
 want.
 
-Some browsers cache AJAX loads, so a random argument is automatically 
+Some browsers cache AJAX loads, so a random argument is automatically
 added to URLs.
 
 NOTE: the  "ajax_load" query string argument is automatically added to AJAX
@@ -255,7 +255,7 @@ filter specified in the original overlay is reused.
 For example, if you wished to handle the standard Plone contact form in an
 overlay, you could specify::
 
-    jq('#siteaction-contact a').prepOverlay({
+    $('#siteaction-contact a').prepOverlay({
         subtype: 'ajax',
         filter: '#content>*',
         formselector: 'form'
@@ -264,7 +264,7 @@ overlay, you could specify::
 Another example: using popups for the delete confirmation and rename forms
 (from the action menu)::
 
-    jq('a#delete,a#rename').prepOverlay({
+    $('a#delete,a#rename').prepOverlay({
         subtype: 'ajax',
         filter: '#content>*',
         closeselector: '[name=form.button.Cancel]'
@@ -284,6 +284,33 @@ The `jquery form plugin`_ is used to do the data serialization for form posts.
 It provides a more complete serialization, including submit name/value and file
 data, than jQuery alone.
 
+jQuery Tools Events
+-------------------
+
+Event handlers for jQuery Tools overlay events may be set in via the optional
+"config" argument, which is passed as a dictionary. For example, to specify an
+onBeforeLoad event::
+
+    $('a#testimage').prepOverlay({
+        subtype: 'image',
+        config: {
+            onBeforeLoad : function (e) {
+                console.log('onBeforeLoad', this.getOverlay());
+                return true;
+                }
+            }
+        });
+
+
+Useful events are specified in the jQuery Tools `overlay documentation`_.
+Also, see the `events documentation`_. Note that you should return ``true`` in
+```onBeforeLoad``` and ``onBeforeClose`` handlers if you want the default behavior
+(opening or closing). Return ``false`` to prevent opening or closing.
+
+jQuery Tools passes the event as a parameter when it calls the event handlers.
+``this`` will be the jqt API object, which has ``getOverlay()`` and
+``getTrigger()`` methods.
+
 
 .. _`jquery.tools`: http://flowplayer.org/tools
 .. _`overlay.js`: http://flowplayer.org/tools/overlay/index.html
@@ -299,9 +326,11 @@ data, than jQuery alone.
 .. _`toolbox.flashembed.js`: http://flowplayer.org/tools/toolbox/flashembed.html
 .. _`toolbox.mousewheel.js`: http://flowplayer.org/tools/toolbox/mousewheel.html
 .. _`tooltip.dynamic.js`: http://flowplayer.org/tools/tooltip/dynamic.html
-.. _`tooltip.slide.js`: http://flowplayer.org/tools/tooltip/slide.html 
+.. _`tooltip.slide.js`: http://flowplayer.org/tools/tooltip/slide.html
 .. _`jquerytools dateinput`: http://flowplayer.org/tools/dateinput/index.html
 .. _`first demo`: http://flowplayer.org/tools/demos/dateinput/index.html
 .. _`jquerytools rangeinput`: http://flowplayer.org/tools/rangeinput/index.html
 .. _`jquerytools validator`: http://flowplayer.org/tools/validator/index.html
 .. _`jquery form plugin`: http://malsup.com/jquery/form
+.. _`overlay documentation`: http://flowplayer.org/tools/overlay/#events
+.. _`events documentation`: http://flowplayer.org/tools/documentation/scripting.html#events
