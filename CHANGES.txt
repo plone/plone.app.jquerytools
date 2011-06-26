@@ -13,6 +13,9 @@ Changelog
 
 - Add documentation in README for using jQuery Tools event handlers.
   [smcmahon]
+  
+- Add events triggering so you can hook into it more.
+  [vangheem]
 
 1.2 - 2011-05-13
 ------------------
