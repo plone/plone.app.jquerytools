@@ -371,7 +371,6 @@ jQuery(function ($) {
     };
 
 
-
     /******
         pb.ajax_click
         Click handler for ajax sources. The job of this routine
@@ -422,8 +421,10 @@ jQuery(function ($) {
             src += ' ' + selector;
         }
 
-        // and load the div
-        el.load(src, null, function (responseText, errorText) {
+        // set up callback to be used whenever new contents are loaded
+        // into the overlay, to prepare links and forms to stay within
+        // the overlay
+        el[0].handle_load_inside_overlay = function(responseText, errorText) {
             var el = $(this);
 
             if (errorText === 'error') {
@@ -438,7 +439,10 @@ jQuery(function ($) {
 
             // add the submit handler if we've a formtarget
             if (formtarget) {
-                pb.prep_ajax_form(el.find(formtarget));
+                var target = el.find(formtarget);
+                if (target.length > 0) {
+                    pb.prep_ajax_form(target);
+                }
             }
 
             // if a closeselector has been specified, tie it to the overlay's
@@ -459,6 +463,12 @@ jQuery(function ($) {
             api.onClose = function () {
                 content.remove();
             };
+        }
+
+        // and load the div
+        el.load(src, null, function (responseText, errorText) {
+            // post-process the overlay contents
+            el[0].handle_load_inside_overlay.apply(this, [responseText, errorText]);
 
             // Now, it's all ready to display; hide the
             // spinner and call JQT overlay load.

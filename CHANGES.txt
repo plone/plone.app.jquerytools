@@ -4,6 +4,13 @@ Changelog
 1.2.1 - Unreleased
 ------------------
 
+- Don't break if a formselector was specified but the overlay has no form.
+  [davisagli]
+
+- Refactor setup of AJAX-loaded content so it's easier to call from custom
+  code.
+  [davisagli]
+
 - Add documentation in README for using jQuery Tools event handlers.
   [smcmahon]
 
