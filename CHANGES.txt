@@ -4,6 +4,11 @@ Changelog
 1.2.1 - Unreleased
 ------------------
 
+- It's now possible to repeatedly apply prepOverlay to the same element
+  and have the last-applied case win. Previously, once prepOverlay had been
+  used on an element, all subsequent uses on that element were ignored.
+  [smcmahon]
+
 - Add documentation in README for using jQuery Tools event handlers.
   [smcmahon]
 

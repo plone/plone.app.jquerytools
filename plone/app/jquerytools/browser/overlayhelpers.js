@@ -54,82 +54,108 @@ jQuery(function ($) {
                 pb.fi_focus(this.getOverlay());
             };
 
-            // if there's a rel attribute, we've already
-            // visited this node.
-            if (!o.attr('rel')) {
-                // be promiscuous, pick up the url from
-                // href, src or action attributes
-                src = o.attr('href') || o.attr('src') || o.attr('action');
+            // be promiscuous, pick up the url from
+            // href, src or action attributes
+            src = o.attr('href') || o.attr('src') || o.attr('action');
 
-                // translate url with config specifications
-                if (pbo.urlmatch) {
-                    src = src.replace(new RegExp(pbo.urlmatch), pbo.urlreplace);
+            // translate url with config specifications
+            if (pbo.urlmatch) {
+                src = src.replace(new RegExp(pbo.urlmatch), pbo.urlreplace);
+            }
+
+            if (pbo.subtype === 'inline') {
+                // we're going to let tools' overlay do all the real
+                // work. Just get the markers in place.
+                src = src.replace(/^.+#/, '#');
+                $("[id='" + src.replace('#', '') + "']")
+                    .addClass('overlay');
+                o.removeAttr('href').attr('rel', src);
+                // use overlay on the source (clickable) element
+                o.overlay();
+            } else {
+                // save various bits of information from the pbo options,
+                // and enable the overlay.
+
+                // this is not inline, so in one fashion or another
+                // we'll be loading it via the beforeLoad callback.
+                // create a unique id for a target element
+                pbo.nt = 'pb_' + pb.overlay_counter;
+                pb.overlay_counter += 1;
+
+                pbo.selector = pbo.filter || pbo.selector;
+                if (!pbo.selector) {
+                    // see if one's been supplied in the src
+                    parts = src.split(' ');
+                    src = parts.shift();
+                    pbo.selector = parts.join(' ');
                 }
 
-                if (pbo.subtype === 'inline') {
-                    // we're going to let tools' overlay do all the real
-                    // work. Just get the markers in place.
-                    src = src.replace(/^.+#/, '#');
-                    $("[id='" + src.replace('#', '') + "']")
-                        .addClass('overlay');
-                    o.removeAttr('href').attr('rel', src);
-                    // use overlay on the source (clickable) element
-                    o.overlay();
-                } else {
-                    // we're going to create the container for the overlay,
-                    // save various bits of information from the pbo options,
-                    // and enable the overlay.
+                pbo.src = src;
+                pbo.config = config;
 
-                    // this is not inline, so in one fashion or another
-                    // we'll be loading it via the beforeLoad callback.
-                    // create a unique id for a target element
-                    pbo.nt = 'pb_' + pb.overlay_counter;
-                    pb.overlay_counter += 1;
+                // remove any existing overlay and overlay handler
+                pb.remove_overlay(o);                
 
-                    pbo.selector = pbo.filter || pbo.selector;
-                    if (!pbo.selector) {
-                        // see if one's been supplied in the src
-                        parts = src.split(' ');
-                        src = parts.shift();
-                        pbo.selector = parts.join(' ');
-                    }
+                // save options on trigger element
+                o.data('pbo', pbo);
 
-                    pbo.src = src;
-                    pbo.config = config;
+                // mark the source with a rel attribute so we can find
+                // the overlay, and a special class for styling
+                o.attr('rel', '#' + pbo.nt);
+                o.addClass('link-overlay');
 
-                    // save options on trigger element
-                    o.data('pbo', pbo);
-
-                    // mark the source with a rel attribute so we can find
-                    // the overlay, and a special class for styling
-                    o.attr('rel', '#' + pbo.nt);
-                    o.addClass('link-overlay');
-
-                    // for some subtypes, we're setting click handlers
-                    // and attaching overlay to the target element. That's
-                    // so we'll know the dimensions early.
-                    // Others, like iframe, just use overlay.
-                    switch (pbo.subtype) {
-                    case 'image':
-                        o.click(pb.image_click);
-                        break;
-                    case 'ajax':
-                        o.click(pb.ajax_click);
-                        break;
-                    case 'iframe':
-                        pb.create_content_div(pbo);
-                        o.overlay(config);
-                        break;
-                    default:
-                        throw "Unsupported overlay type";
-                    }
-
-                    // in case the click source wasn't
-                    // already a link.
-                    o.css('cursor', 'pointer');
+                // for some subtypes, we're setting click handlers
+                // and attaching overlay to the target element. That's
+                // so we'll know the dimensions early.
+                // Others, like iframe, just use overlay.
+                switch (pbo.subtype) {
+                case 'image':
+                    o.click(pb.image_click);
+                    break;
+                case 'ajax':
+                    o.click(pb.ajax_click);
+                    break;
+                case 'iframe':
+                    pb.create_content_div(pbo);
+                    o.overlay(config);
+                    break;
+                default:
+                    throw "Unsupported overlay type";
                 }
+
+                // in case the click source wasn't
+                // already a link.
+                o.css('cursor', 'pointer');
             }
         });
+    };
+
+
+    /******
+        pb.remove_overlay
+        Remove the overlay and handler associated with a jquery wrapped
+        trigger object
+    ******/
+    pb.remove_overlay = function (o) {
+        var old_data = o.data('pbo');
+        if (old_data) {
+            switch (old_data.subtype) {
+            case 'image':
+                o.unbind('click', pb.image_click);
+                break;
+            case 'ajax':
+                o.unbind('click', pb.ajax_click);
+                break;
+            default:
+                // it's probably the jqt overlay click handler,
+                // but we don't know the handler and are forced
+                // to do a generic unbind of click handlers.
+                o.unbind('click');
+            }
+            if (old_data.nt) {
+                $('#' + old_data.nt).remove();
+            }
+        }
     };
 
 

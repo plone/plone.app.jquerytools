@@ -18,9 +18,14 @@
             noform: 'close'
             });
 
-        $('a#testimage').prepOverlay({
+        $('a#testiframe, a#dtest').prepOverlay({
+            subtype: 'iframe',
+            });
+
+        $('a#testimage, a#dtest').prepOverlay({
             subtype: 'image',
             });
+
     });
     </script>
 
@@ -28,6 +33,10 @@
     <p><a id="taform" href="@@p.a.jqt.testForm">Test AJAX Form Popup</a></p>
     
     <p><a id="testimage" href="logo.png">Test Image Popup</a></p>
+    
+    <p><a id="testiframe" href="sitemap">Test iframe Popup</a></p>
+    
+    <p><a id="dtest" href="logo.png">Redefined Popup -- should show as image overlay</a></p>
     
     </metal:content-core>
 </metal:content-core>
