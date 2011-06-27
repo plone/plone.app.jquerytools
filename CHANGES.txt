@@ -4,6 +4,16 @@ Changelog
 1.2.1 - Unreleased
 ------------------
 
+- Add events triggering so you can hook into it more.
+  [vangheem]
+
+- Don't break if a formselector was specified but the overlay has no form.
+  [davisagli]
+
+- Refactor setup of AJAX-loaded content so it's easier to call from custom
+  code.
+  [davisagli]
+
 - It's now possible to repeatedly apply prepOverlay to the same element
   and have the last-applied case win. Previously, once prepOverlay had been
   used on an element, all subsequent uses on that element were ignored.
@@ -11,9 +21,9 @@ Changelog
 
 - Add documentation in README for using jQuery Tools event handlers.
   [smcmahon]
-
+  
 1.2 - 2011-05-13
-------------------
+----------------
 
 - 1.2 final release.
   [esteele]

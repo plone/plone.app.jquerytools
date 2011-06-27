@@ -297,6 +297,7 @@ jQuery(function ($) {
             };
         }
         options.success = function (responseText, statusText, xhr, form) {
+            $(document).trigger('formOverlayStart', [this, responseText, statusText, xhr, form]);
             // success comes in many forms, some of which are errors;
             //
 
@@ -344,6 +345,7 @@ jQuery(function ($) {
                         return false;
                     });
                 }
+                $(document).trigger('formOverlayLoadSuccess', [this, myform, api, pb, ajax_parent]);
             } else {
                 // there's no form in our new content or there's been an error
                 if (success) {
@@ -386,6 +388,7 @@ jQuery(function ($) {
                         api.close();
                     }
                 }
+                $(document).trigger('formOverlayLoadFailure', [this, myform, api, pb, ajax_parent, noform]);
             }
             pb.spinner.hide();
         };
@@ -395,7 +398,6 @@ jQuery(function ($) {
         pb.add_ajax_load(form);
         form.ajaxForm(options);
     };
-
 
 
     /******
@@ -415,6 +417,11 @@ jQuery(function ($) {
             formtarget,
             closeselector,
             sep;
+
+        e = $.Event(); 
+    	  e.type = "beforeAjaxClickHandled";
+        $(document).trigger(e, [this, event]);
+        if (e.isDefaultPrevented()) { return; }
 
         pbo = ethis.data('pbo');
 
@@ -448,8 +455,10 @@ jQuery(function ($) {
             src += ' ' + selector;
         }
 
-        // and load the div
-        el.load(src, null, function (responseText, errorText) {
+        // set up callback to be used whenever new contents are loaded
+        // into the overlay, to prepare links and forms to stay within
+        // the overlay
+        el[0].handle_load_inside_overlay = function(responseText, errorText) {
             var el = $(this);
 
             if (errorText === 'error') {
@@ -464,7 +473,10 @@ jQuery(function ($) {
 
             // add the submit handler if we've a formtarget
             if (formtarget) {
-                pb.prep_ajax_form(el.find(formtarget));
+                var target = el.find(formtarget);
+                if (target.length > 0) {
+                    pb.prep_ajax_form(target);
+                }
             }
 
             // if a closeselector has been specified, tie it to the overlay's
@@ -485,6 +497,13 @@ jQuery(function ($) {
             api.onClose = function () {
                 content.remove();
             };
+            $(document).trigger('loadInsideOverlay', [this, responseText, errorText, api]);
+        }
+
+        // and load the div
+        el.load(src, null, function (responseText, errorText) {
+            // post-process the overlay contents
+            el[0].handle_load_inside_overlay.apply(this, [responseText, errorText]);
 
             // Now, it's all ready to display; hide the
             // spinner and call JQT overlay load.
