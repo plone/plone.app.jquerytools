@@ -271,7 +271,7 @@ jQuery(function ($) {
             };
         }
         options.success = function (responseText, statusText, xhr, form) {
-            $(window).trigger('onFormOverlayStart', [this, responseText, statusText, xhr, form]);
+            $(document).trigger('onFormOverlayStart', [this, responseText, statusText, xhr, form]);
             // success comes in many forms, some of which are errors;
             //
 
@@ -319,7 +319,7 @@ jQuery(function ($) {
                         return false;
                     });
                 }
-                $(window).trigger('onFormOverlayLoadSuccess', [this, myform, api, pb, ajax_parent]);
+                $(document).trigger('onFormOverlayLoadSuccess', [this, myform, api, pb, ajax_parent]);
             } else {
                 // there's no form in our new content or there's been an error
                 if (success) {
@@ -362,7 +362,7 @@ jQuery(function ($) {
                         api.close();
                     }
                 }
-                $(window).trigger('onFormOverlayLoadFailure', [this, myform, api, pb, ajax_parent, noform]);
+                $(document).trigger('onFormOverlayLoadFailure', [this, myform, api, pb, ajax_parent, noform]);
             }
             pb.spinner.hide();
         };
@@ -391,6 +391,11 @@ jQuery(function ($) {
             formtarget,
             closeselector,
             sep;
+
+        e = $.Event(); 
+    	  e.type = "onBeforeAjaxClickHandled";
+        $(document).trigger(e, [this, event]);
+        if (e.isDefaultPrevented()) { return; }
 
         pbo = ethis.data('pbo');
 
@@ -466,7 +471,7 @@ jQuery(function ($) {
             api.onClose = function () {
                 content.remove();
             };
-            $(window).trigger('onLoadInsideOverlay', [this, responseText, errorText, api]);
+            $(document).trigger('onLoadInsideOverlay', [this, responseText, errorText, api]);
         }
 
         // and load the div
