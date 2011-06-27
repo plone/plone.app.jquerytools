@@ -4,6 +4,9 @@ Changelog
 1.2.1 - Unreleased
 ------------------
 
+- Add events triggering so you can hook into it more.
+  [vangheem]
+
 - Don't break if a formselector was specified but the overlay has no form.
   [davisagli]
 
@@ -14,11 +17,8 @@ Changelog
 - Add documentation in README for using jQuery Tools event handlers.
   [smcmahon]
   
-- Add events triggering so you can hook into it more.
-  [vangheem]
-
 1.2 - 2011-05-13
-------------------
+----------------
 
 - 1.2 final release.
   [esteele]
