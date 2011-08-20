@@ -1,6 +1,15 @@
 Changelog
 =========
 
+1.4 - unreleased
+----------------
+
+- For overlays that are not already inline, insert them inline after the
+  triggering element rather than at the end of the body. This solves an
+  accessibility problem for screen readers (see ticket #12123), but is going to
+  require more css reset work for overlay styling.
+  [smcmahon]
+
 1.3 - 2011-06-27
 ----------------
 

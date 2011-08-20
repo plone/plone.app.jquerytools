@@ -164,8 +164,9 @@ jQuery(function ($) {
         create a div to act as an overlay; append it to
         the body; return it
     ******/
-    pb.create_content_div = function (pbo) {
-        var content;
+    pb.create_content_div = function (pbo, trigger) {
+        var content,
+            top;
 
         content = $(
             '<div id="' + pbo.nt +
@@ -182,7 +183,20 @@ jQuery(function ($) {
         }
 
         // add the target element at the end of the body.
-        content.appendTo($("body"));
+        if (trigger) {
+            trigger.after(content);
+            // fix for jqt absolute positioning bug by correcting
+            // for position of enclosing element
+            if (!pbo.config.fixed) {
+                top = pbo.top || '10%';
+                if (typeof top == 'string')  {
+                    top = parseInt(top, 10) / 100 * $(window).height();           
+                }               
+                pbo.config.top = top - trigger.offsetParent().offset().top;
+            }
+        } else {
+            content.appendTo($("body"));
+        }
 
         return content;
     };
@@ -190,7 +204,7 @@ jQuery(function ($) {
 
     /******
         pb.image_click
-        click handler for ajax sources.
+        click handler for image loads
     ******/
     pb.image_click = function (event) {
         var ethis, content, api, img, el, pbo;
@@ -419,14 +433,15 @@ jQuery(function ($) {
             sep;
 
         e = $.Event(); 
-    	  e.type = "beforeAjaxClickHandled";
+    	e.type = "beforeAjaxClickHandled";
         $(document).trigger(e, [this, event]);
         if (e.isDefaultPrevented()) { return; }
 
         pbo = ethis.data('pbo');
 
-        content = pb.create_content_div(pbo);
-        content.overlay(pbo.config);
+        content = pb.create_content_div(pbo, ethis);
+        // pbo.config.top = $(window).height() * 0.1 - ethis.offsetParent().offset().top;
+        content.overlay(pbo.config, ethis);
         api = content.overlay();
         src = pbo.src;
         selector = pbo.selector;
