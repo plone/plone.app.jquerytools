@@ -15,7 +15,28 @@ var pb = {spinner: {}, overlay_counter: 1};
 
 jQuery.tools.overlay.conf.oneInstance = false;
 
-jQuery(function ($) {
+(function($) { 
+    // override jqt default effect to take account of position
+    // of parent elements
+    jQuery.tools.overlay.addEffect('default', 
+        function(pos, onLoad) {
+            var conf = this.getConf(),
+                 w = $(window),
+                 ovl = this.getOverlay(),
+                 op = ovl.parent().offsetParent().offset();              
+
+            if (!conf.fixed)  {
+                pos.top += w.scrollTop() - op.top;
+                pos.left += w.scrollLeft() - op.left;
+            } 
+                
+            pos.position = conf.fixed ? 'fixed' : 'absolute';
+            ovl.css(pos).fadeIn(conf.speed, onLoad); 
+            
+        }, function(onClose) {
+            this.getOverlay().fadeOut(this.getConf().closeSpeed, onClose);          
+        }       
+    );      
 
     pb.spinner.show = function () {
         $('body').css('cursor', 'wait');
@@ -23,6 +44,11 @@ jQuery(function ($) {
     pb.spinner.hide = function () {
         $('body').css('cursor', '');
     };
+}) (jQuery);
+
+
+
+jQuery(function ($) {
 
     /******
         $.fn.prepOverlay jQuery plugin to inject overlay target into DOM and
@@ -185,15 +211,6 @@ jQuery(function ($) {
         // add the target element at the end of the body.
         if (trigger) {
             trigger.after(content);
-            // fix for jqt absolute positioning bug by correcting
-            // for position of enclosing element
-            if (!pbo.config.fixed) {
-                top = pbo.top || '10%';
-                if (typeof top == 'string')  {
-                    top = parseInt(top, 10) / 100 * $(window).height();           
-                }               
-                pbo.config.top = top - trigger.offsetParent().offset().top;
-            }
         } else {
             content.appendTo($("body"));
         }
