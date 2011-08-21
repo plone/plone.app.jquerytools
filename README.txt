@@ -153,8 +153,9 @@ The complete options list:
     * filter: (ajax only) the jQuery selector used to find the elements of
       the ajax loaded resource that you wish to use in the overlay.
 
-    * width: Width of the popup. Leave unset to determine through CSS.
-      Overriden by image width for image overlays.
+    * width: Width of the popup. Defaults to 60%. Overriden by image width
+      for image overlays. Percentages are computed against window width,
+      not parent.
 
     * cssclass: A custom css class to apply to the overlay. Ignored
       for inline overlays.
