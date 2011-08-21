@@ -62,7 +62,7 @@ jQuery(function ($) {
 
             // copy options so that it's not just a reference
             // to the parameter.
-            pbo = $.extend(true, {}, pba);
+            pbo = $.extend(true, {'width':'60%'}, pba);
 
             // set overlay configuration
             config = pbo.config || {};
@@ -192,7 +192,8 @@ jQuery(function ($) {
     ******/
     pb.create_content_div = function (pbo, trigger) {
         var content,
-            top;
+            top,
+            pbw = pbo.width;
 
         content = $(
             '<div id="' + pbo.nt +
@@ -203,9 +204,14 @@ jQuery(function ($) {
 
         content.data('pbo', pbo);
 
-        // if we've a width specified, set it on the overlay div
-        if (pbo.width) {
-            content.width(pbo.width);
+        // if a width option is specified, set it on the overlay div,
+        // computing against the window width if a % was specified.
+        if (pbw) {
+            if (pbw.indexOf('%') > 0) {
+                content.width(parseInt(pbw, 10) / 100 * $(window).width());
+            } else {
+                content.width(pbw);
+            }
         }
 
         // add the target element at the end of the body.
