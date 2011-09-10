@@ -92,6 +92,7 @@ jQuery(function ($) {
 
                 pbo.src = src;
                 pbo.config = config;
+                pbo.source = o;
 
                 // remove any existing overlay and overlay handler
                 pb.remove_overlay(o);                
