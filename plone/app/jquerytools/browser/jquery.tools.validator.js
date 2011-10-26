@@ -1,18 +1,18 @@
 /**
  * @license 
- * jQuery Tools Validator v1.2.5 - HTML5 is here. Now use it.
+ * jQuery Tools Validator v1.2.6 - HTML5 is here. Now use it.
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/form/validator/
  * 
  * Since: Mar 2010
- * Date: 2010-12-27 15:01 
+ * Date: 2011-10-26 11:02 
  */
 /*jslint evil: true */ 
 (function($) {	
 
-	$.tools = $.tools || {version: 'v1.2.5'};
+	$.tools = $.tools || {version: 'v1.2.6'};
 		
 	// globals
 	var typeRe = /\[type=([a-z]+)\]/, 
@@ -228,7 +228,7 @@
 		return numRe.test(v);			
 	});
 	
-	v.fn("[max]", "Please enter a value smaller than $1", function(el, v) {
+	v.fn("[max]", "Please enter a value no larger than $1", function(el, v) {
 			
 		// skip empty values and dateinputs
 		if (v === '' || dateInput && el.is(":date")) { return true; }	
@@ -237,7 +237,7 @@
 		return parseFloat(v) <= parseFloat(max) ? true : [max];
 	});
 	
-	v.fn("[min]", "Please enter a value larger than $1", function(el, v) {
+	v.fn("[min]", "Please enter a value of at least $1", function(el, v) {
 
 		// skip empty values and dateinputs
 		if (v === '' || dateInput && el.is(":date")) { return true; }
@@ -265,6 +265,9 @@
 
 		// make sure there are input fields available
 		inputs = inputs.not(":button, :image, :reset, :submit");			 
+		
+    // Prevent default Firefox validation
+    form.attr("novalidate", "novalidate");
 
 		// utility function
 		function pushMessage(to, matcher, returnValue) {
@@ -510,6 +513,9 @@
 				if (!self.checkValidity(null, e)) { 
 					return e.preventDefault(); 
 				}
+				// Reset event type and target
+				e.target = form;
+				e.type = conf.formEvent;
 			});
 		}
 		

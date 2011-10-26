@@ -1,13 +1,13 @@
 /**
  * @license 
- * jQuery Tools v1.2.5 / Overlay Apple effect. 
+ * jQuery Tools v1.2.6 / Overlay Apple effect. 
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/overlay/apple.html
  *
  * Since: July 2009
- * Date: 2010-12-27 15:01 
+ * Date: 2011-10-26 11:02 
  */
 (function($) { 
 
@@ -156,14 +156,14 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.5 / Scrollable Autoscroll
+ * jQuery Tools v1.2.6 / Scrollable Autoscroll
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/scrollable/autoscroll.html
  *
  * Since: September 2009
- * Date: 2010-12-27 15:01 
+ * Date: 2011-10-26 11:02 
  */
 (function($) {		
 
@@ -189,12 +189,24 @@
 		
 		this.each(function() {		
 				
-			var api = $(this).data("scrollable");			
+			var api = $(this).data("scrollable"),
+			    root = api.getRoot(),
+			    // interval stuff
+    			timer, stopped = false;
+
+	    /**
+      *
+      *   Function to run autoscroll through event binding rather than setInterval
+      *   Fixes this bug: http://flowplayer.org/tools/forum/25/72029
+      */
+      function scroll(){        
+        timer = setTimeout(function(){
+          api.next();
+        }, opts.interval);
+      }
+			    
 			if (api) { ret = api; }
 			
-			// interval stuff
-			var timer, stopped = true;
-	
 			api.play = function() { 
 				
 				// do not start additional timer if already exists
@@ -202,26 +214,29 @@
 				
 				stopped = false;
 				
-				// construct new timer
-				timer = setInterval(function() { 
-					api.next();				
-				}, opts.interval);
-				
+        root.bind('onSeek', scroll);
+        scroll();
 			};	
 
 			api.pause = function() {
-				timer = clearInterval(timer);
+				timer = clearTimeout(timer);  // clear any queued items immediately
+        root.unbind('onSeek', scroll);
+			};
+			
+			// resume playing if not stopped
+			api.resume = function() {
+				stopped || api.play();
 			};
 			
 			// when stopped - mouseover won't restart 
 			api.stop = function() {
+			  stopped = true;
 				api.pause();
-				stopped = true;	
 			};
 		
 			/* when mouse enters, autoscroll stops */
 			if (opts.autopause) {
-				api.getRoot().add(api.getNaviButtons()).hover(api.pause, api.play);
+				root.add(api.getNaviButtons()).hover(api.pause, api.resume);
 			}
 			
 			if (opts.autoplay) {
@@ -238,14 +253,14 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.5 / Scrollable Navigator
+ * jQuery Tools v1.2.6 / Scrollable Navigator
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  *
  * http://flowplayer.org/tools/scrollable/navigator.html
  *
  * Since: September 2009
- * Date: 2010-12-27 15:01 
+ * Date: 2011-10-26 11:02 
  */
 (function($) {
 		
@@ -285,7 +300,9 @@
 				 navi = conf.navi.jquery ? conf.navi : find(api.getRoot(), conf.navi), 
 				 buttons = api.getNaviButtons(),
 				 cls = conf.activeClass,
-				 history = conf.history && $.fn.history;
+				 hashed = conf.history && !!history.pushState,
+				 size = api.getConf().size;
+				 
 
 			// @deprecated stuff
 			if (api) { ret = api; }
@@ -295,15 +312,19 @@
 			}; 
 			
 			
+			if (hashed) {
+				history.pushState({i: 0});
+				
+				$(window).bind("popstate", function(evt) {
+					var s = evt.originalEvent.state;
+					if (s) { api.seekTo(s.i); }
+				});					
+			}
+			
 			function doClick(el, i, e) {
-				api.seekTo(i);				
-				if (history) {
-					if (location.hash) {
-						location.hash = el.attr("href").replace("#", "");	
-					}
-				} else  {
-					return e.preventDefault();			
-				}
+				api.seekTo(i);
+				e.preventDefault(); 
+				if (hashed) { history.pushState({i: i}); }
 			}
 			
 			function els() {
@@ -313,18 +334,17 @@
 			function addItem(i) {  
 				
 				var item = $("<" + (conf.naviItem || 'a') + "/>").click(function(e)  {
-					doClick($(this), i, e);
-					
-				}).attr("href", "#" + i);
+					doClick($(this), i, e);					
+				});
 				
 				// index number / id attribute
 				if (i === 0) {  item.addClass(cls); }
 				if (conf.indexed)  { item.text(i + 1); }
-				if (conf.idPrefix) { item.attr("id", conf.idPrefix + i); } 
+				if (conf.idPrefix) { item.attr("id", conf.idPrefix + i); }
 				
 				return item.appendTo(navi);
 			}
-
+			
 			
 			// generate navigator
 			if (els().length) {
@@ -334,9 +354,9 @@
 					});
 				});
 				
-			} else {
+			} else {				
 				$.each(api.getItems(), function(i) {
-					addItem(i); 
+					if (i % size == 0) addItem(i); 
 				});
 			}   
 			
@@ -344,29 +364,19 @@
 			api.onBeforeSeek(function(e, index) {
 				setTimeout(function() {
 					if (!e.isDefaultPrevented()) {	
-						var el = els().eq(index);
-						if (!e.isDefaultPrevented() && el.length) {			
-							els().removeClass(cls).eq(index).addClass(cls);
-						}
+						var i = index / size,
+							 el = els().eq(i);
+							 
+						if (el.length) { els().removeClass(cls).eq(i).addClass(cls); }
 					}
 				}, 1);
 			}); 
 			
-			function doHistory(evt, hash) {
-				var el = els().eq(hash.replace("#", ""));
-				if (!el.length) {
-					el = els().filter("[href=" + hash + "]");	
-				}
-				el.click();		
-			}
-			
 			// new item being added
 			api.onAddItem(function(e, item) {
-				item = addItem(api.getItems().index(item)); 
-				if (history)  { item.history(doHistory); }
+				var i = api.getItems().index(item);
+				if (i % size == 0) addItem(i);
 			});
-			
-			if (history) { els().history(doHistory); }
 			
 		});		
 		
@@ -378,14 +388,14 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.5 Slideshow - Extend it.
+ * jQuery Tools v1.2.6 Slideshow - Extend it.
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tabs/slideshow.html
  *
  * Since: September 2009
- * Date: 2010-12-27 15:01 
+ * Date: 2011-10-26 11:02 
  */
 (function($) {
 	
@@ -413,7 +423,6 @@
 			 timer, 
 			 stopped = true;
 		
-			 
 		// next / prev buttons
 		function find(query) {
 			var el = $(query);
@@ -428,6 +437,15 @@
 			tabs.prev();		
 		}); 
 
+    /**
+    *
+    *   Similar fix for autoscroll animation queue problem
+    */
+    function next(){
+      timer = setTimeout(function(){
+        tabs.next();
+      }, conf.interval);
+    }
 
 		// extend the Tabs API with slideshow methods			
 		$.extend(self, {
@@ -451,13 +469,13 @@
 				fire.trigger(e);				
 				if (e.isDefaultPrevented()) { return self; }				
 				
-				
-				// construct new timer
-				timer = setInterval(tabs.next, conf.interval);
 				stopped = false;				
 				
 				// onPlay
 				fire.trigger("onPlay");				
+				
+				fire.bind('onClick', next);
+				next();
 				
 				return self;
 			},
@@ -471,12 +489,19 @@
 				fire.trigger(e);					
 				if (e.isDefaultPrevented()) { return self; }		
 				
-				timer = clearInterval(timer);
+				timer = clearTimeout(timer);
 				
 				// onPause
 				fire.trigger("onPause");	
 				
+				fire.unbind('onClick', next);
+				
 				return self;
+			},
+			
+			// resume playing if not stopped
+			resume: function() {
+				stopped || self.play();
 			},
 			
 			// when stopped - mouseover won't restart 
@@ -504,9 +529,7 @@
 	
 		/* when mouse enters, slideshow stops */
 		if (conf.autopause) {
-			tabs.getTabs().add(nextButton).add(prevButton).add(tabs.getPanes()).hover(self.pause, function() {
-				if (!stopped) { self.play(); }		
-			});
+			tabs.getTabs().add(nextButton).add(prevButton).add(tabs.getPanes()).hover(self.pause, self.resume);
 		} 
 		
 		if (conf.autoplay) {
@@ -542,7 +565,7 @@
 		var el = this.data("slideshow");
 		if (el) { return el; }
  
-		conf = $.extend({}, tool.conf, conf);		
+		conf = $.extend({}, tool.conf, conf);
 		
 		this.each(function() {
 			el = new Slideshow($(this), conf);
@@ -556,41 +579,41 @@
 
 
 /**
- * @license 
- * jQuery Tools v1.2.5 / Flashembed - New wave Flash embedding
- * 
+ * @license
+ * jQuery Tools v1.2.6 / Flashembed - New wave Flash embedding
+ *
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
- * 
+ *
  * http://flowplayer.org/tools/toolbox/flashembed.html
  *
  * Since : March 2008
- * Date  : 2010-12-27 15:01 
- */ 
+ * Date  : 2011-10-26 11:02
+ */
 (function() {
-		
+
 	var IE = document.all,
 		 URL = 'http://www.adobe.com/go/getflashplayer',
-		 JQUERY = typeof jQuery == 'function', 
+		 JQUERY = typeof jQuery == 'function',
 		 RE = /(\d+)[^\d]+(\d+)[^\d]*(\d*)/,
-		 GLOBAL_OPTS = { 
+		 GLOBAL_OPTS = {
 			// very common opts
 			width: '100%',
-			height: '100%',		
+			height: '100%',
 			id: "_" + ("" + Math.random()).slice(9),
-			
+
 			// flashembed defaults
 			allowfullscreen: true,
 			allowscriptaccess: 'always',
-			quality: 'high',	
-			
+			quality: 'high',
+
 			// flashembed specific options
 			version: [3, 0],
 			onFail: null,
-			expressInstall: null, 
+			expressInstall: null,
 			w3c: false,
-			cachebusting: false  		 		 
+			cachebusting: false
 	};
-	
+
 	// version 9 bugfix: (http://blog.deconcept.com/2006/07/28/swfobject-143-released/)
 	if (window.attachEvent) {
 		window.attachEvent("onbeforeunload", function() {
@@ -598,7 +621,7 @@
 			__flash_savedUnloadHandler = function() {};
 		});
 	}
-	
+
 	// simple extend
 	function extend(to, from) {
 		if (from) {
@@ -607,13 +630,13 @@
 					to[key] = from[key];
 				}
 			}
-		} 
+		}
 		return to;
-	}	
+	}
 
-	// used by asString method	
+	// used by asString method
 	function map(arr, func) {
-		var newArr = []; 
+		var newArr = [];
 		for (var i in arr) {
 			if (arr.hasOwnProperty(i)) {
 				newArr[i] = func(arr[i]);
@@ -623,73 +646,73 @@
 	}
 
 	window.flashembed = function(root, opts, conf) {
-	
-		// root must be found / loaded	
+
+		// root must be found / loaded
 		if (typeof root == 'string') {
 			root = document.getElementById(root.replace("#", ""));
 		}
-		
+
 		// not found
 		if (!root) { return; }
-		
+
 		if (typeof opts == 'string') {
-			opts = {src: opts};	
+			opts = {src: opts};
 		}
 
-		return new Flash(root, extend(extend({}, GLOBAL_OPTS), opts), conf); 
-	};	
-	
+		return new Flash(root, extend(extend({}, GLOBAL_OPTS), opts), conf);
+	};
+
 	// flashembed "static" API
 	var f = extend(window.flashembed, {
-		
+
 		conf: GLOBAL_OPTS,
-	
+
 		getVersion: function()  {
 			var fo, ver;
-			
+
 			try {
-				ver = navigator.plugins["Shockwave Flash"].description.slice(16); 
+				ver = navigator.plugins["Shockwave Flash"].description.slice(16);
 			} catch(e) {
-				
+
 				try  {
 					fo = new ActiveXObject("ShockwaveFlash.ShockwaveFlash.7");
 					ver = fo && fo.GetVariable("$version");
-					
+
 				} catch(err) {
                 try  {
                     fo = new ActiveXObject("ShockwaveFlash.ShockwaveFlash.6");
-                    ver = fo && fo.GetVariable("$version");  
-                } catch(err2) { } 						
-				} 
+                    ver = fo && fo.GetVariable("$version");
+                } catch(err2) { }
+				}
 			}
-			
+
 			ver = RE.exec(ver);
 			return ver ? [ver[1], ver[3]] : [0, 0];
 		},
-		
-		asString: function(obj) { 
+
+		asString: function(obj) {
 
 			if (obj === null || obj === undefined) { return null; }
 			var type = typeof obj;
 			if (type == 'object' && obj.push) { type = 'array'; }
-			
-			switch (type){  
-				
+
+			switch (type){
+
 				case 'string':
 					obj = obj.replace(new RegExp('(["\\\\])', 'g'), '\\$1');
-					
+
 					// flash does not handle %- characters well. transforms "50%" to "50pct" (a dirty hack, I admit)
-					obj = obj.replace(/^\s?(\d+\.?\d+)%/, "$1pct");
+					obj = obj.replace(/^\s?(\d+\.?\d*)%/, "$1pct");
 					return '"' +obj+ '"';
-					
+
 				case 'array':
 					return '['+ map(obj, function(el) {
 						return f.asString(el);
-					}).join(',') +']'; 
-					
+					}).join(',') +']';
+
 				case 'function':
 					return '"function()"';
-					
+
 				case 'object':
 					var str = [];
 					for (var prop in obj) {
@@ -699,167 +722,167 @@
 					}
 					return '{'+str.join(',')+'}';
 			}
-			
+
 			// replace ' --> "  and remove spaces
 			return String(obj).replace(/\s/g, " ").replace(/\'/g, "\"");
 		},
-		
+
 		getHTML: function(opts, conf) {
 
 			opts = extend({}, opts);
-			
+
 			/******* OBJECT tag and it's attributes *******/
-			var html = '<object width="' + opts.width + 
-				'" height="' + opts.height + 
-				'" id="' + opts.id + 
+			var html = '<object width="' + opts.width +
+				'" height="' + opts.height +
+				'" id="' + opts.id +
 				'" name="' + opts.id + '"';
-			
+
 			if (opts.cachebusting) {
-				opts.src += ((opts.src.indexOf("?") != -1 ? "&" : "?") + Math.random());		
-			}			
-			
-			if (opts.w3c || !IE) {
-				html += ' data="' +opts.src+ '" type="application/x-shockwave-flash"';		
-			} else {
-				html += ' classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"';	
+				opts.src += ((opts.src.indexOf("?") != -1 ? "&" : "?") + Math.random());
 			}
-			
-			html += '>'; 
-			
+
+			if (opts.w3c || !IE) {
+				html += ' data="' +opts.src+ '" type="application/x-shockwave-flash"';
+			} else {
+				html += ' classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"';
+			}
+
+			html += '>';
+
 			/******* nested PARAM tags *******/
 			if (opts.w3c || IE) {
-				html += '<param name="movie" value="' +opts.src+ '" />'; 	
-			} 
-			
+				html += '<param name="movie" value="' +opts.src+ '" />';
+			}
+
 			// not allowed params
 			opts.width = opts.height = opts.id = opts.w3c = opts.src = null;
 			opts.onFail = opts.version = opts.expressInstall = null;
-			
+
 			for (var key in opts) {
 				if (opts[key]) {
 					html += '<param name="'+ key +'" value="'+ opts[key] +'" />';
 				}
-			}	
-		
+			}
+
 			/******* FLASHVARS *******/
 			var vars = "";
-			
+
 			if (conf) {
-				for (var k in conf) { 
+				for (var k in conf) {
 					if (conf[k]) {
-						var val = conf[k]; 
-						vars += k +'='+ (/function|object/.test(typeof val) ? f.asString(val) : val) + '&';
+						var val = conf[k];
+						vars += k +'='+ encodeURIComponent(/function|object/.test(typeof val) ? f.asString(val) : val) + '&';
 					}
 				}
 				vars = vars.slice(0, -1);
 				html += '<param name="flashvars" value=\'' + vars + '\' />';
 			}
-			
-			html += "</object>";	
-			
-			return html;				
+
+			html += "</object>";
+
+			return html;
 		},
-		
+
 		isSupported: function(ver) {
-			return VERSION[0] > ver[0] || VERSION[0] == ver[0] && VERSION[1] >= ver[1];			
-		}		
-		
+			return VERSION[0] > ver[0] || VERSION[0] == ver[0] && VERSION[1] >= ver[1];
+		}
+
 	});
-	
-	var VERSION = f.getVersion(); 
-	
-	function Flash(root, opts, conf) {  
-	                                                
+
+	var VERSION = f.getVersion();
+
+	function Flash(root, opts, conf) {
+
 		// version is ok
 		if (f.isSupported(opts.version)) {
 			root.innerHTML = f.getHTML(opts, conf);
-			
+
 		// express install
 		} else if (opts.expressInstall && f.isSupported([6, 65])) {
 			root.innerHTML = f.getHTML(extend(opts, {src: opts.expressInstall}), {
 				MMredirectURL: location.href,
 				MMplayerType: 'PlugIn',
 				MMdoctitle: document.title
-			});	
-			
+			});
+
 		} else {
-			
+
 			// fail #2.1 custom content inside container
 			if (!root.innerHTML.replace(/\s/g, '')) {
-				root.innerHTML = 
-					"<h2>Flash version " + opts.version + " or greater is required</h2>" + 
-					"<h3>" + 
+				root.innerHTML =
+					"<h2>Flash version " + opts.version + " or greater is required</h2>" +
+					"<h3>" +
 						(VERSION[0] > 0 ? "Your version is " + VERSION : "You have no flash plugin installed") +
-					"</h3>" + 
-					
-					(root.tagName == 'A' ? "<p>Click here to download latest version</p>" : 
+					"</h3>" +
+
+					(root.tagName == 'A' ? "<p>Click here to download latest version</p>" :
 						"<p>Download latest version from <a href='" + URL + "'>here</a></p>");
-					
-				if (root.tagName == 'A') {	
+
+				if (root.tagName == 'A') {
 					root.onclick = function() {
 						location.href = URL;
 					};
-				}				
+				}
 			}
-			
+
 			// onFail
 			if (opts.onFail) {
 				var ret = opts.onFail.call(this);
-				if (typeof ret == 'string') { root.innerHTML = ret; }	
-			}			
+				if (typeof ret == 'string') { root.innerHTML = ret; }
+			}
 		}
-		
+
 		// http://flowplayer.org/forum/8/18186#post-18593
 		if (IE) {
 			window[opts.id] = document.getElementById(opts.id);
-		} 
-		
+		}
+
 		// API methods for callback
 		extend(this, {
-				
+
 			getRoot: function() {
-				return root;	
-			},
-			
-			getOptions: function() {
-				return opts;	
+				return root;
 			},
 
-			
+			getOptions: function() {
+				return opts;
+			},
+
+
 			getConf: function() {
-				return conf;	
-			}, 
-			
+				return conf;
+			},
+
 			getApi: function() {
-				return root.firstChild;	
+				return root.firstChild;
 			}
-			
-		}); 
+
+		});
 	}
-	
+
 	// setup jquery support
 	if (JQUERY) {
-		
+
 		// tools version number
-		jQuery.tools = jQuery.tools || {version: 'v1.2.5'};
-		
-		jQuery.tools.flashembed = {  
+		jQuery.tools = jQuery.tools || {version: 'v1.2.6'};
+
+		jQuery.tools.flashembed = {
 			conf: GLOBAL_OPTS
-		};	
-		
-		jQuery.fn.flashembed = function(opts, conf) {		
-			return this.each(function() { 
-				$(this).data("flashembed", flashembed(this, opts, conf));
+		};
+
+		jQuery.fn.flashembed = function(opts, conf) {
+			return this.each(function() {
+				jQuery(this).data("flashembed", flashembed(this, opts, conf));
 			});
-		}; 
-	} 
-	
+		};
+	}
+
 })();
 
 
 /**
  * @license 
- * jQuery Tools v1.2.5 Mousewheel
+ * jQuery Tools v1.2.6 Mousewheel
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
@@ -870,7 +893,7 @@
  * http://threedubmedia.com 
  *
  * Since: Mar 2010
- * Date: 2010-12-27 15:01 
+ * Date: 2011-10-26 11:02 
  */
 (function($) { 
 	
@@ -925,14 +948,14 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.5 / Tooltip Dynamic Positioning
+ * jQuery Tools v1.2.6 / Tooltip Dynamic Positioning
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tooltip/dynamic.html
  *
  * Since: July 2009
- * Date: 2010-12-27 15:01 
+ * Date: 2011-10-26 11:02 
  */
 (function($) { 
 
@@ -990,7 +1013,9 @@
 		
 		conf = $.extend({}, t.dynamic.conf, conf);
 		
-		var cls = conf.classNames.split(/\s/), orig;	
+		var confOrigin = $.extend(true,{},conf),
+		    cls = conf.classNames.split(/\s/), 
+		    orig;
 			
 		this.each(function() {		
 				
@@ -1027,8 +1052,10 @@
 					left: pos.left 
 				}).show(); 
 				
-				// now let's see for hidden edges
-				var crop = getCropping(tip);		
+				var conf = $.extend(true,{},confOrigin),
+				
+				    // now let's see for hidden edges
+				    crop = getCropping(tip);		
 								
 				// possibly alter the configuration
 				if (!isVisible(crop)) {
@@ -1076,14 +1103,14 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.5 / Tooltip Slide Effect
+ * jQuery Tools v1.2.6 / Tooltip Slide Effect
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tooltip/slide.html
  *
  * Since: September 2009
- * Date: 2010-12-27 15:01 
+ * Date: 2011-10-26 11:02 
  */
 (function($) { 
 

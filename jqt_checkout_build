@@ -19,7 +19,7 @@ import StringIO
 import subprocess
 import datetime
 
-JQ_TOOLS_VERSION = 'v1.2.5'
+JQ_TOOLS_VERSION = 'v1.2.6'
 JQ_TOOLS_DOWNLOAD_URL = 'http://github.com/jquerytools/jquerytools/tarball/'+JQ_TOOLS_VERSION
 # JQ_TOOLS_DOWNLOAD_URL = 'file:///Users/rok/Projects/garbas/jquerytools-jquerytools-v1.2.5-0-g85655d7.tar.gz'
 

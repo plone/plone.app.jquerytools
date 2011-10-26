@@ -1,18 +1,18 @@
 /**
  * @license 
- * jQuery Tools v1.2.5 Overlay - Overlay base. Extend it.
+ * jQuery Tools v1.2.6 Overlay - Overlay base. Extend it.
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/overlay/
  *
  * Since: March 2008
- * Date: 2010-12-27 15:01 
+ * Date: 2011-10-26 11:02 
  */
 (function($) { 
 
 	// static constructs
-	$.tools = $.tools || {version: 'v1.2.5'};
+	$.tools = $.tools || {version: 'v1.2.6'};
 	
 	$.tools.overlay = {
 		
@@ -88,7 +88,7 @@
 			maskConf.closeOnClick = maskConf.closeOnEsc = false;
 		}			 
 		 
-		// get overlay and triggerr
+		// get overlay and trigger
 		var jq = conf.target || trigger.attr("rel");
 		overlay = jq ? $(jq) : null || trigger;	
 		
@@ -294,19 +294,19 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.5 Scrollable - New wave UI design
+ * jQuery Tools v1.2.6 Scrollable - New wave UI design
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/scrollable.html
  *
  * Since: March 2008
- * Date: 2010-12-27 15:01 
+ * Date: 2011-10-26 11:02 
  */
 (function($) { 
 
 	// static constructs
-	$.tools = $.tools || {version: 'v1.2.5'};
+	$.tools = $.tools || {version: 'v1.2.6'};
 	
 	$.tools.scrollable = {
 		
@@ -317,12 +317,13 @@
 			disabledClass: 'disabled',
 			easing: 'swing',
 			initialIndex: 0,
-			item: null,
+			item: '> *',
 			items: '.items',
 			keyboard: true,
 			mousewheel: false,
 			next: '.next',   
 			prev: '.prev', 
+			size: 1,
 			speed: 400,
 			vertical: false,
 			touch: true,
@@ -358,6 +359,10 @@
 		if (!current) { current = self; } 
 		if (itemWrap.length > 1) { itemWrap = $(conf.items, root); }
 		
+		
+		// in this version circular not supported when size > 1
+		if (conf.size > 1) { conf.circular = false; } 
+		
 		// methods
 		$.extend(self, {
 				
@@ -386,7 +391,7 @@
 			},
 			
 			getItems: function() {
-				return itemWrap.children(conf.item).not("." + conf.clonedClass);	
+				return itemWrap.find(conf.item).not("." + conf.clonedClass);	
 			},
 							
 			move: function(offset, time) {
@@ -394,11 +399,11 @@
 			},
 			
 			next: function(time) {
-				return self.move(1, time);	
+				return self.move(conf.size, time);	
 			},
 			
 			prev: function(time) {
-				return self.move(-1, time);	
+				return self.move(-conf.size, time);	
 			},
 			
 			begin: function(time) {
@@ -419,9 +424,11 @@
 				
 				if (!conf.circular)  {
 					itemWrap.append(item);
+					next.removeClass("disabled");
+					
 				} else {
-					itemWrap.children("." + conf.clonedClass + ":last").before(item);
-					itemWrap.children("." + conf.clonedClass + ":first").replaceWith(item.clone().addClass(conf.clonedClass)); 						
+					itemWrap.children().last().before(item);
+					itemWrap.children().first().replaceWith(item.clone().addClass(conf.clonedClass)); 						
 				}
 				
 				fire.trigger("onAddItem", [item]);
@@ -491,11 +498,10 @@
 			
 			var cloned1 = self.getItems().slice(-1).clone().prependTo(itemWrap),
 				 cloned2 = self.getItems().eq(1).clone().appendTo(itemWrap);
-				
+
 			cloned1.add(cloned2).addClass(conf.clonedClass);
 			
 			self.onBeforeSeek(function(e, i, time) {
-
 				
 				if (e.isDefaultPrevented()) { return; }
 				
@@ -516,17 +522,38 @@
 				}
 				
 			});
-			
+
 			// seek over the cloned item
-			self.seekTo(0, 0, function() {});
+
+			// if the scrollable is hidden the calculations for seekTo position
+			// will be incorrect (eg, if the scrollable is inside an overlay).
+			// ensure the elements are shown, calculate the correct position,
+			// then re-hide the elements. This must be done synchronously to
+			// prevent the hidden elements being shown to the user.
+
+			// See: https://github.com/jquerytools/jquerytools/issues#issue/87
+
+			var hidden_parents = root.parents().add(root).filter(function () {
+				if ($(this).css('display') === 'none') {
+					return true;
+				}
+			});
+			if (hidden_parents.length) {
+				hidden_parents.show();
+				self.seekTo(0, 0, function() {});
+				hidden_parents.hide();
+			}
+			else {
+				self.seekTo(0, 0, function() {});
+			}
+
 		}
 		
 		// next/prev buttons
-		var prev = find(root, conf.prev).click(function() { self.prev(); }),
-			 next = find(root, conf.next).click(function() { self.next(); });	
+		var prev = find(root, conf.prev).click(function(e) { e.stopPropagation(); self.prev(); }),
+			 next = find(root, conf.next).click(function(e) { e.stopPropagation(); self.next(); }); 
 		
-		if (!conf.circular && self.getSize() > 1) {
-			
+		if (!conf.circular) {
 			self.onBeforeSeek(function(e, i) {
 				setTimeout(function() {
 					if (!e.isDefaultPrevented()) {
@@ -534,11 +561,15 @@
 						next.toggleClass(conf.disabledClass, i >= self.getSize() -1);
 					}
 				}, 1);
-			}); 
+			});
 			
 			if (!conf.initialIndex) {
 				prev.addClass(conf.disabledClass);	
-			}
+			}			
+		}
+			
+		if (self.getSize() < 2) {
+			prev.add(next).addClass(conf.disabledClass);	
 		}
 			
 		// mousewheel support
@@ -580,7 +611,9 @@
 			$(document).bind("keydown.scrollable", function(evt) {
 
 				// skip certain conditions
-				if (!conf.keyboard || evt.altKey || evt.ctrlKey || $(evt.target).is(":input")) { return; }
+				if (!conf.keyboard || evt.altKey || evt.ctrlKey || evt.metaKey || $(evt.target).is(":input")) { 
+					return; 
+				}
 				
 				// does this instance have focus?
 				if (conf.keyboard != 'static' && current != self) { return; }
@@ -630,19 +663,19 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.5 Tabs- The basics of UI design.
+ * jQuery Tools v1.2.6 Tabs- The basics of UI design.
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tabs/
  *
  * Since: November 2008
- * Date: 2010-12-27 15:01 
+ * Date: 2011-10-26 11:02 
  */  
 (function($) {
 		
 	// static constructs
-	$.tools = $.tools || {version: 'v1.2.5'};
+	$.tools = $.tools || {version: 'v1.2.6'};
 	
 	$.tools.tabs = {
 		
@@ -655,6 +688,10 @@
 			initialIndex: 0,			
 			event: 'click',
 			rotate: false,
+			
+      // slide effect
+      slideUpSpeed: 400,
+      slideDownSpeed: 400,
 			
 			// 1.2
 			history: false
@@ -681,7 +718,7 @@
 		*/
 		fade: function(i, done) {		
 			
-			var conf = this.getConf(),            
+			var conf = this.getConf(),
 				 speed = conf.fadeOutSpeed,
 				 panes = this.getPanes();
 			
@@ -696,8 +733,10 @@
 		
 		// for basic accordions
 		slide: function(i, done) {
-			this.getPanes().slideUp(200);
-			this.getPanes().eq(i).slideDown(400, done);			 
+		  var conf = this.getConf();
+		  
+			this.getPanes().slideUp(conf.slideUpSpeed);
+			this.getPanes().eq(i).slideDown(conf.slideDownSpeed, done);			 
 		}, 
 
 		/**
@@ -708,27 +747,58 @@
 		}		
 	};   	
 	
-	var w;
-	
 	/**
 	 * Horizontal accordion
 	 * 
 	 * @deprecated will be replaced with a more robust implementation
-	 */
-	$.tools.tabs.addEffect("horizontal", function(i, done) {
+	*/
 	
+	var
+	  /**
+	  *   @type {Boolean}
+	  *
+	  *   Mutex to control horizontal animation
+	  *   Disables clicking of tabs while animating
+	  *   They mess up otherwise as currentPane gets set *after* animation is done
+	  */
+	  animating,
+	  /**
+	  *   @type {Number}
+	  *   
+	  *   Initial width of tab panes
+	  */
+	  w;
+	 
+	$.tools.tabs.addEffect("horizontal", function(i, done) {
+	  if (animating) return;    // don't allow other animations
+	  
+	  var nextPane = this.getPanes().eq(i),
+	      currentPane = this.getCurrentPane();
+	      
 		// store original width of a pane into memory
-		if (!w) { w = this.getPanes().eq(0).width(); }
+		w || ( w = this.getPanes().eq(0).width() );
+		animating = true;
 		
-		// set current pane's width to zero
-		this.getCurrentPane().animate({width: 0}, function() { $(this).hide(); });
+		nextPane.show(); // hidden by default
 		
-		// grow opened pane to it's original width
-		this.getPanes().eq(i).animate({width: w}, function() { 
-			$(this).show();
-			done.call();
-		});
-		
+		// animate current pane's width to zero
+    // animate next pane's width at the same time for smooth animation
+    currentPane.animate({width: 0}, {
+      step: function(now){
+        nextPane.css("width", w-now);
+      },
+      complete: function(){
+        $(this).hide();
+        done.call();
+        animating = false;
+     }
+    });
+    // Dirty hack...  onLoad, currentPant will be empty and nextPane will be the first pane
+    // If this is the case, manually run callback since the animation never occured, and reset animating
+    if (!currentPane.length){ 
+      done.call(); 
+      animating = false;
+    }
 	});	
 
 	
@@ -750,8 +820,8 @@
 		// public methods
 		$.extend(this, {				
 			click: function(i, e) {
-				
-				var tab = tabs.eq(i);												 
+			  
+				var tab = tabs.eq(i);
 				
 				if (typeof i == 'string' && i.replace("#", "")) {
 					tab = tabs.filter("[href*=" + i.replace("#", "") + "]");
@@ -781,14 +851,13 @@
 
 				// call the effect
 				effects[conf.effect].call(self, i, function() {
-
+					current = i;
 					// onClick callback
 					e.type = "onClick";
-					trigger.trigger(e, [i]);					
+					trigger.trigger(e, [i]);
 				});			
 				
 				// default behaviour
-				current = i;
 				tabs.removeClass(conf.current);	
 				tab.addClass(conf.current);				
 				
@@ -914,19 +983,19 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.5 / Expose - Dim the lights
+ * jQuery Tools v1.2.6 / Expose - Dim the lights
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/toolbox/expose.html
  *
  * Since: Mar 2010
- * Date: 2010-12-27 15:01 
+ * Date: 2011-10-26 11:02 
  */
 (function($) { 	
 
 	// static constructs
-	$.tools = $.tools || {version: 'v1.2.5'};
+	$.tools = $.tools || {version: 'v1.2.6'};
 	
 	var tool;
 	
@@ -1139,20 +1208,20 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.5 History "Back button for AJAX apps"
+ * jQuery Tools v1.2.6 History "Back button for AJAX apps"
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/toolbox/history.html
  * 
  * Since: Mar 2010
- * Date: 2010-12-27 15:01 
+ * Date: 2011-10-26 11:02 
  */
 (function($) {
 		
 	var hash, iframe, links, inited;		
 	
-	$.tools = $.tools || {version: 'v1.2.5'};
+	$.tools = $.tools || {version: 'v1.2.6'};
 	
 	$.tools.history = {
 	
@@ -1166,14 +1235,14 @@
 				// create iframe that is constantly checked for hash changes
 				if (!iframe) {
 					iframe = $("<iframe/>").attr("src", "javascript:false;").hide().get(0);
-					$("body").append(iframe);
+					$("body").prepend(iframe);
 									
 					setInterval(function() {
 						var idoc = iframe.contentWindow.document, 
 							 h = idoc.location.hash;
 					
 						if (hash !== h) {						
-							$.event.trigger("hash", h);
+							$(window).trigger("hash", h);
 						}
 					}, 100);
 					
@@ -1186,7 +1255,7 @@
 				setInterval(function() {
 					var h = location.hash;
 					if (h !== hash) {
-						$.event.trigger("hash", h);
+						$(window).trigger("hash", h);
 					}						
 				}, 100);
 			}
@@ -1248,18 +1317,18 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.5 Tooltip - UI essentials
+ * jQuery Tools v1.2.6 Tooltip - UI essentials
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tooltip/
  *
  * Since: November 2008
- * Date: 2010-12-27 15:01 
+ * Date: 2011-10-26 11:02 
  */
 (function($) { 	
 	// static constructs
-	$.tools = $.tools || {version: 'v1.2.5'};
+	$.tools = $.tools || {version: 'v1.2.6'};
 	
 	$.tools.tooltip = {
 		
@@ -1272,6 +1341,7 @@
 			delay: 30,
 			opacity: 1,			
 			tip: 0,
+            fadeIE: false, // enables fade effect in IE
 			
 			// 'top', 'bottom', 'right', 'left', 'center'
 			position: ['top', 'center'], 
@@ -1314,13 +1384,26 @@
 		],
 		
 		fade: [
-			function(done) { 
+			function(done) {
 				var conf = this.getConf();
-				this.getTip().fadeTo(conf.fadeInSpeed, conf.opacity, done); 
-			},  
-			function(done) { 
-				this.getTip().fadeOut(this.getConf().fadeOutSpeed, done); 
-			} 
+				if (!$.browser.msie || conf.fadeIE) {
+					this.getTip().fadeTo(conf.fadeInSpeed, conf.opacity, done);
+				}
+				else {
+					this.getTip().show();
+					done();
+				}
+			},
+			function(done) {
+				var conf = this.getConf();
+				if (!$.browser.msie || conf.fadeIE) {
+					this.getTip().fadeOut(conf.fadeOutSpeed, done);
+				}
+				else {
+					this.getTip().hide();
+					done();
+				}
+			}
 		]		
 	};   
 
@@ -1458,7 +1541,7 @@
 				}
 
 				// onBeforeShow
-				e = e || $.Event();
+				e = $.Event();
 				e.type = "onBeforeShow";
 				fire.trigger(e, [pos]);				
 				if (e.isDefaultPrevented()) { return self; }
@@ -1485,13 +1568,13 @@
 
 				if (!tip.data("__set")) {
 					
-					tip.bind(event[0], function() { 
+					tip.unbind(event[0]).bind(event[0], function() { 
 						clearTimeout(timer);
 						clearTimeout(pretimer);
 					});
 					
 					if (event[1] && !trigger.is("input:not(:checkbox, :radio), textarea")) { 					
-						tip.bind(event[1], function(e) {
+						tip.unbind(event[1]).bind(event[1], function(e) {
 	
 							// being moved to the trigger element
 							if (e.relatedTarget != trigger[0]) {
@@ -1500,7 +1583,8 @@
 						}); 
 					} 
 					
-					tip.data("__set", true);
+					// bind agein for if same tip element
+					if (!conf.tip) tip.data("__set", true);
 				}
 				
 				return self;
@@ -1511,7 +1595,7 @@
 				if (!tip || !self.isShown()) { return self; }
 			
 				// onBeforeHide
-				e = e || $.Event();
+				e = $.Event();
 				e.type = "onBeforeHide";
 				fire.trigger(e);				
 				if (e.isDefaultPrevented()) { return; }
