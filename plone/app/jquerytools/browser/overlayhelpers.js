@@ -198,7 +198,7 @@ jQuery(function ($) {
 
         content = $(
             '<div id="' + pbo.nt +
-            '" class="overlay overlay-' + pbo.subtype +
+            '" class="modal overlay overlay-' + pbo.subtype +
             ' ' + (pbo.cssclass || '') +
             '"><div class="close"><span>Close</span></div></div>'
         );
