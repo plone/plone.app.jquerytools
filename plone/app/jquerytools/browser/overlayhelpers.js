@@ -214,9 +214,11 @@ jQuery(function ($) {
                 content.width(pbw);
             }
         }
-
         // add the target element at the end of the body.
-        if (trigger) {
+		if (pbo.config.overlayTarget && $(pbo.config.overlayTarget).length){
+			content.appendTo($(pbo.config.overlayTarget));
+			console.log("appending overlay to "+pbo.config.overlayTarget);
+		} else if (trigger) {
             trigger.after(content);
         } else {
             content.appendTo($("body"));
