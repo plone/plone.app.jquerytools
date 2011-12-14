@@ -473,12 +473,15 @@ jQuery(function ($) {
         // prevent double click warning for this form
         $(this).find("input.submitting").removeClass('submitting');
 
-        el = $('<div class="pb-ajax" />');
+        el = $('div.pb-ajax', content);
+        if (el.length === 0) {
+            el = $('<div class="pb-ajax" />');
+            content.append(el);
+        }
         if (api.getConf().fixed) {
             // don't let it be over 75% of the viewport's height
             el.css('max-height', Math.floor($(window).height() * 0.75));
         }
-        content.append(el);
 
         // affix a random query argument to prevent
         // loading from browser cache
