@@ -93,8 +93,7 @@ jQuery(function ($) {
                 // we're going to let tools' overlay do all the real
                 // work. Just get the markers in place.
                 src = src.replace(/^.+#/, '#');
-                $("[id='" + src.replace('#', '') + "']")
-                    .addClass('overlay');
+                $("[id='" + src.replace('#', '') + "']").addClass('overlay');
                 o.removeAttr('href').attr('rel', src);
                 // use overlay on the source (clickable) element
                 o.overlay();
@@ -167,17 +166,18 @@ jQuery(function ($) {
         var old_data = o.data('pbo');
         if (old_data) {
             switch (old_data.subtype) {
-            case 'image':
-                o.unbind('click', pb.image_click);
-                break;
-            case 'ajax':
-                o.unbind('click', pb.ajax_click);
-                break;
-            default:
-                // it's probably the jqt overlay click handler,
-                // but we don't know the handler and are forced
-                // to do a generic unbind of click handlers.
-                o.unbind('click');
+                case 'image':
+                    o.unbind('click', pb.image_click);
+                    break;
+                case 'ajax':
+                    o.unbind('click', pb.ajax_click);
+                    break;
+                default:
+                    // it's probably the jqt overlay click handler,
+                    // but we don't know the handler and are forced
+                    // to do a generic unbind of click handlers.
+                    o.unbind('click');
+                    break;
             }
             if (old_data.nt) {
                 $('#' + old_data.nt).remove();
@@ -196,12 +196,11 @@ jQuery(function ($) {
             top,
             pbw = pbo.width;
 
-        content = $(
+        content = $('' +
             '<div id="' + pbo.nt +
             '" class="overlay overlay-' + pbo.subtype +
             ' ' + (pbo.cssclass || '') +
-            '"><div class="close"><span>Close</span></div></div>'
-        );
+            '"><div class="close"><span>Close</span></div></div>');
 
         content.data('pbo', pbo);
 
@@ -290,8 +289,8 @@ jQuery(function ($) {
         This routine returns the cooked error response.
     ******/
     pb.ajax_error_recover = function (responseText, selector) {
-        var tcontent = $('<div/>')
-            .append(responseText.replace(/<script(.|\s)*?\/script>/gi, ""));
+        var tcontent = $('<div/>').append(
+                responseText.replace(/<script(.|\s)*?\/script>/gi, ""));
         return selector ? tcontent.find(selector) : tcontent;
     };
 
@@ -352,15 +351,11 @@ jQuery(function ($) {
 
             // create a div containing the optionally filtered response
             el = $('<div />').append(
-                selector ?
-                    // a lesson learned from the jQuery source: $(responseText)
-                    // will not work well unless responseText is well-formed;
-                    // appending to a div is more robust, and automagically
-                    // removes the html/head/body outer tagging.
-                    $('<div />').append(responseText).find(selector)
-                    :
-                    responseText
-                );
+                // a lesson learned from the jQuery source: $(responseText)
+                // will not work well unless responseText is well-formed;
+                // appending to a div is more robust, and automagically
+                // removes the html/head/body outer tagging.
+                selector ? $('<div />').append(responseText).find(selector) : responseText );
 
             // afterpost callback
             if (success && afterpost) {
@@ -425,6 +420,7 @@ jQuery(function ($) {
                     } else {
                         api.close();
                     }
+                    break;
                 }
                 $(document).trigger('formOverlayLoadFailure', [this, myform, api, pb, ajax_parent, noform]);
             }
@@ -457,9 +453,9 @@ jQuery(function ($) {
             sep;
 
         e = $.Event();
-    	e.type = "beforeAjaxClickHandled";
+        e.type = "beforeAjaxClickHandled";
         $(document).trigger(e, [this, event]);
-        if (e.isDefaultPrevented()) { return; }
+        if (e.isDefaultPrevented()) { return false; }
 
         pbo = ethis.data('pbo');
 
@@ -537,7 +533,7 @@ jQuery(function ($) {
                 content.remove();
             };
             $(document).trigger('loadInsideOverlay', [this, responseText, errorText, api]);
-        }
+        };
 
         // and load the div
         el.load(src, null, function (responseText, errorText) {
@@ -577,8 +573,7 @@ jQuery(function ($) {
             content.append(
                 '<iframe src="' + pbo.src + '" width="' +
                  content.width() + '" height="' + content.height() +
-                 '" onload="pb.spinner.hide()"/>'
-            );
+                 '" onload="pb.spinner.hide()"/>');
         } else {
             pb.spinner.hide();
         }
