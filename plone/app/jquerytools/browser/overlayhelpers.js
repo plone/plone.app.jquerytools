@@ -15,28 +15,28 @@ var pb = {spinner: {}, overlay_counter: 1};
 
 jQuery.tools.overlay.conf.oneInstance = false;
 
-(function($) { 
+(function($) {
     // override jqt default effect to take account of position
     // of parent elements
-    jQuery.tools.overlay.addEffect('default', 
+    jQuery.tools.overlay.addEffect('default',
         function(pos, onLoad) {
             var conf = this.getConf(),
                  w = $(window),
                  ovl = this.getOverlay(),
-                 op = ovl.parent().offsetParent().offset();              
+                 op = ovl.parent().offsetParent().offset();
 
             if (!conf.fixed)  {
                 pos.top += w.scrollTop() - op.top;
                 pos.left += w.scrollLeft() - op.left;
-            } 
-                
+            }
+
             pos.position = conf.fixed ? 'fixed' : 'absolute';
-            ovl.css(pos).fadeIn(conf.speed, onLoad); 
-            
+            ovl.css(pos).fadeIn(conf.speed, onLoad);
+
         }, function(onClose) {
-            this.getOverlay().fadeOut(this.getConf().closeSpeed, onClose);          
-        }       
-    );      
+            this.getOverlay().fadeOut(this.getConf().closeSpeed, onClose);
+        }
+    );
 
     pb.spinner.show = function () {
         $('body').css('cursor', 'wait');
@@ -121,7 +121,7 @@ jQuery(function ($) {
                 pbo.source = o;
 
                 // remove any existing overlay and overlay handler
-                pb.remove_overlay(o);                
+                pb.remove_overlay(o);
 
                 // save options on trigger element
                 o.data('pbo', pbo);
@@ -456,7 +456,7 @@ jQuery(function ($) {
             closeselector,
             sep;
 
-        e = $.Event(); 
+        e = $.Event();
     	e.type = "beforeAjaxClickHandled";
         $(document).trigger(e, [this, event]);
         if (e.isDefaultPrevented()) { return; }
