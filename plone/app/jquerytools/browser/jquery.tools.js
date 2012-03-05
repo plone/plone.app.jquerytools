@@ -1,18 +1,18 @@
 /**
  * @license 
- * jQuery Tools v1.2.6 Overlay - Overlay base. Extend it.
+ * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 Overlay - Overlay base. Extend it.
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/overlay/
  *
  * Since: March 2008
- * Date: 2011-10-26 11:02 
+ * Date: 2012-03-05 00:46 
  */
 (function($) { 
 
 	// static constructs
-	$.tools = $.tools || {version: 'v1.2.6'};
+	$.tools = $.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
 	
 	$.tools.overlay = {
 		
@@ -163,7 +163,7 @@
 				
 				// when window is clicked outside overlay, we close
 				if (conf.closeOnClick) {
-					$(document).bind("click." + uid, function(e) { 
+					$(document).on("click." + uid, function(e) { 
 						if (!$(e.target).parents(overlay).length) { 
 							self.close(e); 
 						}
@@ -174,7 +174,7 @@
 				if (conf.closeOnEsc) { 
 
 					// one callback is enough if multiple instances are loaded simultaneously
-					$(document).bind("keydown." + uid, function(e) {
+					$(document).on("keydown." + uid, function(e) {
 						if (e.keyCode == 27) { 
 							self.close(e);	 
 						}
@@ -203,7 +203,7 @@
 				});
 				
 				// unbind the keyboard / clicking actions
-				$(document).unbind("click." + uid).unbind("keydown." + uid);		  
+				$(document).off("click." + uid + " keydown." + uid);		  
 				
 				if (maskConf) {
 					$.mask.close();		
@@ -240,12 +240,12 @@
 				
 			// configuration
 			if ($.isFunction(conf[name])) { 
-				$(self).bind(name, conf[name]); 
+				$(self).on(name, conf[name]); 
 			}
 
 			// API
 			self[name] = function(fn) {
-				if (fn) { $(self).bind(name, fn); }
+				if (fn) { $(self).on(name, fn); }
 				return self;
 			};
 		});
@@ -294,19 +294,19 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.6 Scrollable - New wave UI design
+ * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 Scrollable - New wave UI design
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/scrollable.html
  *
  * Since: March 2008
- * Date: 2011-10-26 11:02 
+ * Date: 2012-03-05 00:46 
  */
 (function($) { 
 
 	// static constructs
-	$.tools = $.tools || {version: 'v1.2.6'};
+	$.tools = $.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
 	
 	$.tools.scrollable = {
 		
@@ -484,11 +484,11 @@
 				
 			// configuration
 			if ($.isFunction(conf[name])) { 
-				$(self).bind(name, conf[name]); 
+				$(self).on(name, conf[name]); 
 			}
 			
 			self[name] = function(fn) {
-				if (fn) { $(self).bind(name, fn); }
+				if (fn) { $(self).on(name, fn); }
 				return self;
 			};
 		});  
@@ -608,7 +608,7 @@
 		
 		if (conf.keyboard)  {
 			
-			$(document).bind("keydown.scrollable", function(evt) {
+			$(document).on("keydown.scrollable", function(evt) {
 
 				// skip certain conditions
 				if (!conf.keyboard || evt.altKey || evt.ctrlKey || evt.metaKey || $(evt.target).is(":input")) { 
@@ -663,19 +663,19 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.6 Tabs- The basics of UI design.
+ * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 Tabs- The basics of UI design.
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tabs/
  *
  * Since: November 2008
- * Date: 2011-10-26 11:02 
+ * Date: 2012-03-05 00:46 
  */  
 (function($) {
 		
 	// static constructs
-	$.tools = $.tools || {version: 'v1.2.6'};
+	$.tools = $.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
 	
 	$.tools.tabs = {
 		
@@ -685,6 +685,7 @@
 			onBeforeClick: null,
 			onClick: null, 
 			effect: 'default',
+			initialEffect: false,   // whether or not to show effect in first init of tabs
 			initialIndex: 0,			
 			event: 'click',
 			rotate: false,
@@ -804,11 +805,11 @@
 	
 	function Tabs(root, paneSelector, conf) {
 		
-		var self = this, 
-			 trigger = root.add(this),
-			 tabs = root.find(conf.tabs),
-			 panes = paneSelector.jquery ? paneSelector : root.children(paneSelector),			 
-			 current;
+		var self = this,
+        trigger = root.add(this),
+        tabs = root.find(conf.tabs),
+        panes = paneSelector.jquery ? paneSelector : root.children(paneSelector),
+        current;
 			 
 		
 		// make sure tabs and panes are found
@@ -821,10 +822,11 @@
 		$.extend(this, {				
 			click: function(i, e) {
 			  
-				var tab = tabs.eq(i);
+				var tab = tabs.eq(i),
+				    firstRender = !root.data('tabs');
 				
 				if (typeof i == 'string' && i.replace("#", "")) {
-					tab = tabs.filter("[href*=" + i.replace("#", "") + "]");
+					tab = tabs.filter("[href*=\"" + i.replace("#", "") + "\"]");
 					i = Math.max(tabs.index(tab), 0);
 				}
 								
@@ -848,9 +850,12 @@
 				e.type = "onBeforeClick";
 				trigger.trigger(e, [i]);				
 				if (e.isDefaultPrevented()) { return; }
+				
+        // if firstRender, only run effect if initialEffect is set, otherwise default
+				var effect = firstRender ? conf.initialEffect && conf.effect || 'default' : conf.effect;
 
 				// call the effect
-				effects[conf.effect].call(self, i, function() {
+				effects[effect].call(self, i, function() {
 					current = i;
 					// onClick callback
 					e.type = "onClick";
@@ -897,8 +902,8 @@
 			},
 			
 			destroy: function() {
-				tabs.unbind(conf.event).removeClass(conf.current);
-				panes.find("a[href^=#]").unbind("click.T"); 
+				tabs.off(conf.event).removeClass(conf.current);
+				panes.find("a[href^=\"#\"]").off("click.T"); 
 				return self;
 			}
 		
@@ -909,12 +914,12 @@
 				
 			// configuration
 			if ($.isFunction(conf[name])) {
-				$(self).bind(name, conf[name]); 
+				$(self).on(name, conf[name]); 
 			}
 
 			// API
 			self[name] = function(fn) {
-				if (fn) { $(self).bind(name, fn); }
+				if (fn) { $(self).on(name, fn); }
 				return self;	
 			};
 		});
@@ -927,19 +932,19 @@
 		
 		// setup click actions for each tab
 		tabs.each(function(i) { 				
-			$(this).bind(conf.event, function(e) {
+			$(this).on(conf.event, function(e) {
 				self.click(i, e);
 				return e.preventDefault();
 			});			
 		});
 		
 		// cross tab anchor link
-		panes.find("a[href^=#]").bind("click.T", function(e) {
+		panes.find("a[href^=\"#\"]").on("click.T", function(e) {
 			self.click($(this).attr("href"), e);		
 		}); 
 		
 		// open initial tab
-		if (location.hash && conf.tabs == "a" && root.find("[href=" +location.hash+ "]").length) {
+		if (location.hash && conf.tabs == "a" && root.find("[href=\"" +location.hash+ "\"]").length) {
 			self.click(location.hash);
 
 		} else {
@@ -983,19 +988,19 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.6 / Expose - Dim the lights
+ * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 / Expose - Dim the lights
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/toolbox/expose.html
  *
  * Since: Mar 2010
- * Date: 2011-10-26 11:02 
+ * Date: 2012-03-05 00:46 
  */
 (function($) { 	
 
 	// static constructs
-	$.tools = $.tools || {version: 'v1.2.6'};
+	$.tools = $.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
 	
 	var tool;
 	
@@ -1099,7 +1104,7 @@
 			
 			// esc button
 			if (conf.closeOnEsc) {						
-				$(document).bind("keydown.mask", function(e) {							
+				$(document).on("keydown.mask", function(e) {							
 					if (e.keyCode == 27) {
 						$.mask.close(e);	
 					}		
@@ -1108,13 +1113,13 @@
 			
 			// mask click closes
 			if (conf.closeOnClick) {
-				mask.bind("click.mask", function(e)  {
+				mask.on("click.mask", function(e)  {
 					$.mask.close(e);		
 				});					
 			}			
 			
 			// resize mask when window is resized
-			$(window).bind("resize.mask", function() {
+			$(window).on("resize.mask", function() {
 				$.mask.fit();
 			});
 			
@@ -1161,9 +1166,9 @@
 				});				
 				
 				// unbind various event listeners
-				$(document).unbind("keydown.mask");
-				mask.unbind("click.mask");
-				$(window).unbind("resize.mask");  
+				$(document).off("keydown.mask");
+				mask.off("click.mask");
+				$(window).off("resize.mask");  
 			}
 			
 			return this; 
@@ -1208,20 +1213,20 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.6 History "Back button for AJAX apps"
+ * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 History "Back button for AJAX apps"
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/toolbox/history.html
  * 
  * Since: Mar 2010
- * Date: 2011-10-26 11:02 
+ * Date: 2012-03-05 00:46 
  */
 (function($) {
 		
 	var hash, iframe, links, inited;		
 	
-	$.tools = $.tools || {version: 'v1.2.6'};
+	$.tools = $.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
 	
 	$.tools.history = {
 	
@@ -1288,7 +1293,7 @@
 	} 
 		 
 	// global histroy change listener
-	$(window).bind("hash", function(e, h)  { 
+	$(window).on("hash", function(e, h)  { 
 		if (h) {
 			links.filter(function() {
 			  var href = $(this).attr("href");
@@ -1309,7 +1314,7 @@
 		$.tools.history.init(this);
 
 		// return jQuery
-		return this.bind("history", fn);		
+		return this.on("history", fn);		
 	};	
 		
 })(jQuery); 
@@ -1317,18 +1322,18 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.6 Tooltip - UI essentials
+ * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 Tooltip - UI essentials
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tooltip/
  *
  * Since: November 2008
- * Date: 2011-10-26 11:02 
+ * Date: 2012-03-05 00:46 
  */
 (function($) { 	
 	// static constructs
-	$.tools = $.tools || {version: 'v1.2.6'};
+	$.tools = $.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
 	
 	$.tools.tooltip = {
 		
@@ -1469,7 +1474,7 @@
 		
 		
 		// trigger --> show  
-		trigger.bind(evt[0], function(e) {
+		trigger.on(evt[0], function(e) {
 
 			clearTimeout(timer);
 			if (conf.predelay) {
@@ -1480,7 +1485,7 @@
 			}
 			
 		// trigger --> hide
-		}).bind(evt[1], function(e)  {
+		}).on(evt[1], function(e)  {
 			clearTimeout(pretimer);
 			if (conf.delay)  {
 				timer = setTimeout(function() { self.hide(e); }, conf.delay);	
@@ -1568,13 +1573,13 @@
 
 				if (!tip.data("__set")) {
 					
-					tip.unbind(event[0]).bind(event[0], function() { 
+					tip.off(event[0]).on(event[0], function() { 
 						clearTimeout(timer);
 						clearTimeout(pretimer);
 					});
 					
 					if (event[1] && !trigger.is("input:not(:checkbox, :radio), textarea")) { 					
-						tip.unbind(event[1]).bind(event[1], function(e) {
+						tip.off(event[1]).on(event[1], function(e) {
 	
 							// being moved to the trigger element
 							if (e.relatedTarget != trigger[0]) {
@@ -1633,12 +1638,12 @@
 				
 			// configuration
 			if ($.isFunction(conf[name])) { 
-				$(self).bind(name, conf[name]); 
+				$(self).on(name, conf[name]); 
 			}
 
 			// API
 			self[name] = function(fn) {
-				if (fn) { $(self).bind(name, fn); }
+				if (fn) { $(self).on(name, fn); }
 				return self;
 			};
 		});

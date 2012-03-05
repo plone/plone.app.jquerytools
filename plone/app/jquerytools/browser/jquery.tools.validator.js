@@ -1,18 +1,18 @@
 /**
  * @license 
- * jQuery Tools Validator v1.2.6 - HTML5 is here. Now use it.
+ * jQuery Tools Validator 884082c1ad23306019690bb4f8561ea9b6a29237 - HTML5 is here. Now use it.
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/form/validator/
  * 
  * Since: Mar 2010
- * Date: 2011-10-26 11:02 
+ * Date: 2012-03-05 00:46 
  */
 /*jslint evil: true */ 
 (function($) {	
 
-	$.tools = $.tools || {version: 'v1.2.6'};
+	$.tools = $.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
 		
 	// globals
 	var typeRe = /\[type=([a-z]+)\]/, 
@@ -95,14 +95,17 @@
 	};
 	
 	/* calculate error message position relative to the input */  	
-	function getPosition(trigger, el, conf) {	
+	function getPosition(trigger, el, conf) {
+	
+		// Get the first element in the selector set
+		el = $(el).first() || el;
 		
 		// get origin top/left position 
-		var top = trigger.offset().top, 
-			 left = trigger.offset().left,	 
-			 pos = conf.position.split(/,?\s+/),
-			 y = pos[0],
-			 x = pos[1];
+		var	top = trigger.offset().top,
+			left = trigger.offset().left,
+			pos = conf.position.split(/,?\s+/),
+			y = pos[0],
+			x = pos[1];
 		
 		top  -= el.outerHeight() - conf.offset[0];
 		left += trigger.outerWidth() + conf.offset[1];
@@ -133,7 +136,7 @@
 		function fn() {
 			return this.getAttribute("type") == type;  	
 		} 
-		fn.key = "[type=" + type + "]";
+		fn.key = "[type=\"" + type + "\"]";
 		return fn;
 	}	
 
@@ -210,7 +213,7 @@
 		Usage: $("input:eq(2)").oninvalid(function() { ... });
 	*/
 	$.fn.oninvalid = function( fn ){
-		return this[fn ? "bind" : "trigger"]("OI", fn);
+		return this[fn ? "on" : "trigger"]("OI", fn);
 	};
 	
 	
@@ -251,17 +254,25 @@
 		return !!v; 			
 	});
 	
-	v.fn("[pattern]", function(el) {
-		var p = new RegExp("^" + el.attr("pattern") + "$");  
-		return p.test(el.val()); 			
+	v.fn("[pattern]", function(el, v) {
+		return v === '' || new RegExp("^" + el.attr("pattern") + "$").test(v);
 	});
 
+	v.fn(":radio", "Please select an option.", function(el) {
+		var	checked = false;
+		var	els = $("[name='" + el.attr("name") + "']").each(function(i, el) {
+			if ($(el).is(":checked")) {
+				checked = true;
+			}
+		});
+		return (checked) ? true : false;
+	});
 	
 	function Validator(inputs, form, conf) {		
 		
 		// private variables
 		var self = this, 
-			 fire = form.add(self);
+			fire = form.add(self);
 
 		// make sure there are input fields available
 		inputs = inputs.not(":button, :image, :reset, :submit");			 
@@ -370,13 +381,13 @@
 						msg.remove();
 						$(this).data("msg.el", null);
 					}
-				}).unbind(conf.errorInputEvent || '');
+				}).off(conf.errorInputEvent + '.v' || '');
 				return self;
 			},
 			
 			destroy: function() { 
-				form.unbind(conf.formEvent + ".V").unbind("reset.V"); 
-				inputs.unbind(conf.inputEvent + ".V").unbind("change.V");
+				form.off(conf.formEvent + ".V reset.V"); 
+				inputs.off(conf.inputEvent + ".V change.V");
 				return self.reset();	
 			}, 
 			
@@ -388,6 +399,17 @@
 				
 				els = els || inputs;    
 				els = els.not(":disabled");
+
+				// filter duplicate elements by name
+				var names = {};
+				els = els.filter(function(){
+					var name = $(this).attr("name");					
+					if (!names[name]) {
+						names[name] = true;
+						return $(this);
+					}
+				});
+
 				if (!els.length) { return true; }
 
 				e = e || $.Event();
@@ -401,7 +423,7 @@
 				var errs = [];
  
 				// loop trough the inputs
-				els.not(":radio:not(:checked)").each(function() {
+				els.each(function() {
 						
 					// field and it's error message container						
 					var msgs = [], 
@@ -409,7 +431,7 @@
 						 event = dateInput && el.is(":date") ? "onHide.v" : conf.errorInputEvent + ".v";					
 					
 					// cleanup previous validation event
-					el.unbind(event);
+					el.off(event);
 					
 					
 					// loop all validator functions
@@ -452,7 +474,7 @@
 						
 						// begin validating upon error event type (such as keyup) 
 						if (conf.errorInputEvent) {							
-							el.bind(event, function(e) {
+							el.on(event, function(e) {
 								self.checkValidity(el, e);		
 							});							
 						} 					
@@ -482,7 +504,7 @@
 					e.type = "onSuccess";					
 					fire.trigger(e, [els]);
 					
-					els.unbind(conf.errorInputEvent + ".v");
+					els.off(conf.errorInputEvent + ".v");
 				}
 				
 				return true;				
@@ -496,12 +518,12 @@
 				
 			// configuration
 			if ($.isFunction(conf[name]))  {
-				$(self).bind(name, conf[name]);	
+				$(self).on(name, conf[name]);	
 			}
 			
 			// API methods				
 			self[name] = function(fn) {
-				if (fn) { $(self).bind(name, fn); }
+				if (fn) { $(self).on(name, fn); }
 				return self;
 			};
 		});	
@@ -509,7 +531,7 @@
 		
 		// form validation
 		if (conf.formEvent) {
-			form.bind(conf.formEvent + ".V", function(e) {
+			form.on(conf.formEvent + ".V", function(e) {
 				if (!self.checkValidity(null, e)) { 
 					return e.preventDefault(); 
 				}
@@ -520,7 +542,7 @@
 		}
 		
 		// form reset
-		form.bind("reset.V", function()  {
+		form.on("reset.V", function()  {
 			self.reset();			
 		});
 		
@@ -540,27 +562,32 @@
 		
 		// input validation               
 		if (conf.inputEvent) {
-			inputs.bind(conf.inputEvent + ".V", function(e) {
+			inputs.on(conf.inputEvent + ".V", function(e) {
 				self.checkValidity($(this), e);
 			});	
 		} 
 	
-		// checkboxes, selects and radios are checked separately
-		inputs.filter(":checkbox, select").filter("[required]").bind("change.V", function(e) {
+		// checkboxes and selects are checked separately
+		inputs.filter(":checkbox, select").filter("[required]").on("change.V", function(e) {
 			var el = $(this);
 			if (this.checked || (el.is("select") && $(this).val())) {
 				effects[conf.effect][1].call(self, el, e); 
 			}
-		});		
-		
-		var radios = inputs.filter(":radio").change(function(e) {
-			self.checkValidity(radios, e);
+		});
+
+		// get radio groups by name
+		inputs.filter(":radio[required]").on("change.V", function(e) {			
+			var els = $("[name='" + $(e.srcElement).attr("name") + "']");
+			if ((els != null) && (els.length != 0)) {
+				self.checkValidity(els, e);
+			}
 		});
 		
 		// reposition tooltips when window is resized
 		$(window).resize(function() {
 			self.reflow();		
 		});
+		
 	}
 
 	
@@ -594,6 +621,4 @@
 	};   
 		
 })(jQuery);
-			
-
 

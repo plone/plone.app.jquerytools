@@ -1,13 +1,13 @@
 /**
  * @license 
- * jQuery Tools v1.2.6 / Overlay Apple effect. 
+ * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 / Overlay Apple effect. 
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/overlay/apple.html
  *
  * Since: July 2009
- * Date: 2011-10-26 11:02 
+ * Date: 2012-03-05 00:46 
  */
 (function($) { 
 
@@ -99,8 +99,8 @@
 		
 		// begin growing
 		img.animate({			
-			top: overlay.css("top"), 
-			left: overlay.css("left"), 
+			top: pos.top,
+			left: pos.left,
 			width: oWidth}, conf.speed, function() {
 			
 			// set close button and content over the image
@@ -156,14 +156,14 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.6 / Scrollable Autoscroll
+ * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 / Scrollable Autoscroll
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/scrollable/autoscroll.html
  *
  * Since: September 2009
- * Date: 2011-10-26 11:02 
+ * Date: 2012-03-05 00:46 
  */
 (function($) {		
 
@@ -200,6 +200,8 @@
       *   Fixes this bug: http://flowplayer.org/tools/forum/25/72029
       */
       function scroll(){        
+      	// Fixes https://github.com/jquerytools/jquerytools/issues/591
+        if (timer) clearTimeout(timer); // reset timeout, especially for onSeek event
         timer = setTimeout(function(){
           api.next();
         }, opts.interval);
@@ -213,14 +215,13 @@
 				if (timer) { return; }
 				
 				stopped = false;
-				
-        root.bind('onSeek', scroll);
-        scroll();
+				root.on('onSeek', scroll);
+				scroll();
 			};	
 
 			api.pause = function() {
 				timer = clearTimeout(timer);  // clear any queued items immediately
-        root.unbind('onSeek', scroll);
+				root.off('onSeek', scroll);
 			};
 			
 			// resume playing if not stopped
@@ -253,14 +254,14 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.6 / Scrollable Navigator
+ * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 / Scrollable Navigator
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  *
  * http://flowplayer.org/tools/scrollable/navigator.html
  *
  * Since: September 2009
- * Date: 2011-10-26 11:02 
+ * Date: 2012-03-05 00:46 
  */
 (function($) {
 		
@@ -313,9 +314,9 @@
 			
 			
 			if (hashed) {
-				history.pushState({i: 0});
+				history.pushState({i: 0}, '');
 				
-				$(window).bind("popstate", function(evt) {
+				$(window).on("popstate", function(evt) {
 					var s = evt.originalEvent.state;
 					if (s) { api.seekTo(s.i); }
 				});					
@@ -324,7 +325,7 @@
 			function doClick(el, i, e) {
 				api.seekTo(i);
 				e.preventDefault(); 
-				if (hashed) { history.pushState({i: i}); }
+				if (hashed) { history.pushState({i: i}, ''); }
 			}
 			
 			function els() {
@@ -388,14 +389,14 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.6 Slideshow - Extend it.
+ * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 Slideshow - Extend it.
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tabs/slideshow.html
  *
  * Since: September 2009
- * Date: 2011-10-26 11:02 
+ * Date: 2012-03-05 00:46 
  */
 (function($) {
 	
@@ -474,7 +475,7 @@
 				// onPlay
 				fire.trigger("onPlay");				
 				
-				fire.bind('onClick', next);
+				fire.on('onClick', next);
 				next();
 				
 				return self;
@@ -494,7 +495,7 @@
 				// onPause
 				fire.trigger("onPause");	
 				
-				fire.unbind('onClick', next);
+				fire.off('onClick', next);
 				
 				return self;
 			},
@@ -517,12 +518,12 @@
 				
 			// configuration
 			if ($.isFunction(conf[name]))  {
-				$(self).bind(name, conf[name]);	
+				$(self).on(name, conf[name]);	
 			}
 			
 			// API methods				
 			self[name] = function(fn) {
-				return $(self).bind(name, fn);
+				return $(self).on(name, fn);
 			};
 		});	
 		
@@ -580,14 +581,14 @@
 
 /**
  * @license
- * jQuery Tools v1.2.6 / Flashembed - New wave Flash embedding
+ * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 / Flashembed - New wave Flash embedding
  *
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  *
  * http://flowplayer.org/tools/toolbox/flashembed.html
  *
  * Since : March 2008
- * Date  : 2011-10-26 11:02
+ * Date  : 2012-03-05 00:46
  */
 (function() {
 
@@ -864,7 +865,7 @@
 	if (JQUERY) {
 
 		// tools version number
-		jQuery.tools = jQuery.tools || {version: 'v1.2.6'};
+		jQuery.tools = jQuery.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
 
 		jQuery.tools.flashembed = {
 			conf: GLOBAL_OPTS
@@ -882,7 +883,7 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.6 Mousewheel
+ * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 Mousewheel
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
@@ -893,12 +894,12 @@
  * http://threedubmedia.com 
  *
  * Since: Mar 2010
- * Date: 2011-10-26 11:02 
+ * Date: 2012-03-05 00:46 
  */
 (function($) { 
 	
 	$.fn.mousewheel = function( fn ){
-		return this[ fn ? "bind" : "trigger" ]( "wheel", fn );
+		return this[ fn ? "on" : "trigger" ]( "wheel", fn );
 	};
 
 	// special event config
@@ -948,14 +949,14 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.6 / Tooltip Dynamic Positioning
+ * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 / Tooltip Dynamic Positioning
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tooltip/dynamic.html
  *
  * Since: July 2009
- * Date: 2011-10-26 11:02 
+ * Date: 2012-03-05 00:46 
  */
 (function($) { 
 
@@ -1103,14 +1104,14 @@
 
 /**
  * @license 
- * jQuery Tools v1.2.6 / Tooltip Slide Effect
+ * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 / Tooltip Slide Effect
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tooltip/slide.html
  *
  * Since: September 2009
- * Date: 2011-10-26 11:02 
+ * Date: 2012-03-05 00:46 
  */
 (function($) { 
 

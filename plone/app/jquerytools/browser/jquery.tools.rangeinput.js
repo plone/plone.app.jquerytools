@@ -1,17 +1,17 @@
 /**
  * @license 
- * jQuery Tools v1.2.6 Rangeinput - HTML5 <input type="range" /> for humans
+ * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 Rangeinput - HTML5 <input type="range" /> for humans
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/rangeinput/
  *
  * Since: Mar 2010
- * Date: 2011-10-26 11:02 
+ * Date: 2012-03-05 00:46 
  */
 (function($) {
 	 
-	$.tools = $.tools || {version: 'v1.2.6'};
+	$.tools = $.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
 	 
 	var tool;
 	
@@ -46,7 +46,7 @@
 		FULL featured drag and drop. 0.7 kb minified, 0.3 gzipped. done.
 		Who told d'n'd is rocket science? Usage:
 		
-		$(".myelement").drag({y: false}).bind("drag", function(event, x, y) {
+		$(".myelement").drag({y: false}).on("drag", function(event, x, y) {
 			// do your custom thing
 		});
 		 
@@ -66,7 +66,7 @@
 		
 		conf = $.extend({x: true, y: true, drag: true}, conf);
 	
-		doc = doc || $(document).bind("mousedown mouseup", function(e) {
+		doc = doc || $(document).on("mousedown mouseup", function(e) {
 				
 			var el = $(e.target);  
 			
@@ -78,7 +78,7 @@
 					 y0 = e.pageY - offset.top,
 					 start = true;    
 				
-				doc.bind("mousemove.drag", function(e) {  
+				doc.on("mousemove.drag", function(e) {  
 					var x = e.pageX -x0, 
 						 y = e.pageY -y0,
 						 props = {};
@@ -104,7 +104,7 @@
 						draggable.trigger("dragEnd");  
 					}
 				} finally { 
-					doc.unbind("mousemove.drag");
+					doc.off("mousemove.drag");
 					draggable = null; 
 				}
 			} 
@@ -167,11 +167,8 @@
 			 precision = conf.precision;
 			 
 		if (precision === undefined) {
-			try {
-				precision = step.toString().split(".")[1].length;
-			} catch (err) {
-				precision = 0;	
-			}
+			precision = step.toString().split(".");
+			precision = precision.length === 2 ? precision[1].length : 0;
 		}  
 		
 		// Replace built-in range input (type attribute cannot be changed)
@@ -330,19 +327,19 @@
 				
 			// from configuration
 			if ($.isFunction(conf[name]))  {
-				$(self).bind(name, conf[name]);	
+				$(self).on(name, conf[name]);	
 			}
 			
 			// API methods
 			self[name] = function(fn) {
-				if (fn) { $(self).bind(name, fn); }
+				if (fn) { $(self).on(name, fn); }
 				return self;	
 			};
 		}); 
 			
 
 		// dragging		                                  
-		handle.drag({drag: false}).bind("dragStart", function() {
+		handle.drag({drag: false}).on("dragStart", function() {
 		
 			/* do some pre- calculations for seek() function. improves performance */			
 			init();
@@ -351,12 +348,12 @@
 			fireOnSlide = hasEvent($(self)) || hasEvent(input);
 			
 				
-		}).bind("drag", function(e, y, x) {        
+		}).on("drag", function(e, y, x) {        
 			
 			if (input.is(":disabled")) { return false; } 
 			slide(e, vertical ? y : x); 
 			
-		}).bind("dragEnd", function(e) {
+		}).on("dragEnd", function(e) {
 			if (!e.isDefaultPrevented()) {
 				e.type = "change";
 				fire.trigger(e, [value]);	 

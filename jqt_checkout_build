@@ -19,7 +19,7 @@ import StringIO
 import subprocess
 import datetime
 
-JQ_TOOLS_VERSION = 'v1.2.6'
+JQ_TOOLS_VERSION = '884082c1ad23306019690bb4f8561ea9b6a29237'  # 1.2.7-dev, branch=dev
 JQ_TOOLS_DOWNLOAD_URL = 'http://github.com/jquerytools/jquerytools/tarball/'+JQ_TOOLS_VERSION
 # JQ_TOOLS_DOWNLOAD_URL = 'file:///Users/rok/Projects/garbas/jquerytools-jquerytools-v1.2.5-0-g85655d7.tar.gz'
 
@@ -219,7 +219,7 @@ def version_hook(**kw):
     if not kw['filename'].endswith('.js') or \
        kw['filename'].endswith('jslint.js'):
         return kw
-    args = shlex.split('sed -i "" "s/@VERSION/%(version)s/g" %(filename)s' % kw)
+    args = shlex.split('sed -i "s/@VERSION/%(version)s/g" %(filename)s' % kw)
     subprocess.check_call(args)
     return kw
 
@@ -228,7 +228,7 @@ def date_hook(**kw):
        kw['filename'].endswith('jslint.js'):
         return kw
     # FIXME: should be date from git log
-    args = shlex.split('sed -i "" "s/@DATE/%(today)s/g" %(filename)s' % kw)
+    args = shlex.split('sed -i "s/@DATE/%(today)s/g" %(filename)s' % kw)
     subprocess.check_call(args)
     return kw
 

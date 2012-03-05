@@ -1,13 +1,13 @@
 /**
  * @license                                     
- * jQuery Tools v1.2.6 Dateinput - <input type="date" /> for humans
+ * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 Dateinput - <input type="date" /> for humans
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/form/dateinput/
  *
  * Since: Mar 2010
- * Date: 2011-10-26 11:02 
+ * Date: 2012-03-05 00:46 
  */
 (function($, undefined) {	
 		
@@ -15,10 +15,11 @@
 		 preserve today highlighted
 	*/
 	
-	$.tools = $.tools || {version: 'v1.2.6'};
+	$.tools = $.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
 	
-	var instances = [], 
-		 tool, 
+	var instances = [],
+		formatters = {},
+		 tool,
 		 
 		 // h=72, j=74, k=75, l=76, down=40, left=37, up=38, right=39
 		 KEYS = [75, 76, 38, 39, 74, 72, 40, 37],
@@ -28,6 +29,7 @@
 		
 		conf: { 
 			format: 'mm/dd/yy',
+			formatter: 'default',
 			selectors: false,
 			yearRange: [-5, 5],
 			lang: 'en',
@@ -70,6 +72,10 @@
 			}  
 		},
 		
+		addFormatter: function(name, fn) {
+			formatters[name] = fn;
+		},
+		
 		localize: function(language, labels) {
 			$.each(labels, function(key, val) {
 				labels[key] = val.split(",");		
@@ -103,10 +109,9 @@
 	}  
 	
 	// thanks: http://stevenlevithan.com/assets/misc/date.format.js 
-	var Re = /d{1,4}|m{1,4}|yy(?:yy)?|"[^"]*"|'[^']*'/g, tmpTag = $("<a/>");
+	var tmpTag = $("<a/>");
 	
-	function format(date, fmt, lang) {
-		
+	function format(formatter, date, text, lang) {
 	  var d = date.getDate(),
 			D = date.getDay(),
 			m = date.getMonth(),
@@ -124,15 +129,25 @@
 				yy:   String(y).slice(2),
 				yyyy: y
 			};
-
-		var ret = fmt.replace(Re, function ($0) {
-			return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
-		});
+			
+		var ret = formatters[formatter](text, date, flags, lang);
 		
 		// a small trick to handle special characters
 		return tmpTag.html(ret).html();
 		
 	}
+	
+	tool.addFormatter('default', function(text, date, flags, lang) {
+		return text.replace(/d{1,4}|m{1,4}|yy(?:yy)?|"[^"]*"|'[^']*'/g, function ($0) {
+			return $0 in flags ? flags[$0] : $0;
+		});
+	});
+	
+	tool.addFormatter('prefixed', function(text, date, flags, lang) {
+		return text.replace(/%(d{1,4}|m{1,4}|yy(?:yy)?|"[^"]*"|'[^']*')/g, function ($0, $1) {
+			return $1 in flags ? flags[$1] : $0;
+		});
+	});
 	
 	function integer(val) {
 		return parseInt(val, 10);	
@@ -282,16 +297,21 @@
 			currMonth = date.getMonth();
 			currDay	 = date.getDate();				
 			
+			e || (e = $.Event("api"));
+
+			// focus the input after selection (doesn't work in IE)
+			if (e.type == "click" && !$.browser.msie) {
+				input.focus();
+			}
 			
-			// beforChange
-			e = e || $.Event("api");
+			// beforeChange
 			e.type = "beforeChange";
 			
 			fire.trigger(e, [date]);
 			if (e.isDefaultPrevented()) { return; }
 			
 			// formatting			
-			input.val(format(date, conf.format, conf.lang));
+			input.val(format(conf.formatter, date, conf.format, conf.lang));
 			
       // change
 			e.type = "change";
@@ -312,18 +332,18 @@
 			ev.type = "onShow";
 			fire.trigger(ev);
 			
-			$(document).bind("keydown.d", function(e) {
+			$(document).on("keydown.d", function(e) {
 					
 				if (e.ctrlKey) { return true; }				
 				var key = e.keyCode;			 
 				
-				// backspace clears the value
-				if (key == 8) {
+				// backspace or delete clears the value
+				if (key == 8 || key == 46) {
 					input.val("");
 					return self.hide(e);	
 				}
 				
-				// esc or tab key
+				// esc or tab key exits
 				if (key == 27 || key == 9) { return self.hide(e); }						
 					
 				if ($(KEYS).index(key) >= 0) {
@@ -379,7 +399,7 @@
 			
 			
 			// click outside dateinput
-			$(document).bind("click.d", function(e) {					
+			$(document).on("click.d", function(e) {					
 				var el = e.target;
 				
 				if (!$(el).parents("#" + css.root).length && el != input[0] && (!trigger || el != trigger[0])) {
@@ -414,25 +434,25 @@
 				
 				opened = true;
 				
-				// month selector
-				monthSelector.unbind("change").change(function() {
-					self.setValue(yearSelector.val(), $(this).val());		
-				});
-				
-				// year selector
-				yearSelector.unbind("change").change(function() {
-					self.setValue($(this).val(), monthSelector.val());		
-				});
-				
+        // month selector
+        monthSelector.off("change").change(function() {
+          self.setValue(integer(yearSelector.val()), integer($(this).val()));
+        });
+
+        // year selector
+        yearSelector.off("change").change(function() {
+          self.setValue(integer($(this).val()), integer(monthSelector.val()));
+        });
+        
 				// prev / next month
-				pm = root.find("#" + css.prev).unbind("click").click(function(e) {
+				pm = root.find("#" + css.prev).off("click").click(function(e) {
 					if (!pm.hasClass(css.disabled)) {	
 					  self.addMonth(-1);
 					}
 					return false;
 				});
 				
-				nm = root.find("#" + css.next).unbind("click").click(function(e) {
+				nm = root.find("#" + css.next).off("click").click(function(e) {
 					if (!nm.hasClass(css.disabled)) {
 						self.addMonth();
 					}
@@ -606,7 +626,7 @@
 
 				// sunday
 				if (css.sunday) {
-					weeks.find(css.week).each(function() {
+					weeks.find("." + css.week).each(function() {
 						var beg = conf.firstDay ? 7 - conf.firstDay : 0;
 						$(this).children().slice(beg, beg + 1).addClass(css.sunday);		
 					});	
@@ -649,7 +669,7 @@
 			},						
 			
 			destroy: function() {
-				input.add(document).unbind("click.d").unbind("keydown.d");
+				input.add(document).off("click.d keydown.d");
 				root.add(trigger).remove();
 				input.removeData("dateinput").removeClass(css.input);
 				if (original)  { input.replaceWith(original); }
@@ -664,11 +684,11 @@
 					e.type = "onHide";
 					fire.trigger(e);
 					
-					$(document).unbind("click.d").unbind("keydown.d");
-					
 					// cancelled ?
 					if (e.isDefaultPrevented()) { return; }
 					
+					$(document).off("click.d keydown.d");
+										
 					// do the hide
 					root.hide();
 					opened = false;
@@ -694,7 +714,7 @@
 			},
 			
 			getValue: function(dateFormat) {
-				return dateFormat ? format(value, dateFormat, conf.lang) : value;	
+				return dateFormat ? format(conf.formatter, value, dateFormat, conf.lang) : value;	
 			},
 			
 			isOpen: function() {
@@ -708,12 +728,12 @@
 				
 			// configuration
 			if ($.isFunction(conf[name]))  {
-				$(self).bind(name, conf[name]);	
+				$(self).on(name, conf[name]);	
 			}
 			
 			// API methods				
 			self[name] = function(fn) {
-				if (fn) { $(self).bind(name, fn); }
+				if (fn) { $(self).on(name, fn); }
 				return self;
 			};
 		});
@@ -721,7 +741,7 @@
 		if (!conf.editable) {
 			
 			// show dateinput & assign keyboard shortcuts
-			input.bind("focus.d click.d", self.show).keydown(function(e) {
+			input.on("focus.d click.d", self.show).keydown(function(e) {
 	
 				var key = e.keyCode;
 		
@@ -729,6 +749,10 @@
 				if (!opened &&  $(KEYS).index(key) >= 0) {
 					self.show(e);
 					return e.preventDefault();
+			
+			// clear value on backspace or delete
+			} else if (key == 8 || key == 46) {
+				input.val("");
 				} 
 				
 				// allow tab
