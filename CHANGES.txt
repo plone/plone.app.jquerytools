@@ -4,6 +4,9 @@ Changelog
 1.4b1 - unreleased
 ------------------
 
+- Fix sed command in jqt_checkout_build script to work on Linux and OSX.
+  [thet]
+
 - Update to jQueryTools 1.2.6.
   [smcmahon] 
 
