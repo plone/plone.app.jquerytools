@@ -1,13 +1,13 @@
 /**
  * @license                                     
- * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 Dateinput - <input type="date" /> for humans
+ * jQuery Tools v1.2.7 Dateinput - <input type="date" /> for humans
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/form/dateinput/
  *
  * Since: Mar 2010
- * Date: 2012-03-05 00:46 
+ * Date: 2012-04-30 14:24 
  */
 (function($, undefined) {	
 		
@@ -15,7 +15,7 @@
 		 preserve today highlighted
 	*/
 	
-	$.tools = $.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
+	$.tools = $.tools || {version: 'v1.2.7'};
 	
 	var instances = [],
 		formatters = {},

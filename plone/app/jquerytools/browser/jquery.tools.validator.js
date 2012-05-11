@@ -1,18 +1,18 @@
 /**
  * @license 
- * jQuery Tools Validator 884082c1ad23306019690bb4f8561ea9b6a29237 - HTML5 is here. Now use it.
+ * jQuery Tools Validator v1.2.7 - HTML5 is here. Now use it.
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/form/validator/
  * 
  * Since: Mar 2010
- * Date: 2012-03-05 00:46 
+ * Date: 2012-04-30 14:24 
  */
 /*jslint evil: true */ 
 (function($) {	
 
-	$.tools = $.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
+	$.tools = $.tools || {version: 'v1.2.7'};
 		
 	// globals
 	var typeRe = /\[type=([a-z]+)\]/, 

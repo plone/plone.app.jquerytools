@@ -19,9 +19,8 @@ import StringIO
 import subprocess
 import datetime
 
-JQ_TOOLS_VERSION = '884082c1ad23306019690bb4f8561ea9b6a29237'  # 1.2.7-dev, branch=dev
+JQ_TOOLS_VERSION = 'v1.2.7'
 JQ_TOOLS_DOWNLOAD_URL = 'http://github.com/jquerytools/jquerytools/tarball/'+JQ_TOOLS_VERSION
-# JQ_TOOLS_DOWNLOAD_URL = 'file:///Users/rok/Projects/garbas/jquerytools-jquerytools-v1.2.5-0-g85655d7.tar.gz'
 
 JQ_FORM_VERSION = 'master' # there is no tag
 JQ_FORM_URL= 'http://github.com/malsup/form/tarball/'+JQ_FORM_VERSION

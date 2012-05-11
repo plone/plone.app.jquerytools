@@ -1,13 +1,13 @@
 /**
  * @license 
- * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 / Overlay Apple effect. 
+ * jQuery Tools v1.2.7 / Overlay Apple effect. 
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/overlay/apple.html
  *
  * Since: July 2009
- * Date: 2012-03-05 00:46 
+ * Date: 2012-04-30 14:24 
  */
 (function($) { 
 
@@ -156,14 +156,14 @@
 
 /**
  * @license 
- * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 / Scrollable Autoscroll
+ * jQuery Tools v1.2.7 / Scrollable Autoscroll
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/scrollable/autoscroll.html
  *
  * Since: September 2009
- * Date: 2012-03-05 00:46 
+ * Date: 2012-04-30 14:24 
  */
 (function($) {		
 
@@ -254,14 +254,14 @@
 
 /**
  * @license 
- * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 / Scrollable Navigator
+ * jQuery Tools v1.2.7 / Scrollable Navigator
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  *
  * http://flowplayer.org/tools/scrollable/navigator.html
  *
  * Since: September 2009
- * Date: 2012-03-05 00:46 
+ * Date: 2012-04-30 14:24 
  */
 (function($) {
 		
@@ -389,14 +389,14 @@
 
 /**
  * @license 
- * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 Slideshow - Extend it.
+ * jQuery Tools v1.2.7 Slideshow - Extend it.
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tabs/slideshow.html
  *
  * Since: September 2009
- * Date: 2012-03-05 00:46 
+ * Date: 2012-04-30 14:24 
  */
 (function($) {
 	
@@ -581,14 +581,14 @@
 
 /**
  * @license
- * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 / Flashembed - New wave Flash embedding
+ * jQuery Tools v1.2.7 / Flashembed - New wave Flash embedding
  *
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  *
  * http://flowplayer.org/tools/toolbox/flashembed.html
  *
  * Since : March 2008
- * Date  : 2012-03-05 00:46
+ * Date  : 2012-04-30 14:24
  */
 (function() {
 
@@ -865,7 +865,7 @@
 	if (JQUERY) {
 
 		// tools version number
-		jQuery.tools = jQuery.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
+		jQuery.tools = jQuery.tools || {version: 'v1.2.7'};
 
 		jQuery.tools.flashembed = {
 			conf: GLOBAL_OPTS
@@ -883,7 +883,7 @@
 
 /**
  * @license 
- * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 Mousewheel
+ * jQuery Tools v1.2.7 Mousewheel
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
@@ -894,7 +894,7 @@
  * http://threedubmedia.com 
  *
  * Since: Mar 2010
- * Date: 2012-03-05 00:46 
+ * Date: 2012-04-30 14:24 
  */
 (function($) { 
 	
@@ -949,14 +949,14 @@
 
 /**
  * @license 
- * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 / Tooltip Dynamic Positioning
+ * jQuery Tools v1.2.7 / Tooltip Dynamic Positioning
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tooltip/dynamic.html
  *
  * Since: July 2009
- * Date: 2012-03-05 00:46 
+ * Date: 2012-04-30 14:24 
  */
 (function($) { 
 
@@ -1104,14 +1104,14 @@
 
 /**
  * @license 
- * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 / Tooltip Slide Effect
+ * jQuery Tools v1.2.7 / Tooltip Slide Effect
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tooltip/slide.html
  *
  * Since: September 2009
- * Date: 2012-03-05 00:46 
+ * Date: 2012-04-30 14:24 
  */
 (function($) { 
 

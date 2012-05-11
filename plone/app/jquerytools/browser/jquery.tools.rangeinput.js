@@ -1,17 +1,17 @@
 /**
  * @license 
- * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 Rangeinput - HTML5 <input type="range" /> for humans
+ * jQuery Tools v1.2.7 Rangeinput - HTML5 <input type="range" /> for humans
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/rangeinput/
  *
  * Since: Mar 2010
- * Date: 2012-03-05 00:46 
+ * Date: 2012-04-30 14:24 
  */
 (function($) {
 	 
-	$.tools = $.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
+	$.tools = $.tools || {version: 'v1.2.7'};
 	 
 	var tool;
 	

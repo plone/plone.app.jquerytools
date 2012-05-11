@@ -7,6 +7,9 @@ Changelog
 - Added a link in the close button to improve accessibility
   [giacomos]
 
+- Update to jQueryTools 1.2.7.
+  [thet]
+
 - Fix sed command in jqt_checkout_build script to work on Linux and OSX.
   [thet]
 

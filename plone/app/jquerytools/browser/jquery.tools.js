@@ -1,18 +1,18 @@
 /**
  * @license 
- * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 Overlay - Overlay base. Extend it.
+ * jQuery Tools v1.2.7 Overlay - Overlay base. Extend it.
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/overlay/
  *
  * Since: March 2008
- * Date: 2012-03-05 00:46 
+ * Date: 2012-04-30 14:24 
  */
 (function($) { 
 
 	// static constructs
-	$.tools = $.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
+	$.tools = $.tools || {version: 'v1.2.7'};
 	
 	$.tools.overlay = {
 		
@@ -294,19 +294,19 @@
 
 /**
  * @license 
- * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 Scrollable - New wave UI design
+ * jQuery Tools v1.2.7 Scrollable - New wave UI design
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/scrollable.html
  *
  * Since: March 2008
- * Date: 2012-03-05 00:46 
+ * Date: 2012-04-30 14:24 
  */
 (function($) { 
 
 	// static constructs
-	$.tools = $.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
+	$.tools = $.tools || {version: 'v1.2.7'};
 	
 	$.tools.scrollable = {
 		
@@ -663,19 +663,19 @@
 
 /**
  * @license 
- * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 Tabs- The basics of UI design.
+ * jQuery Tools v1.2.7 Tabs- The basics of UI design.
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tabs/
  *
  * Since: November 2008
- * Date: 2012-03-05 00:46 
+ * Date: 2012-04-30 14:24 
  */  
 (function($) {
 		
 	// static constructs
-	$.tools = $.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
+	$.tools = $.tools || {version: 'v1.2.7'};
 	
 	$.tools.tabs = {
 		
@@ -988,19 +988,19 @@
 
 /**
  * @license 
- * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 / Expose - Dim the lights
+ * jQuery Tools v1.2.7 / Expose - Dim the lights
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/toolbox/expose.html
  *
  * Since: Mar 2010
- * Date: 2012-03-05 00:46 
+ * Date: 2012-04-30 14:24 
  */
 (function($) { 	
 
 	// static constructs
-	$.tools = $.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
+	$.tools = $.tools || {version: 'v1.2.7'};
 	
 	var tool;
 	
@@ -1213,20 +1213,20 @@
 
 /**
  * @license 
- * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 History "Back button for AJAX apps"
+ * jQuery Tools v1.2.7 History "Back button for AJAX apps"
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/toolbox/history.html
  * 
  * Since: Mar 2010
- * Date: 2012-03-05 00:46 
+ * Date: 2012-04-30 14:24 
  */
 (function($) {
 		
 	var hash, iframe, links, inited;		
 	
-	$.tools = $.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
+	$.tools = $.tools || {version: 'v1.2.7'};
 	
 	$.tools.history = {
 	
@@ -1240,7 +1240,7 @@
 				// create iframe that is constantly checked for hash changes
 				if (!iframe) {
 					iframe = $("<iframe/>").attr("src", "javascript:false;").hide().get(0);
-					$("body").prepend(iframe);
+					$("body").append(iframe);
 									
 					setInterval(function() {
 						var idoc = iframe.contentWindow.document, 
@@ -1322,18 +1322,18 @@
 
 /**
  * @license 
- * jQuery Tools 884082c1ad23306019690bb4f8561ea9b6a29237 Tooltip - UI essentials
+ * jQuery Tools v1.2.7 Tooltip - UI essentials
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tooltip/
  *
  * Since: November 2008
- * Date: 2012-03-05 00:46 
+ * Date: 2012-04-30 14:24 
  */
 (function($) { 	
 	// static constructs
-	$.tools = $.tools || {version: '884082c1ad23306019690bb4f8561ea9b6a29237'};
+	$.tools = $.tools || {version: 'v1.2.7'};
 	
 	$.tools.tooltip = {
 		
