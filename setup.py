@@ -5,8 +5,8 @@ version = '1.4b1'
 setup(name='plone.app.jquerytools',
       version=version,
       description="jQuery Tools integration for Plone plus overlay and AJAX form helpers.",
-      long_description=open("README.txt").read() + "\n" +
-                       open("CHANGES.txt").read(),
+      long_description=open("README.rst").read() + "\n" +
+                       open("CHANGES.rst").read(),
       classifiers=[
           "Environment :: Web Environment",
           "Framework :: Plone",
