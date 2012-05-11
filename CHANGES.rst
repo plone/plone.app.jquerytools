@@ -4,9 +4,11 @@ Changelog
 1.4 - unreleased
 ------------------
 
-- added a link in the close button of the overlays to improve accessibility
-  (https://dev.plone.org/ticket/12122).
-  [giacomo]
+- Added a link in the close button to improve accessibility
+  [giacomos]
+
+- Fix sed command in jqt_checkout_build script to work on Linux and OSX.
+  [thet]
 
 - Update to jQueryTools 1.2.6.
   [smcmahon]

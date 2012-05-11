@@ -219,8 +219,8 @@ def version_hook(**kw):
     if not kw['filename'].endswith('.js') or \
        kw['filename'].endswith('jslint.js'):
         return kw
-    args = shlex.split('sed -i "s/@VERSION/%(version)s/g" %(filename)s' % kw)
-    subprocess.check_call(args)
+    args_ = shlex.split('sed -i -e "s/@VERSION/%(version)s/g" %(filename)s' % kw)
+    subprocess.check_call(args_)
     return kw
 
 def date_hook(**kw):
@@ -228,8 +228,8 @@ def date_hook(**kw):
        kw['filename'].endswith('jslint.js'):
         return kw
     # FIXME: should be date from git log
-    args = shlex.split('sed -i "s/@DATE/%(today)s/g" %(filename)s' % kw)
-    subprocess.check_call(args)
+    args_ = shlex.split('sed -i -e "s/@DATE/%(today)s/g" %(filename)s' % kw)
+    subprocess.check_call(args_)
     return kw
 
 def lint_hook(**kw):
