@@ -1,11 +1,15 @@
 Changelog
 =========
 
-1.4b1 - unreleased
+1.4 - unreleased
 ------------------
 
+- added a link in the close button of the overlays to improve accessibility
+  (https://dev.plone.org/ticket/12122).
+  [giacomo]
+
 - Update to jQueryTools 1.2.6.
-  [smcmahon] 
+  [smcmahon]
 
 - For overlays that are not already inline, insert them inline after the
   triggering element rather than at the end of the body. This solves an
