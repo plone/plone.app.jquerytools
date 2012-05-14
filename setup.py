@@ -36,7 +36,10 @@ setup(name='plone.app.jquerytools',
           target = plone
       """,
       extras_require = {
-          # 'test': ['niteoweb.windmill',],
-          'test': ['plone.app.testing', 'selenium'],
+          'test': [
+              'plone.app.testing',
+              'unittest_jshint',
+              'selenium',
+              ],
       },
 )
