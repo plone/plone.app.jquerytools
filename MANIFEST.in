@@ -1,3 +1,3 @@
-include *.txt docs/*.txt
+include *.rst docs/*
 recursive-include plone/app/jquerytools *
 global-exclude *.pyc *~ *.mo *.jar jslint.js jqt_checkout_build

@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.4 - unreleased
-------------------
+1.4 - 2012-05-11
+----------------
 
 - Added a link in the close button to improve accessibility
   [giacomos]
