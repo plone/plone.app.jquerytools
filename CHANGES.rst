@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.5dev - unreleased
+-------------------
+
+- Use link instead of @import for css resources. This improves speed, since it
+  better uses parallel downloads. See: "don’t use @import" by Steve Souders.
+  [thet]
+
+
 1.4 - 2012-05-11
 ----------------
 
@@ -22,6 +30,7 @@ Changelog
   going to require more css reset work for overlay styling.
   [smcmahon]
 
+
 1.3 - 2011-06-27
 ----------------
 
@@ -42,12 +51,14 @@ Changelog
 
 - Add documentation in README for using jQuery Tools event handlers.
   [smcmahon]
-  
+
+
 1.2 - 2011-05-13
 ----------------
 
 - 1.2 final release.
   [esteele]
+
 
 1.2b5 - 2011-04-06
 ------------------
