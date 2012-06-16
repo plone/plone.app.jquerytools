@@ -3,6 +3,9 @@ Changelog
 
 1.4 - unreleased
 ------------------
+- Add translatable string for close box. This and the following change by
+  giacomos fix http://dev.plone.org/ticket/12122.
+  [fulviocasali]
 
 - Added a link in the close button to improve accessibility
   [giacomos]

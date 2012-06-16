@@ -8,7 +8,7 @@
 *****************/
 
 /*jslint browser: true, onevar: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, newcap: true, immed: true, regexp: false, white:true */
-/*global jQuery, ajax_noresponse_message, window */
+/*global jQuery, ajax_noresponse_message, close_box_message, window */
 
 // Name space object for pipbox
 var pb = {spinner: {}, overlay_counter: 1};
@@ -193,14 +193,23 @@ jQuery(function ($) {
     ******/
     pb.create_content_div = function (pbo, trigger) {
         var content,
+            close_message,
             top,
             pbw = pbo.width;
+
+        if (typeof(close_box_message) === 'undefined') {
+            close_message = 'Close this box.';
+        } else {
+            close_message = close_box_message;
+        }
 
         content = $('' +
             '<div id="' + pbo.nt +
             '" class="overlay overlay-' + pbo.subtype +
             ' ' + (pbo.cssclass || '') +
-            '"><div class="close"><a href="#" title="Close this box">Close</a></div></div>');
+            '"><div class="close"><a href="#" title="Close this box">' + 
+            close_message +
+            '</a></div></div>');
 
         content.data('pbo', pbo);
 
