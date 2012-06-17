@@ -313,25 +313,25 @@ jQuery Tools passes the event as a parameter when it calls the event handlers.
 ``getTrigger()`` methods.
 
 
-.. _`jquery.tools`: http://flowplayer.org/tools
-.. _`overlay.js`: http://flowplayer.org/tools/overlay/index.html
-.. _`scrollable.js`: http://flowplayer.org/tools/scrollable/index.html
-.. _`tabs.js`: http://flowplayer.org/tools/tabs/index.html
-.. _`toolbox.history.js`: http://flowplayer.org/tools/toolbox/history.html
-.. _`toolbox.expose.js`: http://flowplayer.org/tools/toolbox/expose.html
-.. _`tooltip.js`: http://flowplayer.org/tools/tooltip/index.html
-.. _`overlay.apple.js`: http://flowplayer.org/tools/overlay/apple.html
-.. _`scrollable.autoscroll.js`: http://flowplayer.org/tools/scrollable/autoscroll.html
-.. _`scrollable.navigator.js`: http://flowplayer.org/tools/scrollable/navigator.html
-.. _`tabs.slideshow.js`: http://flowplayer.org/tools/tabs/slideshow.html
-.. _`toolbox.flashembed.js`: http://flowplayer.org/tools/toolbox/flashembed.html
-.. _`toolbox.mousewheel.js`: http://flowplayer.org/tools/toolbox/mousewheel.html
-.. _`tooltip.dynamic.js`: http://flowplayer.org/tools/tooltip/dynamic.html
-.. _`tooltip.slide.js`: http://flowplayer.org/tools/tooltip/slide.html
-.. _`jquerytools dateinput`: http://flowplayer.org/tools/dateinput/index.html
-.. _`first demo`: http://flowplayer.org/tools/demos/dateinput/index.html
-.. _`jquerytools rangeinput`: http://flowplayer.org/tools/rangeinput/index.html
-.. _`jquerytools validator`: http://flowplayer.org/tools/validator/index.html
+.. _`jquery.tools`: http://jquerytools.org
+.. _`overlay.js`: http://jquerytools.org/documentation/overlay/index.html
+.. _`scrollable.js`: http://jquerytools.org/documentation/scrollable/index.html
+.. _`tabs.js`: http://jquerytools.org/documentation/tabs/index.html
+.. _`toolbox.history.js`: http://jquerytools.org/documentation/toolbox/history.html
+.. _`toolbox.expose.js`: http://jquerytools.org/documentation/toolbox/expose.html
+.. _`tooltip.js`: http://jquerytools.org/documentation/tooltip/index.html
+.. _`overlay.apple.js`: http://jquerytools.org/documentation/overlay/apple.html
+.. _`scrollable.autoscroll.js`: http://jquerytools.org/documentation/scrollable/autoscroll.html
+.. _`scrollable.navigator.js`: http://jquerytools.org/documentation/scrollable/navigator.html
+.. _`tabs.slideshow.js`: http://jquerytools.org/documentation/tabs/slideshow.html
+.. _`toolbox.flashembed.js`: http://jquerytools.org/documentation/toolbox/flashembed.html
+.. _`toolbox.mousewheel.js`: http://jquerytools.org/documentation/toolbox/mousewheel.html
+.. _`tooltip.dynamic.js`: http://jquerytools.org/documentation/tooltip/dynamic.html
+.. _`tooltip.slide.js`: http://jquerytools.org/documentation/tooltip/slide.html
+.. _`jquerytools dateinput`: http://jquerytools.org/documentation/dateinput/index.html
+.. _`first demo`: http://jquerytools.org/demos/dateinput/index.html
+.. _`jquerytools rangeinput`: http://jquerytools.org/documentation/rangeinput/index.html
+.. _`jquerytools validator`: http://jquerytools.org/documentation/validator/index.html
 .. _`jquery form plugin`: http://malsup.com/jquery/form
-.. _`overlay documentation`: http://flowplayer.org/tools/overlay/#events
-.. _`events documentation`: http://flowplayer.org/tools/documentation/scripting.html#events
+.. _`overlay documentation`: http://jquerytools.org/documentation/overlay/#events
+.. _`events documentation`: http://jquerytools.org/documentation/scripting.html#events
