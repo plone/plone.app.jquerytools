@@ -277,7 +277,7 @@ when we may be renaming or deleting the displayed object. Second, we specify
 a close selector so that pushing the cancel button will close the overlay
 without bothering to submit the form.
 
-See ``Products/CMFPlone/skins/plone_ecmascript/popupform.js`` for several
+See ``Products/CMFPlone/skins/plone_ecmascript/popupforms.js`` for several
 examples of using callbacks to handle tricky cases like confirming deletion of
 the current content item.
 
