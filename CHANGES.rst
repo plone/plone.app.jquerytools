@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.5 - (unreleased)
-------------------
+1.5 (2012-08-30)
+----------------
 
 - Add translatable string for close box. This and the following change by
   giacomos fix http://dev.plone.org/ticket/12122.
