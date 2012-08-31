@@ -1,8 +1,12 @@
 Changelog
 =========
 
-1.5dev - unreleased
--------------------
+1.5 - (unreleased)
+------------------
+
+- Add translatable string for close box. This and the following change by
+  giacomos fix http://dev.plone.org/ticket/12122.
+  [fulviocasali]
 
 - Use link instead of @import for css resources. This improves speed, since it
   better uses parallel downloads. See: "don’t use @import" by Steve Souders.
