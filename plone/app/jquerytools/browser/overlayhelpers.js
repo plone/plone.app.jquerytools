@@ -224,11 +224,7 @@ jQuery(function ($) {
         }
 
         // add the target element at the end of the body.
-        if (trigger) {
-            trigger.after(content);
-        } else {
-            content.appendTo($("body"));
-        }
+        content.appendTo($("body"));
 
         return content;
     };

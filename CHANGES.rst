@@ -4,6 +4,9 @@ Changelog
 1.5.1 (unreleased)
 ------------------
 
+- Revert to always adding the overlay at the bottom of the document body.
+  [davisagli]
+
 - Make sure the "Close this box" link has a hiddenStructure class so it
   won't show up for most users.
   [davisagli]
