@@ -207,7 +207,7 @@ jQuery(function ($) {
             '<div id="' + pbo.nt +
             '" class="overlay overlay-' + pbo.subtype +
             ' ' + (pbo.cssclass || '') +
-            '"><div class="close"><a href="#" title="Close this box">' + 
+            '"><div class="close"><a href="#" class="hiddenStructure" title="Close this box">' + 
             close_message +
             '</a></div></div>');
 

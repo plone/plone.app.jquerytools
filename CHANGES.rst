@@ -4,7 +4,9 @@ Changelog
 1.5.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make sure the "Close this box" link has a hiddenStructure class so it
+  won't show up for most users.
+  [davisagli]
 
 
 1.5 (2012-08-30)
