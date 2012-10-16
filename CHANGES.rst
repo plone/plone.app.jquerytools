@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.1 (unreleased)
+1.5.1 (2012-10-16)
 ------------------
 
 - Revert to always adding the overlay at the bottom of the document body.
