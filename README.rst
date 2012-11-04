@@ -16,55 +16,47 @@ Avaliable resources
 
 `jquery.tools`_ plugins and widgets are packed into Zope browser resources:
 
-    * ``++resource++plone.app.jquerytools.js``
+``++resource++plone.app.jquerytools.js``
+    Default plugins and widgets used by plone. This resource is enabled
+    by default with ``plone.app.jquerytools:default`` profile.
+    
+    Included scripts: `overlay.js`_, `scrollable.js`_, `tabs.js`_,
+    `toolbox.history.js`_, `toolbox.expose.js`_, `tooltip.js`_
 
-        Default plugins and widgets used by plone. This resource is enabled
-        by default with ``plone.app.jquerytools:default`` profile.
+``++resource++plone.app.jquerytools.plugins.js``
+    Additional plugin and widgets which does not take much space and for
+    this reason are packed together. This plugins are not enabled by
+    default.
 
-        Included scripts: `overlay.js`_, `scrollable.js`_, `tabs.js`_,
-        `toolbox.history.js`_, `toolbox.expose.js`_, `tooltip.js`_
+    Included scripts: `overlay.apple.js`_, `scrollable.autoscroll.js`_,
+    `scrollable.navigator.js`_, `tabs.slideshow.js`_, `toolbox.flashembed.js`_, 
+    `toolbox.mousewheel.js`_, `tooltip.dynamic.js`_, `tooltip.slide.js`_
 
-    * ``++resource++plone.app.jquerytools.plugins.js``
+``++resource++plone.app.jquerytools.dateinput.js`` ``++resource++plone.app.jquerytools.dateinput.css``
+    `jquerytools dateinput`_ widget with style from `first demo`_. Both
+    scripts are added to portal_javascript and portal_css but disabled by
+    default.
 
-        Additional plugin and widgets which does not take much space and for
-        this reason are packed together. This plugins are not enabled by
-        default.
+``++resource++plone.app.jquerytools.rangeinput.js``
+    `jquerytools rangeinput`_ widget. Added to portal_javascript tool, but
+    disabled by default.
 
-        Included scripts: `overlay.apple.js`_, `scrollable.autoscroll.js`_,
-        `scrollable.navigator.js`_, `tabs.slideshow.js`_,
-        `toolbox.flashembed.js`_, `toolbox.mousewheel.js`_,
-        `tooltip.dynamic.js`_, `tooltip.slide.js`_
+``++resource++plone.app.jquerytools.validator.js``
+    `jquerytools validator`_ script, which should help you with nice
+    validation of your forms. Added to portal_javascript tool, but
+    disabled byt default.
 
-    * ``++resource++plone.app.jquerytools.dateinput.js``
-      ``++resource++plone.app.jquerytools.dateinput.css``
+``++resource++plone.app.jquerytools.form.js``
+    Integrates the `jquery form plugin`_ to add support for AJAX form
+     handling. More about this below.
 
-        `jquerytools dateinput`_ widget with style from `first demo`_. Both
-        scripts are added to portal_javascript and portal_css but disabled by
-        default.
+``++resource++plone.app.jquerytools.overlayhelpers.js``
+    not yet minimized) and ``++resource++plone.app.jquerytools.overlays.css``
+    (Size: 1.9KB, not yet minimized)
 
-    * ``++resource++plone.app.jquerytools.rangeinput.js``
-
-        `jquerytools rangeinput`_ widget. Added to portal_javascript tool, but
-        disabled by default.
-
-    * ``++resource++plone.app.jquerytools.validator.js``
-
-        `jquerytools validator`_ script, which should help you with nice
-        validation of your forms. Added to portal_javascript tool, but
-        disabled byt default.
-
-    * ``++resource++plone.app.jquerytools.form.js``
-
-        Integrates the `jquery form plugin`_ to add support for AJAX form
-        handling. More about this below.
-
-    * ``++resource++plone.app.jquerytools.overlayhelpers.js``
-      not yet minimized) and ``++resource++plone.app.jquerytools.overlays.css``
-      (Size: 1.9KB, not yet minimized)
-
-        Adds helper code for loading overlays dynamically and for handling AJAX
-        forms based on existing pages with minimal setup. More about this in
-        instructions below.
+    Adds helper code for loading overlays dynamically and for handling AJAX
+    forms based on existing pages with minimal setup. More about this in
+    instructions below.
 
 JS resources are minified, but uncompressed versions are available in
 plone/app/jquerytools/browser for reading/debugging purposes. To use them
@@ -93,16 +85,16 @@ Let's say, for example, that you want to make clicking on news-item photos
 open a lightbox-style larger version of the image. To do this, you'll need to
 specify:
 
-    * A jQuery style selector for a Plone element, e.g., ".newsImageContainer a"
+* A jQuery style selector for a Plone element, e.g., ".newsImageContainer a"
 
-    * "image" for the load method ("ajax" and "iframe" are other alternatives)
+* "image" for the load method ("ajax" and "iframe" are other alternatives)
 
-    * A regular expression search/replace to transform the href or src URL.
-      In this example, we're changing the URL to point to the preview-sized
-      image. So, our search/replace pair is "/image_view_fullscreen"
-      and "_preview".
+* A regular expression search/replace to transform the href or src URL.
+  In this example, we're changing the URL to point to the preview-sized
+  image. So, our search/replace pair is "/image_view_fullscreen"
+  and "_preview".
 
-    * You could also specify additional overlay configuration parameters.
+* You could also specify additional overlay configuration parameters.
 
 The code::
 
@@ -143,70 +135,77 @@ Options
 
 The complete options list:
 
-    * subtype: 'image' | 'iframe' | 'ajax'
-
-    * urlmatch: Regular expression for a portion of the target URL. Target
-      URL is determined by checking href, src or action attributes.
-
-    * urlreplace: Replacement expression for the matched expression.
-
-    * filter: (ajax only) the jQuery selector used to find the elements of
-      the ajax loaded resource that you wish to use in the overlay.
-
-    * width: Width of the popup. Defaults to 60%. Overriden by image width
-      for image overlays. Percentages are computed against window width,
-      not parent.
-
-    * cssclass: A custom css class to apply to the overlay. Ignored
-      for inline overlays.
-
-    * config: jQuery Tools configuration options in a dictionary.
+subtype
+  'image' | 'iframe' | 'ajax'
+urlmatch: 
+  Regular expression for a portion of the target URL. Target
+  URL is determined by checking href, src or action attributes.
+urlreplace
+  Replacement expression for the matched expression.
+filter (ajax only)
+  the jQuery selector used to find the elements of
+  the ajax loaded resource that you wish to use in the overlay.
+width
+  Width of the popup. Defaults to 60%. Overriden by image width
+  for image overlays. Percentages are computed against window width,
+  not parent.
+cssclass
+  A custom css class to apply to the overlay. Ignored
+  for inline overlays.
+config 
+  jQuery Tools configuration options in a dictionary.
 
 For AJAX overlay forms, add the following, form-oriented, options:
 
-    * formselector: Used to specify the JQuery selector for any
-      forms inside the loaded content that you want to be handled
-      inside the overlay by doing an AJAX load to get the overlay
-      content.
+formselector
+  Used to specify the JQuery selector for any
+  forms inside the loaded content that you want to be handled
+  inside the overlay by doing an AJAX load to get the overlay
+  content.
 
-      When a form is submitted, the overlay handler checks the response
-      for formselector. If it's found, the result is displayed in the
-      overlay and form handlers are bound. If not, the 'noform' action
-      is carried out.
+  When a form is submitted, the overlay handler checks the response
+  for formselector. If it's found, the result is displayed in the
+  overlay and form handlers are bound. If not, the 'noform' action
+  is carried out.
 
-    * noform: the action to take if an ajax form is submitted and the returned
-      content has nothing matching the formselector. Available actions include
-      'close' to simply close the overlay, 'reload' to reload the page, and
-      'redirect' to redirect to another page. If you choose 'redirect', you
-      must specify the URL in the redirect option. Default
-      action is to display the filtered response in the popup.
+noform
+  the action to take if an ajax form is submitted and the returned
+  content has nothing matching the formselector. Available actions include
+  'close' to simply close the overlay, 'reload' to reload the page, and
+  'redirect' to redirect to another page. If you choose 'redirect', you
+  must specify the URL in the redirect option. Default
+  action is to display the filtered response in the popup.
 
-      You may also supply as the 'noform' argument a
-      callback function that returns one of these strings. The overlay helper
-      will call the function with the overlay element as an argument.
+  You may also supply as the 'noform' argument a
+  callback function that returns one of these strings. The overlay helper
+  will call the function with the overlay element as an argument.
 
-    * closeselector: use this to specify a JQuery selector that will be used
-      to find elements within the overlay that should close the overlay if
-      clicked. The most obvious example is a form's cancel button.
+closeselector
+  use this to specify a JQuery selector that will be used
+  to find elements within the overlay that should close the overlay if
+  clicked. The most obvious example is a form's cancel button.
 
-    * redirect: if you specify 'redirect' for the noform action, use the
-      redirect option to specify the full target URL. You may also supply a
-      callback function that returns a URL. The overlay helper will call the
-      function with the overlay element and the response text as arguments.
+redirect
+  if you specify 'redirect' for the noform action, use the
+  redirect option to specify the full target URL. You may also supply a
+  callback function that returns a URL. The overlay helper will call the
+  function with the overlay element and the response text as arguments.
 
-    * beforepost: you may specify a function that will be called before the
-      AJAX form posting. This callback will be passed the jQuery-wrapped form
-      and the serialized form data. Return true if you wish the AJAX form
-      handler to handle the event; return false if you wish to cancel the
-      submit.
+beforepost
+  you may specify a function that will be called before the
+  AJAX form posting. This callback will be passed the jQuery-wrapped form
+  and the serialized form data. Return true if you wish the AJAX form
+  handler to handle the event; return false if you wish to cancel the
+  submit.
 
-    * afterpost: you may specify a function that will be called immediately
-      after the AJAX load of the post response. The function will be passed an
-      element containing the returned HTML as a jQuery object. Second argument
-      is data_parent object, which contains overlay configuration and other
-      useful data in the jQuery 'data' resource. This callback occurs before
-      any other processing of the response. The callback function's return
-      value is ignored.
+afterpost
+  you may specify a function that will be called immediately
+  after the AJAX load of the post response. The function will be passed an
+  element containing the returned HTML as a jQuery object. Second argument
+  is data_parent object, which contains overlay configuration and other
+  useful data in the jQuery 'data' resource. This callback occurs before
+  any other processing of the response. The callback function's return
+  value is ignored.
 
 AJAX
 ----
