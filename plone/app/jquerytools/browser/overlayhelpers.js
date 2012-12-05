@@ -7,7 +7,7 @@
 
 *****************/
 
-/*jslint browser: true, onevar: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, newcap: true, immed: true, regexp: false, white:true */
+/*jslint browser: true, onevar: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, newcap: true, immed: true, regexp: true, white:true */
 /*global jQuery, ajax_noresponse_message, close_box_message, window */
 
 // Name space object for pipbox
