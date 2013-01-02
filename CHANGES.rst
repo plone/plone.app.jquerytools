@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.5.2 (unreleased)
+1.5.2 (2013-01-01)
 ------------------
 
-- Nothing changed yet.
+- Dont be so strong with regexp in overlayhelpers.js
+  [garbas]
 
 
 1.5.1 (2012-10-16)
