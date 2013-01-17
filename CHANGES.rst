@@ -4,7 +4,8 @@ Changelog
 1.5.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Call ploneTabInit when a form is reloaded with errors.
+  [vincentfretin]
 
 
 1.5.2 (2013-01-01)
