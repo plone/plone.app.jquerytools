@@ -342,6 +342,10 @@ jQuery(function ($) {
             myform = el.find(formtarget);
             if (success && myform.length) {
                 ajax_parent.empty().append(el);
+                // This may be a complex form.
+                if ($.fn.ploneTabInit) {
+                    el.ploneTabInit();
+                }
                 pb.fi_focus(ajax_parent);
 
                 pb.add_ajax_load(myform);
