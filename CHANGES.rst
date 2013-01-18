@@ -4,6 +4,19 @@ Changelog
 1.5.4 (unreleased)
 ------------------
 
+- Now execute inline scripts in ajax overlay.
+  [vincentfretin]
+
+- Give the pbo object as second parameter for noform callback. You can access
+  everything from it, for example the overlay trigger pbo.source.
+  [vincentfretin]
+
+- Give the disconnected "el" jQuery object (the div created with the html
+  response) instead of "this" (the request object) to the noform and redirect
+  callbacks. This fixes the noformerrorshow callback from popupforms.js in the
+  Products.CMFPlone package.
+  [vincentfretin]
+
 - Adapt jquery.tools.dateinput.css to use Plone popup calendar icon and
   compatible styles.
   [smcmahon]

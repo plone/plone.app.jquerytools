@@ -343,7 +343,7 @@ jQuery(function ($) {
             // success comes in many forms, some of which are errors;
             //
 
-            var el, myform, success, target;
+            var el, myform, success, target, scripts = [];
 
             success = statusText === "success" || statusText === "notmodified";
 
@@ -352,15 +352,19 @@ jQuery(function ($) {
                 responseText = responseText.responseText;
             }
             // strip inline script tags
-            responseText = responseText.replace(/<script(.|\s)*?\/script>/gi, "");
+            filteredResponseText = responseText.replace(/<script(.|\s)*?\/script>/gi, "");
 
             // create a div containing the optionally filtered response
             el = $('<div />').append(
-                // a lesson learned from the jQuery source: $(responseText)
-                // will not work well unless responseText is well-formed;
-                // appending to a div is more robust, and automagically
-                // removes the html/head/body outer tagging.
-                selector ? $('<div />').append(responseText).find(selector) : responseText );
+                selector ?
+                    // a lesson learned from the jQuery source: $(responseText)
+                    // will not work well unless responseText is well-formed;
+                    // appending to a div is more robust, and automagically
+                    // removes the html/head/body outer tagging.
+                    $('<div />').append(filteredResponseText).find(selector)
+                    :
+                    filteredResponseText
+                );
 
             // afterpost callback
             if (success && afterpost) {
@@ -370,6 +374,15 @@ jQuery(function ($) {
             myform = el.find(formtarget);
             if (success && myform.length) {
                 ajax_parent.empty().append(el);
+
+                // execute inline scripts
+                $.buildFragment([responseText], [document], scripts);
+                if (scripts.length) {
+                    $.each(scripts, function() {
+                        $.globalEval( this.text || this.textContent || this.innerHTML || "" );
+                    });
+                }
+
                 // This may be a complex form.
                 if ($.fn.ploneTabInit) {
                     el.ploneTabInit();
@@ -393,7 +406,7 @@ jQuery(function ($) {
                 if (success) {
                     if (typeof(noform) === "function") {
                         // get action from callback
-                        noform = noform(this);
+                        noform = noform(el, pbo);
                     }
                 } else {
                     noform = statusText;
@@ -418,7 +431,7 @@ jQuery(function ($) {
                     target = pbo.redirect;
                     if (typeof(target) === "function") {
                         // get target from callback
-                        target = target(this, responseText);
+                        target = target(el, responseText);
                     }
                     location.replace(target);
                     break;
@@ -459,7 +472,8 @@ jQuery(function ($) {
             selector,
             formtarget,
             closeselector,
-            sep;
+            sep,
+            scripts = [];
 
         e = $.Event();
         e.type = "beforeAjaxClickHandled";
@@ -532,6 +546,14 @@ jQuery(function ($) {
                 el.find(closeselector).click(function (event) {
                     api.close();
                     return false;
+                });
+            }
+
+            // execute inline scripts
+            $.buildFragment([responseText], [document], scripts);
+            if (scripts.length) {
+                $.each(scripts, function() {
+                    $.globalEval( this.text || this.textContent || this.innerHTML || "" );
                 });
             }
 
