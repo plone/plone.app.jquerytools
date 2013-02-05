@@ -3,9 +3,9 @@
 # Check out jQuery Tools and jquery from from source repositories;
 # run jslint, minify and repackage into plone.app.jquerytools
 # resources.
-# 
+#
 # Uses Google's closure compiler for the minification.
-# 
+#
 # Added to p.a.jqt by Rok Garbas
 
 
@@ -46,7 +46,7 @@ def build(name, download_url, hooks=dict(), **kw):
     f.write(archive)
     f.seek(0)
 
-    # extract it to temporary folder 
+    # extract it to temporary folder
     archive_tar = tarfile.open(fileobj=f)
     for member in archive_tar.getmembers():
         if member.path.startswith('/') or \
@@ -119,9 +119,9 @@ def main():
                 'jquery.tools:tooltip/tooltip.dynamic.js',
                 'jquery.tools:tooltip/tooltip.slide.js',
             ],
-        'jquery.tools.dateinput.css': [
-                'jquery.tools:dateinput/skin1.css',
-            ],
+        # 'jquery.tools.dateinput.css': [
+        #         'jquery.tools:dateinput/skin1.css',
+        #     ],
         'jquery.tools.dateinput.js': [
                 'jquery.tools:dateinput/dateinput.js',
             ],

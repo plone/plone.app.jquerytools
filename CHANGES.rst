@@ -4,7 +4,13 @@ Changelog
 1.5.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Adapt jquery.tools.dateinput.css to use Plone popup calendar icon and
+  compatible styles.
+  [smcmahon]
+
+- Change jqt_checkout_build to *not* pick up dateinput.css from jQuery.
+  This should be Plone-specific.
+  [smcmahon]
 
 
 1.5.3 (2013-01-17)
