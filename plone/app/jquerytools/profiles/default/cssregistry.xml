@@ -13,6 +13,7 @@
 
     <stylesheet title=""
         id="++resource++plone.app.jquerytools.custom.css"
+        insert-after="++resource++plone.app.jquerytools.dateinput.css"
         media="screen" rel="stylesheet" rendering="link"
         cacheable="True" compression="safe" cookable="True"
         enabled="0" expression=""/>

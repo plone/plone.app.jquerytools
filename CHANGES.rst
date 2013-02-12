@@ -9,9 +9,20 @@ Changelog
   use the plone3 profile.
   [thet]
 
-- Create dedicated custom.css resource for Plone-integration customizations.
-  All customizations should go there which simplifies the update of the
-  jQueryTools library.
+- Override jquery.tools.dateinput.css in custom.css to use Plone popup calendar
+  icon and compatible styles.
+  [smcmahon, thet]
+
+- Set cacheable to True for jquery.tools.dateinput.css and custom.css.
+  [thet]
+
+- Show next and previous icons in datepicker.
+  [thet]
+
+- API CHANGE: Create dedicated custom.css resource for Plone-integration
+  customizations.  All customizations should go there which simplifies the
+  update of the jQueryTools library. Enable it, especially if you use the
+  datepicker.
   [thet]
 
 - Now execute inline scripts in ajax overlay.
@@ -26,14 +37,6 @@ Changelog
   callbacks. This fixes the noformerrorshow callback from popupforms.js in the
   Products.CMFPlone package.
   [vincentfretin]
-
-- Adapt jquery.tools.dateinput.css to use Plone popup calendar icon and
-  compatible styles.
-  [smcmahon]
-
-- Change jqt_checkout_build to *not* pick up dateinput.css from jQuery.
-  This should be Plone-specific.
-  [smcmahon]
 
 
 1.5.3 (2013-01-17)
