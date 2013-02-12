@@ -7,3 +7,19 @@
 #calnext {
 	background-image:url(++resource++plone.app.jquerytools.next.gif);
 }
+
+/* date input trigger element */
+.caltrigger {
+  background:url('popup_calendar.png') no-repeat 0 0;
+  height: 16px;
+  width: 16px;
+  display: inline-block;
+  border-bottom: none !important;
+  vertical-align: middle;
+  /* overrides */
+  padding:0;
+  margin:0;
+  -moz-border-radius:0;
+  -webkit-border-radius:0;
+  border-radius:0;
+}
