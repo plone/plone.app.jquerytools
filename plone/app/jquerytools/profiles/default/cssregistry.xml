@@ -3,9 +3,7 @@
 
     <stylesheet title=""
         id="++resource++plone.app.jquerytools.overlays.css"
-        media="screen" rel="stylesheet" rendering="link"
-        cacheable="False" compression="safe" cookable="True"
-        enabled="1" expression=""/>
+        remove="True"/>
 
     <stylesheet title=""
         id="++resource++plone.app.jquerytools.dateinput.css"

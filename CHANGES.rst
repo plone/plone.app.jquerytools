@@ -1,8 +1,13 @@
 Changelog
 =========
 
-1.5.4 (unreleased)
-------------------
+1.6dev (unreleased)
+-------------------
+
+- API CHANGE: Restructure and simplify upgrade steps and create dedicated plone3
+  integration profile. If you want to install this package in Plone 3, please
+  use the plone3 profile.
+  [thet]
 
 - Override jquery.tools.dateinput.css in custom.css to use Plone popup calendar
   icon and compatible styles.

@@ -83,23 +83,22 @@
 
     <genericsetup:registerProfile
         name="default"
-        title="Plone JQuery Tools Integration"
+        title="Plone jQuery Tools Integration"
         directory="profiles/default"
-        description="Profile for Plone's JQuery Tools resources."
+        description="Profile for Plone's jQuery Tools resources."
         provides="Products.GenericSetup.interfaces.EXTENSION"
         for="Products.CMFCore.interfaces.ISiteRoot"
         />
 
-    <!-- custom steps for installation profile -->
-    <genericsetup:importStep
-        name="jquerytools-various"
-        title="jquerytools custom setup steps"
-        description=""
-        handler=".setuphandlers.importVarious">
-        <depends name="cssregistry"/>
-    </genericsetup:importStep>
+    <genericsetup:registerProfile
+        name="plone3"
+        title="Plone jQuery Tools Integration for Plone 3"
+        directory="profiles/plone3"
+        description="Profile for Plone 3 jQuery Tools resources."
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        for="Products.CMFCore.interfaces.ISiteRoot"
+        />
 
     <include package=".upgrades"/>
-
 
 </configure>

@@ -4,10 +4,9 @@ Introduction
 plone.app.jquerytools adds `jquery.tools`_ and some related
 overlay and form-handling JavaScript libraries to Plone.
 
-``plone.app.jquerytools`` was developed for Plone 4. However, it can
-be used in Plone 3.x by adding a zcml slug and running it's
-GS Setup extension profile, or by adding a product like Products.pipbox
-that will load the GS profile for you.
+``plone.app.jquerytools`` was developed for Plone 4. However, it can be used in
+Plone 3.x by adding a zcml slug and running the special "Plone jQuery Tools
+Integration for Plone 3" GS Setup extension profile.
 
 .. contents::
 
