@@ -8,6 +8,7 @@ class JSHintTestCase(unittest_jshint.JSHintTestCase):
         )
 
     exclude = (
+        'custom.css',
         'jquery.form.js',
         'jquery.form.min.js',
         'jquery.tools.dateinput.css',

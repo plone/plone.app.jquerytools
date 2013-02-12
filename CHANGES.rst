@@ -1,8 +1,13 @@
 Changelog
 =========
 
-1.5.4 (unreleased)
-------------------
+1.6dev (unreleased)
+-------------------
+
+- API CHANGE: Restructure and simplify upgrade steps and create dedicated plone3
+  integration profile. If you want to install this package in Plone 3, please
+  use the plone3 profile.
+  [thet]
 
 - Create dedicated custom.css resource for Plone-integration customizations.
   All customizations should go there which simplifies the update of the
