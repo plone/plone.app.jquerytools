@@ -4,6 +4,11 @@ Changelog
 1.5.4 (unreleased)
 ------------------
 
+- Create dedicated custom.css resource for Plone-integration customizations.
+  All customizations should go there which simplifies the update of the
+  jQueryTools library.
+  [thet]
+
 - Now execute inline scripts in ajax overlay.
   [vincentfretin]
 
