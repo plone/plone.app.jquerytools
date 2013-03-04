@@ -5,9 +5,8 @@ plone.app.jquerytools adds `jquery.tools`_ and some related
 overlay and form-handling JavaScript libraries to Plone.
 
 ``plone.app.jquerytools`` was developed for Plone 4. However, it can
-be used in Plone 3.x by adding a zcml slug and running it's
-GS Setup extension profile, or by adding a product like Products.pipbox
-that will load the GS profile for you.
+be used in Plone 3.x by adding a zcml slug and running its
+GS Setup extension profile.
 
 .. contents::
 
@@ -19,7 +18,7 @@ Avaliable resources
 ``++resource++plone.app.jquerytools.js``
     Default plugins and widgets used by plone. This resource is enabled
     by default with ``plone.app.jquerytools:default`` profile.
-    
+
     Included scripts: `overlay.js`_, `scrollable.js`_, `tabs.js`_,
     `toolbox.history.js`_, `toolbox.expose.js`_, `tooltip.js`_
 
@@ -29,7 +28,7 @@ Avaliable resources
     default.
 
     Included scripts: `overlay.apple.js`_, `scrollable.autoscroll.js`_,
-    `scrollable.navigator.js`_, `tabs.slideshow.js`_, `toolbox.flashembed.js`_, 
+    `scrollable.navigator.js`_, `tabs.slideshow.js`_, `toolbox.flashembed.js`_,
     `toolbox.mousewheel.js`_, `tooltip.dynamic.js`_, `tooltip.slide.js`_
 
 ``++resource++plone.app.jquerytools.dateinput.js`` ``++resource++plone.app.jquerytools.dateinput.css``
@@ -137,7 +136,7 @@ The complete options list:
 
 subtype
   'image' | 'iframe' | 'ajax'
-urlmatch: 
+urlmatch:
   Regular expression for a portion of the target URL. Target
   URL is determined by checking href, src or action attributes.
 urlreplace
@@ -152,7 +151,7 @@ width
 cssclass
   A custom css class to apply to the overlay. Ignored
   for inline overlays.
-config 
+config
   jQuery Tools configuration options in a dictionary.
 
 For AJAX overlay forms, add the following, form-oriented, options:
