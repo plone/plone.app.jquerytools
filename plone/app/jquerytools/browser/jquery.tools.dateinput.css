@@ -148,6 +148,10 @@ a.caldisabled {
 	color:#fff;
 }
 
+/************
+  Customizations for Plone
+*************/
+
 /* date input trigger element */
 .caltrigger {
   background:url('popup_calendar.png') no-repeat 0 0;
@@ -156,4 +160,12 @@ a.caldisabled {
   display: inline-block;
   border-bottom: none !important;
   vertical-align: middle;
+}
+
+#calprev {
+background-image:url(++resource++plone.app.jquerytools.prev.gif);
+}
+
+#calnext {
+background-image:url(++resource++plone.app.jquerytools.next.gif);
 }
