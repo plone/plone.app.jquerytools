@@ -150,11 +150,10 @@ a.caldisabled {
 
 /* date input trigger element */
 .caltrigger {
-  padding: 5px 20px;
-  padding-top: 9px;
-  margin-left: 2px;
-  background:url('http://static.flowplayer.org/tools/demos/dateinput/css/icon.jpg') no-repeat 0 0;
-  -moz-border-radius:3px;
-  -webkit-border-radius:3px;
-  border-radius:3px;
+  background:url('popup_calendar.png') no-repeat 0 0;
+  height: 16px;
+  width: 16px;
+  display: inline-block;
+  border-bottom: none !important;
+  vertical-align: middle;
 }

@@ -119,9 +119,9 @@ def main():
                 'jquery.tools:tooltip/tooltip.dynamic.js',
                 'jquery.tools:tooltip/tooltip.slide.js',
             ],
-        'jquery.tools.dateinput.css': [
-                'jquery.tools:dateinput/skin1.css',
-            ],
+        # 'jquery.tools.dateinput.css': [
+        #         'jquery.tools:dateinput/skin1.css',
+        #     ],
         'jquery.tools.dateinput.js': [
                 'jquery.tools:dateinput/dateinput.js',
             ],
