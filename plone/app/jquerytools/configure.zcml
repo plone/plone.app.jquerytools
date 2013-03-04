@@ -67,13 +67,6 @@
         file="browser/next.gif"
         />
 
-
-    <resource
-        name="plone.app.jquerytools.custom.css"
-        file="browser/custom.css"
-        />
-
-
     <!-- TODO: turn on condition zcml:condition="installed plone.app.testing"
          when finished drafting selenium tests
     -->

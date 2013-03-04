@@ -1,9 +1,0 @@
-/* plone.app.jquerytools integration customizations */
-
-#calprev {
-	background-image:url(++resource++plone.app.jquerytools.prev.gif);
-}
-
-#calnext {
-	background-image:url(++resource++plone.app.jquerytools.next.gif);
-}
