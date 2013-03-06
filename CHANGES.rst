@@ -1,6 +1,15 @@
 Changelog
 =========
 
+1.5.5 (unreleased)
+------------------
+
+- Pass the pbo object as third parameter to the redirect callback. This
+  provides the same flexibility for redirect that was added for noform in
+  1.5.4.
+  [izak]
+
+
 1.5.4
 -----
 

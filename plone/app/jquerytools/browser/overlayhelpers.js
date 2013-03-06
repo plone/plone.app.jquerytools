@@ -431,7 +431,7 @@ jQuery(function ($) {
                     target = pbo.redirect;
                     if (typeof(target) === "function") {
                         // get target from callback
-                        target = target(el, responseText);
+                        target = target(el, responseText, pbo);
                     }
                     location.replace(target);
                     break;
