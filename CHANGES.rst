@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.5 (unreleased)
+1.5.5 (2012-03-18)
 ------------------
 
 - Set z-index for dateinput calendar popup so that it will display in
