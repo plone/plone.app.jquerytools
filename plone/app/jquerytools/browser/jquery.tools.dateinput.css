@@ -169,3 +169,7 @@ background-image:url(++resource++plone.app.jquerytools.prev.gif);
 #calnext {
 background-image:url(++resource++plone.app.jquerytools.next.gif);
 }
+
+#calroot {
+    z-index: 10000;
+}
