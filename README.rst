@@ -4,13 +4,22 @@ Introduction
 plone.app.jquerytools adds `jquery.tools`_ and some related
 overlay and form-handling JavaScript libraries to Plone.
 
-``plone.app.jquerytools`` was developed for Plone 4. However, it can
+``plone.app.jquerytools`` was developed for Plone 4. Earlier versions could
 be used in Plone 3.x by adding a zcml slug and running its
-GS Setup extension profile.
+GS Setup extension profile. This version requires Plone 4.x.
+
+Plone developers will wish to use ``plone.app.jquerytools`` to provide DOM
+popups, particularly if they require AJAX. There is extensive support
+for AJAX form posting. It's also useful for adding dateinput and forminput
+widgets that are HTML5 compatible.
+
+The AJAX and AJAX-form support is Plone-specific, and is documented in this module.
+Dateinput, rangeinput, accordions, and tooltips are all unchanged from
+jquerytools, and the jquerytools docs should be consulted.
 
 .. contents::
 
-Avaliable resources
+Available resources
 ===================
 
 `jquery.tools`_ plugins and widgets are packed into Zope browser resources:
