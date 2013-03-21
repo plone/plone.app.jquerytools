@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.5 (2012-03-18)
+1.5.5 (2013-03-18)
 ------------------
 
 - Set z-index for dateinput calendar popup so that it will display in
@@ -14,8 +14,8 @@ Changelog
   [izak]
 
 
-1.5.4
------
+1.5.4 (2013-03-04)
+------------------
 
 - Now execute inline scripts in ajax overlay.
   [vincentfretin]
