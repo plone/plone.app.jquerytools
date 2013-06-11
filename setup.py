@@ -4,7 +4,8 @@ version = '1.5.6.dev0'
 
 setup(name='plone.app.jquerytools',
       version=version,
-      description="jQuery Tools integration for Plone plus overlay and AJAX form helpers.",
+      description="jQuery Tools integration for Plone plus overlay and AJAX "
+                  "form helpers.",
       long_description=open("README.rst").read() + "\n" +
                        open("CHANGES.rst").read(),
       classifiers=[
@@ -35,7 +36,7 @@ setup(name='plone.app.jquerytools',
           [z3c.autoinclude.plugin]
           target = plone
       """,
-      extras_require = {
+      extras_require={
           'test': [
               'plone.app.testing',
               'unittest_jshint',

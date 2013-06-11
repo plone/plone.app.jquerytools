@@ -4,8 +4,13 @@ Changelog
 1.5.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Backport pull-req https://github.com/jquerytools/jquerytools/pull/873 and
+  apply in other jquerytools files too: Fix API of outerWidth and outerHeight
+  to ensure jQuery 1.8.x compatibility. This change is backwards compatible at
+  least to 1.4, since jquerytools used the API incorrectly. See jQuery 1.4 API
+  doc:
+  http://web.archive.org/web/20100210083046/http://api.jquery.com/outerWidth/
+  [thet]
 
 1.5.5 (2013-03-18)
 ------------------
