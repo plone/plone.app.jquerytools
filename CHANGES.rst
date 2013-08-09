@@ -4,6 +4,10 @@ Changelog
 1.5.6 (unreleased)
 ------------------
 
+- In the date picker, fire the change event on the input
+  so it doesn't bubble up and cause an error in jquery 1.8.
+  [davisagli]
+
 - Backport pull-req https://github.com/jquerytools/jquerytools/pull/873 and
   apply in other jquerytools files too: Fix API of outerWidth and outerHeight
   to ensure jQuery 1.8.x compatibility. This change is backwards compatible at
