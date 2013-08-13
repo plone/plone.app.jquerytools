@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.6 (unreleased)
+1.5.6 (2013-08-13)
 ------------------
 
 - In the date picker, fire the change event on the input
