@@ -12,12 +12,16 @@ testfiles = (
 ptc.setupPloneSite()
 
 
+class JquerytoolsFunctionalTestCase(ptc.FunctionalTestCase):
+	pass
+
+
 def test_suite():
     return unittest.TestSuite([
 
         ztc.FunctionalDocFileSuite(
             f, package = 'plone.app.jquerytools.tests',
-            test_class = ptc.FunctionalTestCase,
+            test_class = JquerytoolsFunctionalTestCase,
             optionflags = doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS)
             for f in testfiles
         ])
