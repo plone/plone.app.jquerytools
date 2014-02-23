@@ -1,10 +1,15 @@
 Changelog
 =========
 
-1.5.7 (unreleased)
+1.5.7 (2014-02-23)
 ------------------
 
-- Nothing changed yet.
+- Fix a test isolation issue.
+  [davisagli]
+
+- Install plone.app.jquerytools.js after plone_javasscript_variables.js
+  in new instances.
+  [bloodbare]
 
 
 1.5.6 (2013-08-13)
