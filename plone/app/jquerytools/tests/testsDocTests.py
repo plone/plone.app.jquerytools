@@ -1,31 +1,14 @@
 import unittest
 import doctest
 
-from Testing import ZopeTestCase as ztc
+from plone.app.jquerytools.testing import PLONEAPPJQUERYTPOOLS_FUNCTIONAL_TESTING
 
-from Products.PloneTestCase import PloneTestCase as ptc
-
-testfiles = (
-    'ploneIntegration.txt',
-)
-
-ptc.setupPloneSite()
-
-
-class JquerytoolsFunctionalTestCase(ptc.FunctionalTestCase):
-	pass
+from plone.testing import layered
 
 
 def test_suite():
-    return unittest.TestSuite([
-
-        ztc.FunctionalDocFileSuite(
-            f, package = 'plone.app.jquerytools.tests',
-            test_class = JquerytoolsFunctionalTestCase,
-            optionflags = doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS)
-            for f in testfiles
-        ])
-
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')
+    return unittest.TestSuite(
+        [layered(doctest.DocFileSuite('tests/ploneIntegration.txt', package='plone.app.jquerytools',
+         optionflags=doctest.ELLIPSIS | doctest.REPORT_ONLY_FIRST_FAILURE),
+         layer=PLONEAPPJQUERYTPOOLS_FUNCTIONAL_TESTING)]
+    )
