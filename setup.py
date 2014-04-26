@@ -39,7 +39,6 @@ setup(name='plone.app.jquerytools',
       extras_require={
           'test': [
               'plone.app.testing',
-              'unittest_jshint',
               'selenium',
               ],
       },
