@@ -4,8 +4,12 @@ Introduction
 Setup the test framework::
 
     >>> from zope.component import getMultiAdapter
-    >>> from Testing.testbrowser import Browser
-    >>> browser = Browser()
+    >>> from plone.testing import z2
+
+    >>> from plone.testing.z2 import Browser
+    >>> from Testing.ZopeTestCase import user_password
+    >>> with z2.zopeApp() as app:
+    ...     browser = Browser(app)
     >>> portal_url = 'http://nohost/plone'
 
 We should already be installed::
@@ -18,7 +22,7 @@ Javascript Resource and View
 
 We should have three items in the JS registry::
 
-    >>> jsreg = portal.portal_javascripts
+    >>> jsreg = layer['portal'].portal_javascripts
     >>> ids = jsreg.getResourceIds()
     >>> '++resource++plone.app.jquerytools.js' in ids
     True
@@ -50,7 +54,7 @@ And, make sure it's got our code in it::
     >>> print browser.contents
     /*****************
     <BLANKLINE>
-    jQuery Tools overlay helpers.
+       jQuery Tools overlay helpers.
     ...
 
 Open the plugins item as a resource::
@@ -68,7 +72,7 @@ And, make sure it's got our code in it::
 Open the test page::
 
     >>> browser.open(portal_url+'/@@p.a.jqt.testPage')
-    
+
     >>> browser.contents.find("Test AJAX Form Popup") > 0
     True
-    
+
