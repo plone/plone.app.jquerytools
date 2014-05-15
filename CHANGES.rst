@@ -1,10 +1,14 @@
 Changelog
 =========
 
-1.5.8 (unreleased)
-------------------
+2.0 (unreleased)
+----------------
 
-- Nothing changed yet.
+- Use dev branch of jquerytools for better support of newer jQuery versions.
+  [thet]
+
+- Switched to Grunt based build system.
+  [thet]
 
 
 1.5.7 (2014-02-23)
