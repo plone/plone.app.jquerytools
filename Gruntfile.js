@@ -11,7 +11,7 @@ module.exports = function (grunt) {
                 command: 'rm -Rf repo-jqueryform',
             },
             gitclone_jquerytools: {
-                command: 'git clone --branch dev git@github.com:jquerytools/jquerytools.git repo-jquerytools',
+                command: 'git clone --branch dev git@github.com:collective/jquerytools.git repo-jquerytools',
             },
             gitclone_jqueryform: {
                 command: 'git clone --branch master git@github.com:malsup/form.git repo-jqueryform',
