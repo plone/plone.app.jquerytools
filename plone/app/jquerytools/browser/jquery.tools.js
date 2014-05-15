@@ -1,18 +1,18 @@
 /**
  * @license 
- * jQuery Tools v1.2.7 Overlay - Overlay base. Extend it.
+ * jQuery Tools @VERSION Overlay - Overlay base. Extend it.
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/overlay/
  *
  * Since: March 2008
- * Date: 2012-04-30 14:24 
+ * Date: @DATE 
  */
 (function($) { 
 
 	// static constructs
-	$.tools = $.tools || {version: 'v1.2.7'};
+	$.tools = $.tools || {version: '@VERSION'};
 	
 	$.tools.overlay = {
 		
@@ -28,7 +28,7 @@
 			effect: 'default',
 			
 			// since 1.2. fixed positioning not supported by IE6
-			fixed: !$.browser.msie || $.browser.version > 6, 
+			fixed: !/msie/.test(navigator.userAgent.toLowerCase()) || navigator.appVersion > 6, 
 			
 			left: 'center',		
 			load: false, // 1.2
@@ -292,21 +292,22 @@
 })(jQuery);
 
 
+
 /**
  * @license 
- * jQuery Tools v1.2.7 Scrollable - New wave UI design
+ * jQuery Tools @VERSION Scrollable - New wave UI design
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/scrollable.html
  *
  * Since: March 2008
- * Date: 2012-04-30 14:24 
+ * Date: @DATE 
  */
 (function($) { 
 
 	// static constructs
-	$.tools = $.tools || {version: 'v1.2.7'};
+	$.tools = $.tools || {version: '@VERSION'};
 	
 	$.tools.scrollable = {
 		
@@ -661,21 +662,22 @@
 	
 })(jQuery);
 
+
 /**
  * @license 
- * jQuery Tools v1.2.7 Tabs- The basics of UI design.
+ * jQuery Tools @VERSION Tabs- The basics of UI design.
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tabs/
  *
  * Since: November 2008
- * Date: 2012-04-30 14:24 
+ * Date: @DATE 
  */  
 (function($) {
 		
 	// static constructs
-	$.tools = $.tools || {version: 'v1.2.7'};
+	$.tools = $.tools || {version: '@VERSION'};
 	
 	$.tools.tabs = {
 		
@@ -986,21 +988,132 @@
 
 
 
+
 /**
  * @license 
- * jQuery Tools v1.2.7 / Expose - Dim the lights
+ * jQuery Tools @VERSION History "Back button for AJAX apps"
+ * 
+ * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
+ * 
+ * http://flowplayer.org/tools/toolbox/history.html
+ * 
+ * Since: Mar 2010
+ * Date: @DATE 
+ */
+(function($) {
+		
+	var hash, iframe, links, inited;		
+	
+	$.tools = $.tools || {version: '@VERSION'};
+	
+	$.tools.history = {
+	
+		init: function(els) {
+			
+			if (inited) { return; }
+			
+			// IE
+			if ($.browser.msie && $.browser.version < '8') {
+				
+				// create iframe that is constantly checked for hash changes
+				if (!iframe) {
+					iframe = $("<iframe/>").attr("src", "javascript:false;").hide().get(0);
+					$("body").append(iframe);
+									
+					setInterval(function() {
+						var idoc = iframe.contentWindow.document, 
+							 h = idoc.location.hash;
+					
+						if (hash !== h) {						
+							$(window).trigger("hash", h);
+						}
+					}, 100);
+					
+					setIframeLocation(location.hash || '#');
+				}
+
+				
+			// other browsers scans for location.hash changes directly without iframe hack
+			} else { 
+				setInterval(function() {
+					var h = location.hash;
+					if (h !== hash) {
+						$(window).trigger("hash", h);
+					}						
+				}, 100);
+			}
+
+			links = !links ? els : links.add(els);
+			
+			els.click(function(e) {
+				var href = $(this).attr("href");
+				if (iframe) { setIframeLocation(href); }
+				
+				// handle non-anchor links
+				if (href.slice(0, 1) != "#") {
+					location.href = "#" + href;
+					return e.preventDefault();		
+				}
+				
+			}); 
+			
+			inited = true;
+		}	
+	};  
+	
+
+	function setIframeLocation(h) {
+		if (h) {
+			var doc = iframe.contentWindow.document;
+			doc.open().close();	
+			doc.location.hash = h;
+		}
+	} 
+		 
+	// global histroy change listener
+	$(window).on("hash", function(e, h)  { 
+		if (h) {
+			links.filter(function() {
+			  var href = $(this).attr("href");
+			  return href == h || href == h.replace("#", ""); 
+			}).trigger("history", [h]);	
+		} else {
+			links.eq(0).trigger("history", [h]);	
+		}
+
+		hash = h;
+
+	});
+		
+	
+	// jQuery plugin implementation
+	$.fn.history = function(fn) {
+			
+		$.tools.history.init(this);
+
+		// return jQuery
+		return this.on("history", fn);		
+	};	
+		
+})(jQuery); 
+
+
+
+/**
+ * @license 
+ * jQuery Tools @VERSION / Expose - Dim the lights
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/toolbox/expose.html
  *
  * Since: Mar 2010
- * Date: 2012-04-30 14:24 
+ * Date: @DATE 
  */
 (function($) { 	
 
 	// static constructs
-	$.tools = $.tools || {version: 'v1.2.7'};
+	$.tools = $.tools || {version: '@VERSION'};
 	
 	var tool;
 	
@@ -1029,7 +1142,7 @@
 	function viewport() {
 				
 		// the horror case
-		if ($.browser.msie) {
+		if (/msie/.test(navigator.userAgent.toLowerCase())) {
 			
 			// if there are no scrollbars then use window.height
 			var d = $(document).height(), w = $(window).height();
@@ -1157,12 +1270,12 @@
 				// onBeforeClose
 				if (call(config.onBeforeClose) === false) { return this; }
 					
-				mask.fadeOut(config.closeSpeed, function()  {					
-					call(config.onClose);					
+				mask.fadeOut(config.closeSpeed, function()  {										
 					if (exposed) {
 						exposed.css({zIndex: overlayIndex});						
 					}				
 					loaded = false;
+					call(config.onClose);
 				});				
 				
 				// unbind various event listeners
@@ -1211,129 +1324,21 @@
 
 })(jQuery);
 
-/**
- * @license 
- * jQuery Tools v1.2.7 History "Back button for AJAX apps"
- * 
- * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
- * 
- * http://flowplayer.org/tools/toolbox/history.html
- * 
- * Since: Mar 2010
- * Date: 2012-04-30 14:24 
- */
-(function($) {
-		
-	var hash, iframe, links, inited;		
-	
-	$.tools = $.tools || {version: 'v1.2.7'};
-	
-	$.tools.history = {
-	
-		init: function(els) {
-			
-			if (inited) { return; }
-			
-			// IE
-			if ($.browser.msie && $.browser.version < '8') {
-				
-				// create iframe that is constantly checked for hash changes
-				if (!iframe) {
-					iframe = $("<iframe/>").attr("src", "javascript:false;").hide().get(0);
-					$("body").append(iframe);
-									
-					setInterval(function() {
-						var idoc = iframe.contentWindow.document, 
-							 h = idoc.location.hash;
-					
-						if (hash !== h) {						
-							$(window).trigger("hash", h);
-						}
-					}, 100);
-					
-					setIframeLocation(location.hash || '#');
-				}
-
-				
-			// other browsers scans for location.hash changes directly without iframe hack
-			} else { 
-				setInterval(function() {
-					var h = location.hash;
-					if (h !== hash) {
-						$(window).trigger("hash", h);
-					}						
-				}, 100);
-			}
-
-			links = !links ? els : links.add(els);
-			
-			els.click(function(e) {
-				var href = $(this).attr("href");
-				if (iframe) { setIframeLocation(href); }
-				
-				// handle non-anchor links
-				if (href.slice(0, 1) != "#") {
-					location.href = "#" + href;
-					return e.preventDefault();		
-				}
-				
-			}); 
-			
-			inited = true;
-		}	
-	};  
-	
-
-	function setIframeLocation(h) {
-		if (h) {
-			var doc = iframe.contentWindow.document;
-			doc.open().close();	
-			doc.location.hash = h;
-		}
-	} 
-		 
-	// global histroy change listener
-	$(window).on("hash", function(e, h)  { 
-		if (h) {
-			links.filter(function() {
-			  var href = $(this).attr("href");
-			  return href == h || href == h.replace("#", ""); 
-			}).trigger("history", [h]);	
-		} else {
-			links.eq(0).trigger("history", [h]);	
-		}
-
-		hash = h;
-
-	});
-		
-	
-	// jQuery plugin implementation
-	$.fn.history = function(fn) {
-			
-		$.tools.history.init(this);
-
-		// return jQuery
-		return this.on("history", fn);		
-	};	
-		
-})(jQuery); 
-
 
 /**
  * @license 
- * jQuery Tools v1.2.7 Tooltip - UI essentials
+ * jQuery Tools @VERSION Tooltip - UI essentials
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tooltip/
  *
  * Since: November 2008
- * Date: 2012-04-30 14:24 
+ * Date: @DATE 
  */
 (function($) { 	
 	// static constructs
-	$.tools = $.tools || {version: 'v1.2.7'};
+	$.tools = $.tools || {version: '@VERSION'};
 	
 	$.tools.tooltip = {
 		
@@ -1391,7 +1396,7 @@
 		fade: [
 			function(done) {
 				var conf = this.getConf();
-				if (!$.browser.msie || conf.fadeIE) {
+				if (!/msie/.test(navigator.userAgent.toLowerCase()) || conf.fadeIE) {
 					this.getTip().fadeTo(conf.fadeInSpeed, conf.opacity, done);
 				}
 				else {
@@ -1401,7 +1406,7 @@
 			},
 			function(done) {
 				var conf = this.getConf();
-				if (!$.browser.msie || conf.fadeIE) {
+				if (!/msie/.test(navigator.userAgent.toLowerCase()) || conf.fadeIE) {
 					this.getTip().fadeOut(conf.fadeOutSpeed, done);
 				}
 				else {
@@ -1525,7 +1530,8 @@
 
 					// manual tooltip
 					} else {	
-						tip = trigger.next();  
+						tip = trigger.find('.' + conf.tipClass);
+						if (!tip.length) { tip = trigger.next(); }
 						if (!tip.length) { tip = trigger.parent().next(); } 	 
 					}
 					
@@ -1653,10 +1659,6 @@
 	
 	// jQuery plugin implementation
 	$.fn.tooltip = function(conf) {
-		
-		// return existing instance
-		var api = this.data("tooltip");
-		if (api) { return api; }
 
 		conf = $.extend(true, {}, $.tools.tooltip.conf, conf);
 		
@@ -1666,9 +1668,12 @@
 		}
 		
 		// install tooltip for each entry in jQuery object
+		// that is not an existing instance
 		this.each(function() {
-			api = new Tooltip($(this), conf); 
-			$(this).data("tooltip", api); 
+			if ( $(this).data("tooltip")===null){
+			    api = new Tooltip($(this), conf);
+			    $(this).data("tooltip", api);
+			};
 		});
 		
 		return conf.api ? api: this;		 
@@ -1677,5 +1682,4 @@
 }) (jQuery);
 
 		
-
 

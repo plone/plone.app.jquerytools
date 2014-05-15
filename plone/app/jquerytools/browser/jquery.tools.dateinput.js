@@ -1,13 +1,13 @@
 /**
  * @license                                     
- * jQuery Tools v1.2.7 Dateinput - <input type="date" /> for humans
+ * jQuery Tools @VERSION Dateinput - <input type="date" /> for humans
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/form/dateinput/
  *
  * Since: Mar 2010
- * Date: 2012-04-30 14:24 
+ * Date: @DATE 
  */
 (function($, undefined) {	
 		
@@ -15,7 +15,7 @@
 		 preserve today highlighted
 	*/
 	
-	$.tools = $.tools || {version: 'v1.2.7'};
+	$.tools = $.tools || {version: '@VERSION'};
 	
 	var instances = [],
 		formatters = {},
@@ -289,7 +289,12 @@
 		
 //{{{ pick
 			 			 
-		function select(date, conf, e) {  
+		function select(date, conf, e) {
+			// If it is readonly, then we'll just close the calendar
+			if (input.attr('readonly')) {
+				self.hide(e);
+				return;
+			}
 			
 			// current value
 			value 	 = date;
@@ -300,7 +305,7 @@
 			e || (e = $.Event("api"));
 
 			// focus the input after selection (doesn't work in IE)
-			if (e.type == "click" && !$.browser.msie) {
+			if (e.type == "click" && !/msie/.test(navigator.userAgent.toLowerCase())) {
 				input.focus();
 			}
 			
@@ -313,9 +318,8 @@
 			// formatting			
 			input.val(format(conf.formatter, date, conf.format, conf.lang));
 			
-			// change
-			e.target = input[0];
-			e.type = "change";
+            // change
+            e.target = input[0];
 			fire.trigger(e);
               
 			// store value into input
@@ -403,7 +407,7 @@
 			$(document).on("click.d", function(e) {					
 				var el = e.target;
 				
-				if (!$(el).parents("#" + css.root).length && el != input[0] && (!trigger || el != trigger[0])) {
+				if (!(el.id == css.root || $(el).parents("#" + css.root).length) && el != input[0] && (!trigger || el != trigger[0])) {
 					self.hide(e);
 				}
 				
@@ -421,7 +425,7 @@
 			*/					
 			show: function(e) {
 				
-				if (input.attr("readonly") || input.attr("disabled") || opened) { return; }
+				if (input.attr("disabled") || opened) { return; }
 				
 				// onBeforeShow
 				e = e || $.Event();
@@ -806,4 +810,3 @@
 }) (jQuery);
  
 	
-
