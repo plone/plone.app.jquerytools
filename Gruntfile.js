@@ -96,5 +96,5 @@ module.exports = function (grunt) {
 
     // Default task(s).
     grunt.registerTask('default', ['shell', 'concat', 'uglify']);
-
+    grunt.registerTask('update', ['concat', 'uglify']);
 };
