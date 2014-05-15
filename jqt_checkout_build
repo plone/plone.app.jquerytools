@@ -15,16 +15,22 @@ import os
 import shlex
 import shutil
 import subprocess
-import tarfile
 import tempfile
 import urllib2
+import zipfile
 
 
-JQ_TOOLS_VERSION = 'v1.2.7'
-JQ_TOOLS_DOWNLOAD_URL = 'http://github.com/jquerytools/jquerytools/tarball/'+JQ_TOOLS_VERSION
+# JQ_TOOLS_VERSION = 'v1.2.7'
+JQT_VERSION = 'dev'
+JQT_DOWNLOAD =\
+    'https://github.com/jquerytools/jquerytools/archive/{}.zip'.format(
+        JQT_VERSION
+    )
 
-JQ_FORM_VERSION = 'master' # there is no tag
-JQ_FORM_URL= 'http://github.com/malsup/form/tarball/'+JQ_FORM_VERSION
+JQ_FORM_VERSION = 'master'  # there is no tag
+JQ_FORM_URL = 'https://github.com/malsup/form/archive/{}.zip'.format(
+    JQ_FORM_VERSION
+)
 
 
 def run_hooks(name, hooks, kw):
@@ -49,12 +55,13 @@ def build(name, download_url, hooks=dict(), **kw):
     f.seek(0)
 
     # extract it to temporary folder
-    archive_tar = tarfile.open(fileobj=f)
-    for member in archive_tar.getmembers():
-        if member.path.startswith('/') or \
-           member.path.startswith('..'):
+    archive_zip = zipfile.ZipFile(file=f, mode='r')
+    import pdb; pdb.set_trace()
+    for member in archive_zip.namelist():
+        if member.startswith('/') or \
+           member.startswith('..'):
             raise Exception('Somebody wants to harm your coputer.')
-    archive_tar.extractall(kw['tmp_dir'])
+    archive_zip.extractall(path=kw['tmp_dir'])
     f.close()
 
     try:
@@ -90,7 +97,6 @@ def build(name, download_url, hooks=dict(), **kw):
         kw = run_hooks('file', hooks, kw)
 
     finally:
-
         # remove temporary directory
         shutil.rmtree(kw['tmp_dir'])
 
