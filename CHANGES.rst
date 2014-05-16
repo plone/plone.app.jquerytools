@@ -7,6 +7,9 @@ Changelog
 - Switch to zipurls instead tarballs for the build infrastructure.
   [thet]
 
+- Switch test infrastructure to plone.app.testing.
+  [sdelcourt]
+
 
 1.5.7 (2014-02-23)
 ------------------
