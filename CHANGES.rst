@@ -4,7 +4,8 @@ Changelog
 1.5.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Switch to zipurls instead tarballs for the build infrastructure.
+  [thet]
 
 
 1.5.7 (2014-02-23)
