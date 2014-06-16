@@ -1,16 +1,17 @@
-import time
-
-import transaction
 from base import SeleniumTestCase
 from plone.app.testing import PLONE_SITE_ID
 from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD, TEST_USER_ROLES
 from plone.app.testing import helpers
 from plone.app.testing.interfaces import TEST_USER_ID
 
+import time
+import transaction
+
 # Note the various time.sleep(...) statements. They're necessary to get
 # these tests to run reliably. Is selenium running in an async thread that
 # may be interrupting a js function (i.e., checking while it's running) and
 # thus catches the DOM in an changing state?
+
 
 class OverlayTestCase(SeleniumTestCase):
 
@@ -52,7 +53,8 @@ class OverlayTestCase(SeleniumTestCase):
         self.waitForElement("#personaltools-logout")
         time.sleep(0.5)
         # overlay should be gone
-        self.assertFalse(sel.is_element_present("css=div.overlay-ajax form#login_form"))
+        self.assertFalse(
+            sel.is_element_present("css=div.overlay-ajax form#login_form"))
 
         self.open("logout")
         time.sleep(0.5)
@@ -84,17 +86,20 @@ class OverlayTestCase(SeleniumTestCase):
         sel.click("id=delete")
         self.waitForElement("div.overlay-ajax form#delete_confirmation")
         self.waitForElement("#exposeMask")
-        self.waitForElement("div.overlay-ajax form#delete_confirmation form.button.Cancel")
+        self.waitForElement(
+            "div.overlay-ajax form#delete_confirmation form.button.Cancel")
         sel.click("form.button.Cancel")
 
         sel.click("id=delete")
-        self.waitForElement("div.overlay-ajax form#delete_confirmation form.button.Cancel")
+        self.waitForElement(
+            "div.overlay-ajax form#delete_confirmation form.button.Cancel")
         sel.click("//input[@value='Delete']")
 
         self.wait()
         time.sleep(0.5)
 
-        self.assertTrue(sel.get_location().rstrip('/').split('/')[-1] == PLONE_SITE_ID)
+        self.assertTrue(
+            sel.get_location().rstrip('/').split('/')[-1] == PLONE_SITE_ID)
 
         self.assertFalse(sel.is_element_present("id=portaltab-f1"))
 

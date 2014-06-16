@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing.layers import FunctionalTesting
 
