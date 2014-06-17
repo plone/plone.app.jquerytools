@@ -4,7 +4,9 @@ Changelog
 2.0 (unreleased)
 ----------------
 
-- Use dev branch of jquerytools for better support of newer jQuery versions.
+- Ensure jQuery 1.7+, including 1.9 compatibility by using the dev branch of
+  jquerytools and applying further fixes. We now use a fork of jquerytools at:
+  https://github.com/collective/jquerytools/tree/dev
   [thet]
 
 - Switched to Grunt based build system.
