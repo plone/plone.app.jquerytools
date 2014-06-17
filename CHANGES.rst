@@ -9,6 +9,15 @@ Changelog
   https://github.com/collective/jquerytools/tree/dev
   [thet]
 
+- Fix ``overlayhelpers.js`` to work with jQuery 1.7 and 1.9.
+  jQuery.buildFragment has a slightly changed API. While it accepts a list of
+  context objects in jQuery 1.7, it expects an explicit context object in
+  jQuery 1.9. See:
+    - https://github.com/jquery/jquery/blob/1.7/src/manipulation.js#L465
+    - https://github.com/jquery/jquery/blob/1.7/src/manipulation.js#L472
+    - https://github.com/jquery/jquery/blob/1.9.1/src/manipulation.js#L617
+  [thet]
+
 - Switched to Grunt based build system.
   [thet]
 

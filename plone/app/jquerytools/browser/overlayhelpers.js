@@ -374,7 +374,7 @@ jQuery(function ($) {
                 ajax_parent.empty().append(el);
 
                 // execute inline scripts
-                $.buildFragment([responseText], [document], scripts);
+                $.buildFragment([responseText], document, scripts);
                 if (scripts.length) {
                     $.each(scripts, function() {
                         $.globalEval( this.text || this.textContent || this.innerHTML || "" );
@@ -550,7 +550,7 @@ jQuery(function ($) {
             }
 
             // execute inline scripts
-            $.buildFragment([responseText], [document], scripts);
+            $.buildFragment([responseText], document, scripts);
             if (scripts.length) {
                 $.each(scripts, function() {
                     $.globalEval( this.text || this.textContent || this.innerHTML || "" );
