@@ -374,7 +374,13 @@ jQuery(function ($) {
                 ajax_parent.empty().append(el);
 
                 // execute inline scripts
-                $.buildFragment([responseText], document, scripts);
+                try {
+                    // jQuery 1.7
+                    $.buildFragment([responseText], [document], scripts);
+                } catch (e) {
+                    // jQuery 1.9
+                    $.buildFragment([responseText], document, scripts);
+                }
                 if (scripts.length) {
                     $.each(scripts, function() {
                         $.globalEval( this.text || this.textContent || this.innerHTML || "" );
@@ -550,7 +556,13 @@ jQuery(function ($) {
             }
 
             // execute inline scripts
-            $.buildFragment([responseText], document, scripts);
+            try {
+                // jQuery 1.7
+                $.buildFragment([responseText], [document], scripts);
+            } catch (e) {
+                // jQuery 1.9
+                $.buildFragment([responseText], document, scripts);
+            }
             if (scripts.length) {
                 $.each(scripts, function() {
                     $.globalEval( this.text || this.textContent || this.innerHTML || "" );
