@@ -195,7 +195,7 @@ jQuery(function ($) {
             close_message,
             pbw = pbo.width;
 
-        if (close_box_message === undefined) {
+        if (typeof close_box_message === 'undefined') {
             close_message = 'Close this box.';
         } else {
             close_message = close_box_message;
