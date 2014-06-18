@@ -19,6 +19,25 @@ jquerytools, and the jquerytools docs should be consulted.
 
 .. contents::
 
+
+Development
+===========
+
+Since version 2.0 we use a Grunt based build system. To update the package, you
+have to setup Grunt like descibed below (this works on Linux). You need ``npm``
+and ``git`` installed.
+
+If grunt-cli isn't installed, do::
+
+    $ sudo npm install -g grunt-cli
+
+Then install the rest locally::
+
+    $ npm install
+
+For more information see: http://gruntjs.com/getting-started
+
+
 Available resources
 ===================
 
