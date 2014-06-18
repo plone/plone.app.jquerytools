@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<object name="portal_javascripts">
+
+  <javascript enabled="False" id="++resource++plone.app.jquerytools.js" />
+  <javascript enabled="False" id="++resource++plone.app.jquerytools.form.js" />
+  <javascript enabled="False" id="++resource++plone.app.jquerytools.dateinput.js" />
+  <javascript enabled="False" id="++resource++plone.app.jquerytools.rangeinput.js" />
+  <javascript enabled="False" id="++resource++plone.app.jquerytools.validator.js" />
+  <javascript enabled="False" id="++resource++plone.app.jquerytools.plugins.js" />
+
+  <javascript
+      cacheable="True"
+      compression="safe"
+      cookable="True"
+      enabled="True"
+      expression=""
+      id="++resource++plone.app.jquerytools.unmin.js"
+      inline="False"
+      insert-after="++resource++plone.app.jquerytools.js"
+      />
+
+  <javascript
+      cacheable="True"
+      compression="safe"
+      cookable="True"
+      enabled="True"
+      expression=""
+      id="++resource++plone.app.jquerytools.form.unmin.js"
+      inline="False"
+      insert-after="++resource++plone.app.jquerytools.form.js"
+      />
+
+  <javascript
+      cacheable="True"
+      compression="safe"
+      cookable="True"
+      enabled="False"
+      expression=""
+      id="++resource++plone.app.jquerytools.dateinput.unmin.js"
+      inline="False"
+      insert-after="++resource++plone.app.jquerytools.dateinput.js"
+      />
+
+  <javascript
+      cacheable="True"
+      compression="safe"
+      cookable="True"
+      enabled="False"
+      expression=""
+      id="++resource++plone.app.jquerytools.rangeinput.unmin.js"
+      inline="False"
+      insert-after="++resource++plone.app.jquerytools.rangeinput.js"
+      />
+
+  <javascript
+      cacheable="True"
+      compression="safe"
+      cookable="True"
+      enabled="False"
+      expression=""
+      id="++resource++plone.app.jquerytools.validator.unmin.js"
+      inline="False"
+      insert-after="++resource++plone.app.jquerytools.validator.js"
+      />
+
+  <javascript
+      cacheable="True"
+      compression="safe"
+      cookable="True"
+      enabled="False"
+      expression=""
+      id="++resource++plone.app.jquerytools.plugins.unmin.js"
+      inline="False"
+      insert-after="++resource++plone.app.jquerytools.plugins.js"
+      />
+
+</object>
