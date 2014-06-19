@@ -1,10 +1,24 @@
 Changelog
 =========
 
-1.5.8 (unreleased)
-------------------
+2.0 (unreleased)
+----------------
 
-- Switch to zipurls instead tarballs for the build infrastructure.
+- Ensure jQuery 1.7+, including 1.9 compatibility by using the dev branch of
+  jquerytools and applying further fixes. We now use a fork of jquerytools at:
+  https://github.com/collective/jquerytools/tree/dev
+  [thet]
+
+- Fix ``overlayhelpers.js`` to work with jQuery 1.7 and 1.9.
+  jQuery.buildFragment has a slightly changed API. While it accepts a list of
+  context objects in jQuery 1.7, it expects an explicit context object in
+  jQuery 1.9. See:
+    - https://github.com/jquery/jquery/blob/1.7/src/manipulation.js#L465
+    - https://github.com/jquery/jquery/blob/1.7/src/manipulation.js#L472
+    - https://github.com/jquery/jquery/blob/1.9.1/src/manipulation.js#L617
+  [thet]
+
+- Switched to Grunt based build system.
   [thet]
 
 - Switch test infrastructure to plone.app.testing.

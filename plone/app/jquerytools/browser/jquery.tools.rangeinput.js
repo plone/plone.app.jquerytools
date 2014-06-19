@@ -1,17 +1,32 @@
 /**
  * @license 
- * jQuery Tools v1.2.7 Rangeinput - HTML5 <input type="range" /> for humans
+ * jQuery Tools @VERSION Rangeinput - HTML5 <input type="range" /> for humans
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/rangeinput/
  *
  * Since: Mar 2010
- * Date: 2012-04-30 14:24 
+ * Date: @DATE 
  */
+ 
+ var oldFnData = jQuery.fn.data;
+
+jQuery.fn.data = function( name ) {
+  var ret, evt,
+    elem = this[0];
+
+  // Handles 1.7 which has this behavior and 1.8 which doesn't
+  if ( elem && name === "events" && arguments.length === 1 ) {
+    ret = jQuery.data( elem, name );
+    evt = jQuery._data( elem, name );
+  }
+  return oldFnData.apply( this, arguments );
+};
+ 
 (function($) {
 	 
-	$.tools = $.tools || {version: 'v1.2.7'};
+	$.tools = $.tools || {version: '@VERSION'};
 	 
 	var tool;
 	
@@ -465,5 +480,4 @@
 	
 	
 }) (jQuery);
-
 

@@ -2,6 +2,10 @@
 *.pyc
 *.pyo
 
+node_modules/
+repo-jquerytools/
+repo-jqueryform/
+
 /bin/
 /dist/
 /include/

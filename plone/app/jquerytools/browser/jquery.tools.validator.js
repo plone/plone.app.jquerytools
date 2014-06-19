@@ -1,18 +1,18 @@
 /**
  * @license 
- * jQuery Tools Validator v1.2.7 - HTML5 is here. Now use it.
+ * jQuery Tools Validator @VERSION - HTML5 is here. Now use it.
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/form/validator/
  * 
  * Since: Mar 2010
- * Date: 2012-04-30 14:24 
+ * Date: @DATE 
  */
 /*jslint evil: true */ 
 (function($) {	
 
-	$.tools = $.tools || {version: 'v1.2.7'};
+	$.tools = $.tools || {version: '@VERSION'};
 		
 	// globals
 	var typeRe = /\[type=([a-z]+)\]/, 
@@ -258,10 +258,10 @@
 		return v === '' || new RegExp("^" + el.attr("pattern") + "$").test(v);
 	});
 
-	v.fn(":radio", "Please select an option.", function(el) {
+	v.fn(":radio[required]", "Please select an option.", function(el) {
 		var	checked = false;
 		var	els = $("[name='" + el.attr("name") + "']").each(function(i, el) {
-			if ($(el).is(":checked")) {
+			if ($(el).is(":checked") || checked) {
 				checked = true;
 			}
 		});
@@ -621,4 +621,3 @@
 	};   
 		
 })(jQuery);
-

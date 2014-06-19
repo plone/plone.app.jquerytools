@@ -1,8 +1,6 @@
-import sys
+from base import SeleniumTestCase
 import time
 
-from base import SeleniumTestCase
-from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD, TEST_USER_ROLES
 
 class FormTestCase(SeleniumTestCase):
 

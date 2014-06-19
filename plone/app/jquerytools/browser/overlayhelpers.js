@@ -7,7 +7,7 @@
 
 *****************/
 
-/*jslint browser: true, onevar: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, newcap: true, immed: true, regexp: true, white:true */
+/*jslint browser: true */
 /*global jQuery, ajax_noresponse_message, close_box_message, window */
 
 // Name space object for pipbox
@@ -44,8 +44,7 @@ jQuery.tools.overlay.conf.oneInstance = false;
     pb.spinner.hide = function () {
         $('body').css('cursor', '');
     };
-}) (jQuery);
-
+}(jQuery));
 
 
 jQuery(function ($) {
@@ -194,20 +193,19 @@ jQuery(function ($) {
     pb.create_content_div = function (pbo, trigger) {
         var content,
             close_message,
-            top,
             pbw = pbo.width;
 
-        if (typeof(close_box_message) === 'undefined') {
+        if (typeof close_box_message === 'undefined') {
             close_message = 'Close this box.';
         } else {
             close_message = close_box_message;
         }
 
-        content = $('' +
+        content = $(
             '<div id="' + pbo.nt +
             '" class="overlay overlay-' + pbo.subtype +
             ' ' + (pbo.cssclass || '') +
-            '"><div class="close"><a href="#" class="hiddenStructure" title="Close this box">' + 
+            '"><div class="close"><a href="#" class="hiddenStructure" title="Close this box">' +
             close_message +
             '</a></div></div>');
 
@@ -343,7 +341,7 @@ jQuery(function ($) {
             // success comes in many forms, some of which are errors;
             //
 
-            var el, myform, success, target, scripts = [];
+            var el, myform, success, target, scripts = [], filteredResponseText;
 
             success = statusText === "success" || statusText === "notmodified";
 
@@ -376,7 +374,13 @@ jQuery(function ($) {
                 ajax_parent.empty().append(el);
 
                 // execute inline scripts
-                $.buildFragment([responseText], [document], scripts);
+                try {
+                    // jQuery 1.7
+                    $.buildFragment([responseText], [document], scripts);
+                } catch (e) {
+                    // jQuery 1.9
+                    $.buildFragment([responseText], document, scripts);
+                }
                 if (scripts.length) {
                     $.each(scripts, function() {
                         $.globalEval( this.text || this.textContent || this.innerHTML || "" );
@@ -404,7 +408,7 @@ jQuery(function ($) {
             } else {
                 // there's no form in our new content or there's been an error
                 if (success) {
-                    if (typeof(noform) === "function") {
+                    if (typeof noform === "function") {
                         // get action from callback
                         noform = noform(el, pbo);
                     }
@@ -429,7 +433,7 @@ jQuery(function ($) {
                     api.close();
                     pb.spinner.show();
                     target = pbo.redirect;
-                    if (typeof(target) === "function") {
+                    if (typeof target === "function") {
                         // get target from callback
                         target = target(el, responseText, pbo);
                     }
@@ -473,7 +477,8 @@ jQuery(function ($) {
             formtarget,
             closeselector,
             sep,
-            scripts = [];
+            scripts = [],
+            e;
 
         e = $.Event();
         e.type = "beforeAjaxClickHandled";
@@ -520,21 +525,22 @@ jQuery(function ($) {
         // into the overlay, to prepare links and forms to stay within
         // the overlay
         el[0].handle_load_inside_overlay = function(responseText, errorText) {
-            var el = $(this);
+            var ele, target;
+            ele = $(this);
 
             if (errorText === 'error') {
-                el.append(pb.ajax_error_recover(responseText, selector));
+                ele.append(pb.ajax_error_recover(responseText, selector));
             } else if (!responseText.length) {
-                el.append(ajax_noresponse_message || 'No response from server.');
+                ele.append(ajax_noresponse_message || 'No response from server.');
             }
 
             // a non-semantic div here will make sure we can
             // do enough formatting.
-            el.wrapInner('<div />');
+            ele.wrapInner('<div />');
 
             // add the submit handler if we've a formtarget
             if (formtarget) {
-                var target = el.find(formtarget);
+                target = ele.find(formtarget);
                 if (target.length > 0) {
                     pb.prep_ajax_form(target);
                 }
@@ -543,14 +549,20 @@ jQuery(function ($) {
             // if a closeselector has been specified, tie it to the overlay's
             // close method via closure
             if (closeselector) {
-                el.find(closeselector).click(function (event) {
+                ele.find(closeselector).click(function (event) {
                     api.close();
                     return false;
                 });
             }
 
             // execute inline scripts
-            $.buildFragment([responseText], [document], scripts);
+            try {
+                // jQuery 1.7
+                $.buildFragment([responseText], [document], scripts);
+            } catch (e) {
+                // jQuery 1.9
+                $.buildFragment([responseText], document, scripts);
+            }
             if (scripts.length) {
                 $.each(scripts, function() {
                     $.globalEval( this.text || this.textContent || this.innerHTML || "" );
@@ -559,7 +571,7 @@ jQuery(function ($) {
 
             // This may be a complex form.
             if ($.fn.ploneTabInit) {
-                el.ploneTabInit();
+                ele.ploneTabInit();
             }
 
             // remove element on close so that it doesn't congest the DOM

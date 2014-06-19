@@ -1,0 +1,10 @@
+{
+  "name": "plone.app.jquerytools",
+  "description": "jquerytools Plone integration package",
+  "devDependencies": {
+    "grunt": "",
+    "grunt-contrib-concat": "",
+    "grunt-contrib-uglify": "",
+    "grunt-shell": ""
+  }
+}

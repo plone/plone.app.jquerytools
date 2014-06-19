@@ -1,11 +1,11 @@
-import unittest
-from niteoweb.windmill import WindmillTestCase
 from Products.PloneTestCase.setup import setupPloneSite
-from Products.PloneTestCase.layer import onsetup
-from Products.Five.zcml import load_config
 from Testing import ZopeTestCase as ztc
+from niteoweb.windmill import WindmillTestCase
+
+import unittest
 
 setupPloneSite(products=[])
+
 
 class IntegrationTestCaseAnon(WindmillTestCase):
 
@@ -39,7 +39,7 @@ class IntegrationTestCaseAnon(WindmillTestCase):
         client.click(id=u'exposeMask')
         client.waits.sleep(milliseconds=u'500')
         client.asserts.assertNotNode(jquery=u'("div.pb-ajax #login_form")[0]')
-        
+
         # open popup again, try submitting empty; look for error.
         # presence of error confirms that we're not losing the portal message
         # in the popup form contents filter.
@@ -49,7 +49,7 @@ class IntegrationTestCaseAnon(WindmillTestCase):
         client.waits.forElement(jquery=u'("div.pb-ajax #login_form")[0]', timeout=u'1000')
         client.click(name=u'submit')
         client.waits.forElement(jquery=u"('div.pb-ajax dl .portalMessage .error dt')", timeout=u'1000')
-        
+
         # try again with real login
         client.type(text=u'portal_owner', id=u'__ac_name')
         client.type(text=u'secret', id=u'__ac_password')
@@ -57,6 +57,7 @@ class IntegrationTestCaseAnon(WindmillTestCase):
         # expect a page load
         client.waits.forPageLoad(timeout=u'20000')
         client.asserts.assertNode(id=u'portal-personaltools')
-        
+
+
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)

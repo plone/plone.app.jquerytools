@@ -1,13 +1,13 @@
 /**
  * @license 
- * jQuery Tools v1.2.7 / Overlay Apple effect. 
+ * jQuery Tools @VERSION / Overlay Apple effect. 
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/overlay/apple.html
  *
  * Since: July 2009
- * Date: 2012-04-30 14:24 
+ * Date: @DATE 
  */
 (function($) { 
 
@@ -154,16 +154,17 @@
 })(jQuery);	
 		
 
+
 /**
  * @license 
- * jQuery Tools v1.2.7 / Scrollable Autoscroll
+ * jQuery Tools @VERSION / Scrollable Autoscroll
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/scrollable/autoscroll.html
  *
  * Since: September 2009
- * Date: 2012-04-30 14:24 
+ * Date: @DATE 
  */
 (function($) {		
 
@@ -252,16 +253,17 @@
 	
 })(jQuery);		
 
+
 /**
  * @license 
- * jQuery Tools v1.2.7 / Scrollable Navigator
+ * jQuery Tools @VERSION / Scrollable Navigator
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  *
  * http://flowplayer.org/tools/scrollable/navigator.html
  *
  * Since: September 2009
- * Date: 2012-04-30 14:24 
+ * Date: @DATE 
  */
 (function($) {
 		
@@ -387,16 +389,17 @@
 	
 })(jQuery);			
 
+
 /**
  * @license 
- * jQuery Tools v1.2.7 Slideshow - Extend it.
+ * jQuery Tools @VERSION Slideshow - Extend it.
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tabs/slideshow.html
  *
  * Since: September 2009
- * Date: 2012-04-30 14:24 
+ * Date: @DATE 
  */
 (function($) {
 	
@@ -443,6 +446,8 @@
     *   Similar fix for autoscroll animation queue problem
     */
     function next(){
+      // Fixes https://github.com/jquerytools/jquerytools/issues/885
+      if (timer) clearTimeout(timer); // reset timeout, especially for angry clicks
       timer = setTimeout(function(){
         tabs.next();
       }, conf.interval);
@@ -579,16 +584,17 @@
 })(jQuery); 
 
 
+
 /**
  * @license
- * jQuery Tools v1.2.7 / Flashembed - New wave Flash embedding
+ * jQuery Tools @VERSION / Flashembed - New wave Flash embedding
  *
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  *
  * http://flowplayer.org/tools/toolbox/flashembed.html
  *
  * Since : March 2008
- * Date  : 2012-04-30 14:24
+ * Date  : @DATE
  */
 (function() {
 
@@ -865,7 +871,7 @@
 	if (JQUERY) {
 
 		// tools version number
-		jQuery.tools = jQuery.tools || {version: 'v1.2.7'};
+		jQuery.tools = jQuery.tools || {version: '@VERSION'};
 
 		jQuery.tools.flashembed = {
 			conf: GLOBAL_OPTS
@@ -881,9 +887,10 @@
 })();
 
 
+
 /**
  * @license 
- * jQuery Tools v1.2.7 Mousewheel
+ * jQuery Tools @VERSION Mousewheel
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
@@ -894,7 +901,7 @@
  * http://threedubmedia.com 
  *
  * Since: Mar 2010
- * Date: 2012-04-30 14:24 
+ * Date: @DATE 
  */
 (function($) { 
 	
@@ -947,16 +954,17 @@
 })(jQuery); 
 
 
+
 /**
  * @license 
- * jQuery Tools v1.2.7 / Tooltip Dynamic Positioning
+ * jQuery Tools @VERSION / Tooltip Dynamic Positioning
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tooltip/dynamic.html
  *
  * Since: July 2009
- * Date: 2012-04-30 14:24 
+ * Date: @DATE 
  */
 (function($) { 
 
@@ -1016,8 +1024,8 @@
 		
 		var confOrigin = $.extend(true,{},conf),
 		    cls = conf.classNames.split(/\s/), 
-		    orig;
-			
+		    orig, ret;
+	
 		this.each(function() {		
 				
 			var api = $(this).tooltip().onBeforeShow(function(e, pos) {				
@@ -1102,16 +1110,17 @@
 	
 }) (jQuery);
 
+
 /**
  * @license 
- * jQuery Tools v1.2.7 / Tooltip Slide Effect
+ * jQuery Tools @VERSION / Tooltip Slide Effect
  * 
  * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
  * 
  * http://flowplayer.org/tools/tooltip/slide.html
  *
  * Since: September 2009
- * Date: 2012-04-30 14:24 
+ * Date: @DATE 
  */
 (function($) { 
 
@@ -1125,7 +1134,7 @@
 		slideOffset: 10,
 		slideInSpeed: 200,
 		slideOutSpeed: 200, 
-		slideFade: !$.browser.msie
+		slideFade: !/msie/.test(navigator.userAgent.toLowerCase())
 	});			
 	
 	// directions for slide effect
@@ -1180,4 +1189,3 @@
 	
 })(jQuery);	
 		
-
