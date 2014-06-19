@@ -21,6 +21,9 @@ Changelog
 - Switched to Grunt based build system.
   [thet]
 
+- Switch test infrastructure to plone.app.testing.
+  [sdelcourt]
+
 
 1.5.7 (2014-02-23)
 ------------------
