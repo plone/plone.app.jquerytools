@@ -1,4 +1,4 @@
-from plone.app.jquerytools.testing import PAJQT_FUNCTIONAL_TESTING
+from plone.app.jquerytools.testing import PLONEAPPJQUERYTPOOLS_FUNCTIONAL_TESTING
 from plone.testing import layered
 
 import doctest
@@ -14,5 +14,5 @@ def test_suite():
                 'tests/ploneIntegration.txt',
                 package='plone.app.jquerytools',
                 optionflags=optionflags),
-            layer=PAJQT_FUNCTIONAL_TESTING)
+            layer=PLONEAPPJQUERYTPOOLS_FUNCTIONAL_TESTING)
     ])
