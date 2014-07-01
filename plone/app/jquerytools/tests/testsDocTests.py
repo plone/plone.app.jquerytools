@@ -1,4 +1,4 @@
-from plone.app.jquerytools.testing import PLONEAPPJQUERYTPOOLS_FUNCTIONAL_TESTING
+from plone.app.jquerytools.testing import PLONEAPPJQUERYTPOOLS_FUNCTIONAL_TESTING  # nopep8
 from plone.testing import layered
 
 import doctest
