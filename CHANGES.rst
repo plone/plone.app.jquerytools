@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.6.0 (unreleased)
+1.6.0 (2014-07-10)
 ------------------
 
 - Ensure jQuery 1.7+, including 1.9 compatibility by using the dev branch of
