@@ -10,7 +10,7 @@
         />
     <resource
         name="plone.app.jquerytools.form.js"
-        file="browser/jquery.form.min.js"
+        file="browser/jquery.form.js"
         />
     <resource
         name="plone.app.jquerytools.plugins.js"
