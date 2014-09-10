@@ -11,3 +11,8 @@ repo-jqueryform/
 /include/
 /lib/
 /plone.app.jquerytools.egg-info/
+
+*~
+.project
+.pydevproject
+npm-debug.log
