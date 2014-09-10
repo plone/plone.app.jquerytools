@@ -4,7 +4,8 @@ Changelog
 1.6.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix dateinput (change event was not triggered anymore).
+  [thomasdesvenain]
 
 
 1.6.0 (2014-07-10)

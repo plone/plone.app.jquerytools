@@ -318,7 +318,8 @@
             // formatting
             input.val(format(conf.formatter, date, conf.format, conf.lang));
 
-                        // change
+            // change
+            e.type = "change";
             e.target = input[0];
             fire.trigger(e);
 
