@@ -20,20 +20,6 @@ We should already be installed::
 Javascript Resource and View
 ----------------------------
 
-We should have three items in the JS registry::
-
-    >>> jsreg = layer['portal'].portal_javascripts
-    >>> ids = jsreg.getResourceIds()
-    >>> '++resource++plone.app.jquerytools.js' in ids
-    True
-
-    >>> '++resource++plone.app.jquerytools.overlayhelpers.js' in ids
-    True
-
-    >>> '++resource++plone.app.jquerytools.plugins.js' in ids
-    True
-
-
 Open the main JS code item as a resource::
 
     >>> browser.open(portal_url+'/++resource++plone.app.jquerytools.js')
