@@ -4,7 +4,9 @@ Changelog
 1.6.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Revert "check each tooltip for existence, fixes issue 349". Fixes broken
+  Tooltip.
+  [vincentfretin, thet]
 
 
 1.6.1 (2014-09-11)
