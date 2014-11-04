@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.6.2 (unreleased)
+1.6.2 (2014-11-04)
 ------------------
 
 - Revert "check each tooltip for existence, fixes issue 349". Fixes broken
