@@ -339,25 +339,25 @@ jQuery Tools passes the event as a parameter when it calls the event handlers.
 ``getTrigger()`` methods.
 
 
-.. _`jquery.tools`: http://jquerytools.org
-.. _`overlay.js`: http://jquerytools.org/documentation/overlay/index.html
-.. _`scrollable.js`: http://jquerytools.org/documentation/scrollable/index.html
-.. _`tabs.js`: http://jquerytools.org/documentation/tabs/index.html
-.. _`toolbox.history.js`: http://jquerytools.org/documentation/toolbox/history.html
-.. _`toolbox.expose.js`: http://jquerytools.org/documentation/toolbox/expose.html
-.. _`tooltip.js`: http://jquerytools.org/documentation/tooltip/index.html
-.. _`overlay.apple.js`: http://jquerytools.org/documentation/overlay/apple.html
-.. _`scrollable.autoscroll.js`: http://jquerytools.org/documentation/scrollable/autoscroll.html
-.. _`scrollable.navigator.js`: http://jquerytools.org/documentation/scrollable/navigator.html
-.. _`tabs.slideshow.js`: http://jquerytools.org/documentation/tabs/slideshow.html
-.. _`toolbox.flashembed.js`: http://jquerytools.org/documentation/toolbox/flashembed.html
-.. _`toolbox.mousewheel.js`: http://jquerytools.org/documentation/toolbox/mousewheel.html
-.. _`tooltip.dynamic.js`: http://jquerytools.org/documentation/tooltip/dynamic.html
-.. _`tooltip.slide.js`: http://jquerytools.org/documentation/tooltip/slide.html
-.. _`jquerytools dateinput`: http://jquerytools.org/documentation/dateinput/index.html
-.. _`first demo`: http://jquerytools.org/demos/dateinput/index.html
-.. _`jquerytools rangeinput`: http://jquerytools.org/documentation/rangeinput/index.html
-.. _`jquerytools validator`: http://jquerytools.org/documentation/validator/index.html
+.. _`jquery.tools`: http://jquerytools.github.io
+.. _`overlay.js`: http://jquerytools.github.io/documentation/overlay/index.html
+.. _`scrollable.js`: http://jquerytools.github.io/documentation/scrollable/index.html
+.. _`tabs.js`: http://jquerytools.github.io/documentation/tabs/index.html
+.. _`toolbox.history.js`: http://jquerytools.github.io/documentation/toolbox/history.html
+.. _`toolbox.expose.js`: http://jquerytools.github.io/documentation/toolbox/expose.html
+.. _`tooltip.js`: http://jquerytools.github.io/documentation/tooltip/index.html
+.. _`overlay.apple.js`: http://jquerytools.github.io/documentation/overlay/apple.html
+.. _`scrollable.autoscroll.js`: http://jquerytools.github.io/documentation/scrollable/autoscroll.html
+.. _`scrollable.navigator.js`: http://jquerytools.github.io/documentation/scrollable/navigator.html
+.. _`tabs.slideshow.js`: http://jquerytools.github.io/documentation/tabs/slideshow.html
+.. _`toolbox.flashembed.js`: http://jquerytools.github.io/documentation/toolbox/flashembed.html
+.. _`toolbox.mousewheel.js`: http://jquerytools.github.io/documentation/toolbox/mousewheel.html
+.. _`tooltip.dynamic.js`: http://jquerytools.github.io/documentation/tooltip/dynamic.html
+.. _`tooltip.slide.js`: http://jquerytools.github.io/documentation/tooltip/slide.html
+.. _`jquerytools dateinput`: http://jquerytools.github.io/documentation/dateinput/index.html
+.. _`first demo`: http://jquerytools.github.io/demos/dateinput/index.html
+.. _`jquerytools rangeinput`: http://jquerytools.github.io/documentation/rangeinput/index.html
+.. _`jquerytools validator`: http://jquerytools.github.io/documentation/validator/index.html
 .. _`jquery form plugin`: http://malsup.com/jquery/form
-.. _`overlay documentation`: http://jquerytools.org/documentation/overlay/#events
-.. _`events documentation`: http://jquerytools.org/documentation/scripting.html#events
+.. _`overlay documentation`: http://jquerytools.github.io/documentation/overlay/#events
+.. _`events documentation`: http://jquerytools.github.io/documentation/scripting.html#events
