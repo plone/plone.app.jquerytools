@@ -4,8 +4,8 @@ Changelog
 1.6.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Disable unminified development javascript in default profile.
+  [thet]
 
 1.6.2 (2014-11-04)
 ------------------
