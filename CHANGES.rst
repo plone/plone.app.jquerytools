@@ -1,8 +1,12 @@
 Changelog
 =========
 
-1.6.3 (unreleased)
+1.7.0 (unreleased)
 ------------------
+
+- Move jQueryTools tooltip into separate file, so that it can be selectively
+  disabled.
+  [thet]
 
 - Disable unminified development javascript in default profile.
   [thet]

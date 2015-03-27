@@ -28,6 +28,14 @@
         name="plone.app.jquerytools.validator.js"
         file="browser/jquery.tools.validator.min.js"
         />
+    <resource
+        name="plone.app.jquerytools.tooltip.js"
+        file="browser/jquery.tools.tooltip.min.js"
+        />
+    <resource
+        name="plone.app.jquerytools.tooltip.plugins.js"
+        file="browser/jquery.tools.tooltip.plugins.min.js"
+        />
 
     <!-- unminified resources -->
     <resource
@@ -53,6 +61,14 @@
     <resource
         name="plone.app.jquerytools.validator.unmin.js"
         file="browser/jquery.tools.validator.js"
+        />
+    <resource
+        name="plone.app.jquerytools.tooltip.unmin.js"
+        file="browser/jquery.tools.tooltip.js"
+        />
+    <resource
+        name="plone.app.jquerytools.tooltip.plugins.unmin.js"
+        file="browser/jquery.tools.tooltip.plugins.js"
         />
 
     <!-- other resources -->

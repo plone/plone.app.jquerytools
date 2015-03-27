@@ -2,11 +2,13 @@
 <object name="portal_javascripts">
 
   <javascript enabled="False" id="++resource++plone.app.jquerytools.unmin.js" />
-  <javascript enabled="False" id="++resource++plone.app.jquerytools.unmin.form.js" />
-  <javascript enabled="False" id="++resource++plone.app.jquerytools.unmin.dateinput.js" />
-  <javascript enabled="False" id="++resource++plone.app.jquerytools.unmin.rangeinput.js" />
-  <javascript enabled="False" id="++resource++plone.app.jquerytools.unmin.validator.js" />
-  <javascript enabled="False" id="++resource++plone.app.jquerytools.unmin.plugins.js" />
+  <javascript enabled="False" id="++resource++plone.app.jquerytools.form.unmin.js" />
+  <javascript enabled="False" id="++resource++plone.app.jquerytools.dateinput.unmin.js" />
+  <javascript enabled="False" id="++resource++plone.app.jquerytools.rangeinput.unmin.js" />
+  <javascript enabled="False" id="++resource++plone.app.jquerytools.validator.unmin.js" />
+  <javascript enabled="False" id="++resource++plone.app.jquerytools.plugins.unmin.js" />
+  <javascript enabled="False" id="++resource++plone.app.jquerytools.tooltip.unmin.js" />
+  <javascript enabled="False" id="++resource++plone.app.jquerytools.tooltip.plugins.unmin.js" />
 
   <javascript
       cacheable="True"
@@ -83,6 +85,28 @@
       id="++resource++plone.app.jquerytools.plugins.js"
       inline="False"
       insert-after="++resource++plone.app.jquerytools.validator.js"
+      />
+
+  <javascript
+      cacheable="True"
+      compression="none"
+      cookable="True"
+      enabled="True"
+      expression=""
+      id="++resource++plone.app.jquerytools.tooltip.js"
+      inline="False"
+      insert-after="++resource++plone.app.jquerytools.plugins.js"
+      />
+
+  <javascript
+      cacheable="True"
+      compression="none"
+      cookable="True"
+      enabled="False"
+      expression=""
+      id="++resource++plone.app.jquerytools.tooltip.plugins.js"
+      inline="False"
+      insert-after="++resource++plone.app.jquerytools.tooltip.js"
       />
 
 </object>

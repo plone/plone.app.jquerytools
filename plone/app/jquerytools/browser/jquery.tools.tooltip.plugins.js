@@ -1,0 +1,234 @@
+/**
+ * @license 
+ * jQuery Tools @VERSION / Tooltip Dynamic Positioning
+ * 
+ * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
+ * 
+ * http://flowplayer.org/tools/tooltip/dynamic.html
+ *
+ * Since: July 2009
+ * Date: @DATE 
+ */
+(function($) { 
+
+	// version number
+	var t = $.tools.tooltip;
+	
+	t.dynamic = {
+		conf: {
+			classNames: "top right bottom left"
+		}
+	};
+		
+	/* 
+	 * See if element is on the viewport. Returns an boolean array specifying which
+	 * edges are hidden. Edges are in following order:
+	 * 
+	 * [top, right, bottom, left]
+	 * 
+	 * For example following return value means that top and right edges are hidden
+	 * 
+	 * [true, true, false, false]
+	 * 
+	 */
+	function getCropping(el) {
+		
+		var w = $(window); 
+		var right = w.width() + w.scrollLeft();
+		var bottom = w.height() + w.scrollTop();		
+		
+		return [
+			el.offset().top <= w.scrollTop(), 						// top
+			right <= el.offset().left + el.width(),				// right
+			bottom <= el.offset().top + el.height(),			// bottom
+			w.scrollLeft() >= el.offset().left 					// left
+		]; 
+	}
+	
+	/*
+		Returns true if all edges of an element are on viewport. false if not
+		
+		@param crop the cropping array returned by getCropping function
+	 */
+	function isVisible(crop) {
+		var i = crop.length;
+		while (i--) {
+			if (crop[i]) { return false; }	
+		}
+		return true;
+	}
+	
+	// dynamic plugin
+	$.fn.dynamic = function(conf) {
+		
+		if (typeof conf == 'number') { conf = {speed: conf}; }
+		
+		conf = $.extend({}, t.dynamic.conf, conf);
+		
+		var confOrigin = $.extend(true,{},conf),
+		    cls = conf.classNames.split(/\s/), 
+		    orig, ret;
+	
+		this.each(function() {		
+				
+			var api = $(this).tooltip().onBeforeShow(function(e, pos) {				
+
+				// get nessessary variables
+				var tip = this.getTip(), tipConf = this.getConf();  
+
+				/*
+					We store the original configuration and use it to restore back to the original state.
+				*/					
+				if (!orig) {
+					orig = [
+						tipConf.position[0], 
+						tipConf.position[1], 
+						tipConf.offset[0], 
+						tipConf.offset[1], 
+						$.extend({}, tipConf)
+					];
+				}
+				
+				/*
+					display tip in it's default position and by setting visibility to hidden.
+					this way we can check whether it will be on the viewport
+				*/
+				$.extend(tipConf, orig[4]);
+				tipConf.position = [orig[0], orig[1]];
+				tipConf.offset = [orig[2], orig[3]];
+
+				tip.css({
+					visibility: 'hidden',
+					position: 'absolute',
+					top: pos.top,
+					left: pos.left 
+				}).show(); 
+				
+				var conf = $.extend(true,{},confOrigin),
+				
+				    // now let's see for hidden edges
+				    crop = getCropping(tip);		
+								
+				// possibly alter the configuration
+				if (!isVisible(crop)) {
+					
+					// change the position and add class
+					if (crop[2]) { $.extend(tipConf, conf.top);		tipConf.position[0] = 'top'; 		tip.addClass(cls[0]); }
+					if (crop[3]) { $.extend(tipConf, conf.right);	tipConf.position[1] = 'right'; 	tip.addClass(cls[1]); }					
+					if (crop[0]) { $.extend(tipConf, conf.bottom); 	tipConf.position[0] = 'bottom';	tip.addClass(cls[2]); } 
+					if (crop[1]) { $.extend(tipConf, conf.left);		tipConf.position[1] = 'left'; 	tip.addClass(cls[3]); }					
+					
+					// vertical offset
+					if (crop[0] || crop[2]) { tipConf.offset[0] *= -1; }
+					
+					// horizontal offset
+					if (crop[1] || crop[3]) { tipConf.offset[1] *= -1; }
+				}  
+				
+				tip.css({visibility: 'visible'}).hide();
+		
+			});
+			
+			// restore positioning as soon as possible
+			api.onBeforeShow(function() {
+				var c = this.getConf(), tip = this.getTip();		 
+				setTimeout(function() { 
+					c.position = [orig[0], orig[1]];
+					c.offset = [orig[2], orig[3]];
+				}, 0);
+			});
+			
+			// remove custom class names and restore original effect
+			api.onHide(function() {
+				var tip = this.getTip(); 
+				tip.removeClass(conf.classNames);
+			});
+				
+			ret = api;
+			
+		});
+		
+		return conf.api ? ret : this;
+	};	
+	
+}) (jQuery);
+
+
+/**
+ * @license 
+ * jQuery Tools @VERSION / Tooltip Slide Effect
+ * 
+ * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
+ * 
+ * http://flowplayer.org/tools/tooltip/slide.html
+ *
+ * Since: September 2009
+ * Date: @DATE 
+ */
+(function($) { 
+
+	// version number
+	var t = $.tools.tooltip;
+		
+	// extend global configuragion with effect specific defaults
+	$.extend(t.conf, { 
+		direction: 'up', // down, left, right 
+		bounce: false,
+		slideOffset: 10,
+		slideInSpeed: 200,
+		slideOutSpeed: 200, 
+		slideFade: !/msie/.test(navigator.userAgent.toLowerCase())
+	});			
+	
+	// directions for slide effect
+	var dirs = {
+		up: ['-', 'top'],
+		down: ['+', 'top'],
+		left: ['-', 'left'],
+		right: ['+', 'left']
+	};
+	
+	/* default effect: "slide"  */
+	t.addEffect("slide", 
+		
+		// show effect
+		function(done) { 
+
+			// variables
+			var conf = this.getConf(), 
+				 tip = this.getTip(),
+				 params = conf.slideFade ? {opacity: conf.opacity} : {}, 
+				 dir = dirs[conf.direction] || dirs.up;
+
+			// direction			
+			params[dir[1]] = dir[0] +'='+ conf.slideOffset;
+			
+			// perform animation
+			if (conf.slideFade) { tip.css({opacity:0}); }
+			tip.show().animate(params, conf.slideInSpeed, done); 
+		}, 
+		
+		// hide effect
+		function(done) {
+			
+			// variables
+			var conf = this.getConf(), 
+				 offset = conf.slideOffset,
+				 params = conf.slideFade ? {opacity: 0} : {}, 
+				 dir = dirs[conf.direction] || dirs.up;
+			
+			// direction
+			var sign = "" + dir[0];
+			if (conf.bounce) { sign = sign == '+' ? '-' : '+'; }			
+			params[dir[1]] = sign +'='+ offset;			
+			
+			// perform animation
+			this.getTip().animate(params, conf.slideOutSpeed, function()  {
+				$(this).hide();
+				done.call();		
+			});
+		}
+	);  
+	
+})(jQuery);	
+		

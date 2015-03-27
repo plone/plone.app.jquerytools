@@ -7,6 +7,8 @@
   <javascript enabled="False" id="++resource++plone.app.jquerytools.rangeinput.js" />
   <javascript enabled="False" id="++resource++plone.app.jquerytools.validator.js" />
   <javascript enabled="False" id="++resource++plone.app.jquerytools.plugins.js" />
+  <javascript enabled="False" id="++resource++plone.app.jquerytools.tooltip.js" />
+  <javascript enabled="False" id="++resource++plone.app.jquerytools.tooltip.plugins.js" />
 
   <javascript
       cacheable="True"
@@ -72,6 +74,28 @@
       id="++resource++plone.app.jquerytools.plugins.unmin.js"
       inline="False"
       insert-after="++resource++plone.app.jquerytools.plugins.js"
+      />
+
+  <javascript
+      cacheable="True"
+      compression="none"
+      cookable="True"
+      enabled="True"
+      expression=""
+      id="++resource++plone.app.jquerytools.tooltip.unmin.js"
+      inline="False"
+      insert-after="++resource++plone.app.jquerytools.plugins.js"
+      />
+
+  <javascript
+      cacheable="True"
+      compression="none"
+      cookable="True"
+      enabled="False"
+      expression=""
+      id="++resource++plone.app.jquerytools.tooltip.plugins.unmin.js"
+      inline="False"
+      insert-after="++resource++plone.app.jquerytools.js"
       />
 
 </object>

@@ -22,6 +22,15 @@
       profile="plone.app.jquerytools:default"
       />
 
+  <genericsetup:upgradeStep
+      source="2"
+      destination="3"
+      title="Add separate tooltip resources"
+      description=""
+      handler=".common_upgrade"
+      profile="plone.app.jquerytools:default"
+      />
+
   <!-- steps on Plone upgrade -->
   
   <!-- disable overlays.css when upgrading from Plone 3 to 4 -->

@@ -29,7 +29,6 @@ module.exports = function (grunt) {
                     'repo-jquerytools/src/tabs/tabs.js',
                     'repo-jquerytools/src/toolbox/toolbox.history.js',
                     'repo-jquerytools/src/toolbox/toolbox.expose.js',
-                    'repo-jquerytools/src/tooltip/tooltip.js',
                 ],
                 dest: 'plone/app/jquerytools/browser/jquery.tools.js'
             },
@@ -41,10 +40,21 @@ module.exports = function (grunt) {
                     'repo-jquerytools/src/tabs/tabs.slideshow.js',
                     'repo-jquerytools/src/toolbox/toolbox.flashembed.js',
                     'repo-jquerytools/src/toolbox/toolbox.mousewheel.js',
+                ],
+                dest: 'plone/app/jquerytools/browser/jquery.tools.plugins.js'
+            },
+            jquerytools_tooltip: {
+                src: [
+                    'repo-jquerytools/src/tooltip/tooltip.js',
+                ],
+                dest: 'plone/app/jquerytools/browser/jquery.tools.tooltip.js'
+            },
+            jquerytools_tooltip_plugins: {
+                src: [
                     'repo-jquerytools/src/tooltip/tooltip.dynamic.js',
                     'repo-jquerytools/src/tooltip/tooltip.slide.js',
                 ],
-                dest: 'plone/app/jquerytools/browser/jquery.tools.plugins.js'
+                dest: 'plone/app/jquerytools/browser/jquery.tools.tooltip.plugins.js'
             },
             jquerytools_dateinput: {
                 src: [
@@ -79,6 +89,8 @@ module.exports = function (grunt) {
             jquery_form: {
                 files: {
                     'plone/app/jquerytools/browser/jquery.form.min.js': ['plone/app/jquerytools/browser/jquery.form.js', ],
+                    'plone/app/jquerytools/browser/jquery.tools.tooltip.min.js': ['plone/app/jquerytools/browser/jquery.tools.tooltip.js', ],
+                    'plone/app/jquerytools/browser/jquery.tools.tooltip.plugins.min.js': ['plone/app/jquerytools/browser/jquery.tools.tooltip.plugins.js', ],
                     'plone/app/jquerytools/browser/jquery.tools.dateinput.min.js': ['plone/app/jquerytools/browser/jquery.tools.dateinput.js', ],
                     'plone/app/jquerytools/browser/jquery.tools.min.js': ['plone/app/jquerytools/browser/jquery.tools.js', ],
                     'plone/app/jquerytools/browser/jquery.tools.rangeinput.min.js': ['plone/app/jquerytools/browser/jquery.tools.rangeinput.js', ],
