@@ -4,12 +4,14 @@ Changelog
 1.7.0 (unreleased)
 ------------------
 
+- Remove the development profile. Unminified resources are still provided. If
+  you need them, include them in your own profile.
+  [thet]
+
 - Move jQueryTools tooltip into separate file, so that it can be selectively
   disabled.
   [thet]
 
-- Disable unminified development javascript in default profile.
-  [thet]
 
 1.6.2 (2014-11-04)
 ------------------

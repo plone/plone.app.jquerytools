@@ -110,14 +110,6 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         for="Products.CMFCore.interfaces.ISiteRoot"
         />
-    <genericsetup:registerProfile
-        name="development"
-        title="Plone JQuery Tools Development Integration"
-        directory="profiles/development"
-        description="Profile for Plone's JQuery Tools resources for development (unminified)."
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        for="Products.CMFCore.interfaces.ISiteRoot"
-        />
 
     <!-- custom steps for installation profile -->
     <genericsetup:importStep

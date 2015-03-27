@@ -1,15 +1,6 @@
 <?xml version="1.0"?>
 <object name="portal_javascripts">
 
-  <javascript enabled="False" id="++resource++plone.app.jquerytools.unmin.js" />
-  <javascript enabled="False" id="++resource++plone.app.jquerytools.form.unmin.js" />
-  <javascript enabled="False" id="++resource++plone.app.jquerytools.dateinput.unmin.js" />
-  <javascript enabled="False" id="++resource++plone.app.jquerytools.rangeinput.unmin.js" />
-  <javascript enabled="False" id="++resource++plone.app.jquerytools.validator.unmin.js" />
-  <javascript enabled="False" id="++resource++plone.app.jquerytools.plugins.unmin.js" />
-  <javascript enabled="False" id="++resource++plone.app.jquerytools.tooltip.unmin.js" />
-  <javascript enabled="False" id="++resource++plone.app.jquerytools.tooltip.plugins.unmin.js" />
-
   <javascript
       cacheable="True"
       compression="none"
@@ -108,5 +99,13 @@
       inline="False"
       insert-after="++resource++plone.app.jquerytools.tooltip.js"
       />
+
+  <!-- upgrade -->
+  <javascript remove="True" id="++resource++plone.app.jquerytools.unmin.js" />
+  <javascript remove="True" id="++resource++plone.app.jquerytools.form.unmin.js" />
+  <javascript remove="True" id="++resource++plone.app.jquerytools.dateinput.unmin.js" />
+  <javascript remove="True" id="++resource++plone.app.jquerytools.rangeinput.unmin.js" />
+  <javascript remove="True" id="++resource++plone.app.jquerytools.validator.unmin.js" />
+  <javascript remove="True" id="++resource++plone.app.jquerytools.plugins.unmin.js" />
 
 </object>
