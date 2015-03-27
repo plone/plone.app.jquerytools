@@ -19,7 +19,6 @@ def common_upgrade(context):
     """ Common upgrade for newer jquerytools versions - import javascript
     registry and cook resources.
     """
-    import pdb; pdb.set_trace()
     setup = getToolByName(context, "portal_setup")
     setup.runImportStepFromProfile(
         'profile-plone.app.jquerytools:default',
