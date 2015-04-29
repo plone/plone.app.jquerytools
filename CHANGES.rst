@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.7.0 (unreleased)
+1.7.0 (2015-04-29)
 ------------------
 
 - Remove the development profile. Unminified resources are still provided. If
