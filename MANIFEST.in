@@ -1,3 +1,4 @@
-include *.rst docs/*
-recursive-include plone/app/jquerytools *
-global-exclude *.pyc *~ *.mo *.jar jslint.js jqt_checkout_build
+include *.rst *.js *.json
+graft docs
+graft plone
+global-exclude *.pyc *~ *.jar jslint.js jqt_checkout_build
