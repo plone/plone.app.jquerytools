@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.7.1 (unreleased)
+1.7.1 (2016-06-27)
 ------------------
 
 - Proper clean setup of jquery.form
