@@ -47,6 +47,8 @@
     at the appropriate time.
 */
 
+(function($) {
+
 /**
  * Feature detection
  */
@@ -1258,3 +1260,5 @@ function log() {
         window.opera.postError(msg);
     }
 }
+
+}(jQuery));
