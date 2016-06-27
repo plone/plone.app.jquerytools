@@ -4,7 +4,8 @@ Changelog
 1.7.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Proper clean setup of jquery.form
+  [gotcha]
 
 
 1.7.0 (2015-04-29)
