@@ -582,7 +582,14 @@ jQuery(function ($) {
         };
 
         // and load the div
-        el.load(src, null, function (responseText, errorText) {
+        var data = null;
+        var form = $(pbo.source.context);
+        var method = form.attr('method');
+        if (method && method.toLowerCase() == 'post') {
+            data = form.serializeArray();
+        }
+        // load will do a POST instead of GET if data is not null
+        el.load(src, data, function (responseText, errorText) {
             // post-process the overlay contents
             el[0].handle_load_inside_overlay.apply(this, [responseText, errorText]);
 

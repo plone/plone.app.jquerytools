@@ -311,6 +311,12 @@ The `jquery form plugin`_ is used to do the data serialization for form posts.
 It provides a more complete serialization, including submit name/value and file
 data, than jQuery alone.
 
+The prepOverlay function can be used on a form instead of a link. When a button
+of this form is clicked, the form action attribute is used to retrieve the
+overlay. If method="POST", the overlay will be fetched via a POST with the
+form payload instead of GET.
+The use of a POST instead of GET may be useful to avoid the url length limit.
+
 jQuery Tools Events
 -------------------
 

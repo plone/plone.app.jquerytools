@@ -1,10 +1,16 @@
 Changelog
 =========
 
-1.7.2 (unreleased)
+1.8.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- The prepOverlay function can be used on a form instead of a link. When a
+  button of this form is clicked, the form action attribute is used to retrieve
+  the overlay. (This was already the case in previous versions, What's new is
+  the following.) If method="POST", the overlay will be fetched via a POST with
+  the form payload instead of GET.
+  The use of a POST instead of GET may be useful to avoid the url length limit.
+  [vincentfretin]
 
 
 1.7.1 (2016-06-27)
