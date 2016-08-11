@@ -4,6 +4,8 @@ Changelog
 1.8.0 (unreleased)
 ------------------
 
+New features:
+
 - The prepOverlay function can be used on a form instead of a link. When a
   button of this form is clicked, the form action attribute is used to retrieve
   the overlay. (This was already the case in previous versions, What's new is
