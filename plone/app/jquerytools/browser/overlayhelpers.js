@@ -133,12 +133,32 @@ jQuery(function ($) {
                 // and attaching overlay to the target element. That's
                 // so we'll know the dimensions early.
                 // Others, like iframe, just use overlay.
+
+                register_handler = function(evt, o, hnd) {
+                   switch (evt) {
+                      case undefined:
+                         o.click(hnd);
+                         break;
+                      case 'click':
+                         o.click(hnd);
+                         break;
+                      case 'hover':
+                         o.hover(hnd);
+                         break;
+                      case 'dblclick':
+                         o.dblclick(hnd);
+                         break;
+                      default:
+                         throw "Unsupported event";
+                   }
+                }
+
                 switch (pbo.subtype) {
                 case 'image':
-                    o.click(pb.image_click);
+                    register_handler(pbo.event, o, pb.image_click);
                     break;
                 case 'ajax':
-                    o.click(pb.ajax_click);
+                    register_handler(pbo.event, o, pb.ajax_click);
                     break;
                 case 'iframe':
                     pb.create_content_div(pbo);
