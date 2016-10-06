@@ -10,7 +10,10 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- An overlay registered by the prepOverlay function can now be optionally be
+  triggered by a hover or doubleclick event, instead of click.
+  [petri]
+
 
 Bug fixes:
 
