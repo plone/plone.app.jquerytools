@@ -132,6 +132,20 @@ The code::
              urlreplace: '_preview'
             });
 
+What if you want the lightbox-style larger image to open upon doubleclick or
+hover, instead? Just add a "event" attribute to override the default::
+
+    $('.newsImageContainer a')
+        .prepOverlay({
+             subtype: 'image',
+             urlmatch: '/image_view_fullscreen$',
+             urlreplace: '_preview',
+             event: 'dblclick'
+            });
+
+The optional "event" attribute takes one of three values: either the default
+"click", "dblclick", or "hover".
+
 Another quick example, one that provides full-image popups for images placed
 via kupu::
 
