@@ -4,20 +4,12 @@ Changelog
 1.8.1 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - An overlay registered by the prepOverlay function can now be optionally be
   triggered by a hover or doubleclick event, instead of click.
   [petri]
 
-
-Bug fixes:
-
-- *add item here*
 
 
 1.8.0 (2016-08-12)
