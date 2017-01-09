@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fix initaliziation of minimum and maximum dates in DateInput.
+  [msom]
 
 
 1.9.0 (2016-12-02)
