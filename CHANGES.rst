@@ -14,7 +14,7 @@ New features:
 
 Bug fixes:
 
-- Fix initaliziation of minimum and maximum dates in DateInput.
+- Fix initialization of minimum and maximum dates in DateInput.
   [msom]
 
 
