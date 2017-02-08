@@ -6,12 +6,8 @@ Changelog
 
 Bug fixes:
 
-- Fix for dotted path form ids.
-  [malsup]
-
-- Fix initaliziation of minimum and maximum dates in dateinput.
+- Updated jquery.form and jquery.tools to latest versions.
   [msom]
-
 
 1.9.0 (2016-12-02)
 ------------------
