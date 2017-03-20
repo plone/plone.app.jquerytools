@@ -4,18 +4,10 @@ Changelog
 1.9.1 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
-- *add item here*
-
+- Updated jquery.form and jquery.tools to latest versions.
+  [msom]
 
 1.9.0 (2016-12-02)
 ------------------
@@ -25,7 +17,6 @@ New features:
 - An overlay registered by the prepOverlay function can now be optionally be
   triggered by a hover or doubleclick event, instead of click.
   [petri]
-
 
 
 1.8.0 (2016-08-12)
