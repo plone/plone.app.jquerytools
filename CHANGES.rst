@@ -14,7 +14,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Update ``Gruntfile.js`` with master branch of collective/jquerytools.
+  Update docs with info about our jQuery Tools fork.
+  [thet]
 
 
 1.9.1 (2017-03-23)

@@ -17,6 +17,8 @@ The AJAX and AJAX-form support is Plone-specific, and is documented in this modu
 Dateinput, rangeinput, accordions, and tooltips are all unchanged from
 jquerytools, and the jquerytools docs should be consulted.
 
+plone.app.jquerytools uses a jQuery 1.9+ compatible fork of jquerytools, located at: https://github.com/collective/jquerytools
+
 .. contents::
 
 
@@ -36,6 +38,13 @@ Then install the rest locally::
     $ npm install
 
 For more information see: http://gruntjs.com/getting-started
+
+To update the repository, simply run::
+
+    $ grunt
+
+.. note::
+    You need git to be installed.
 
 
 Available resources
