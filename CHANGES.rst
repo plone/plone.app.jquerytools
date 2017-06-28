@@ -4,14 +4,6 @@ Changelog
 1.9.2 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Update ``Gruntfile.js`` with master branch of collective/jquerytools.
