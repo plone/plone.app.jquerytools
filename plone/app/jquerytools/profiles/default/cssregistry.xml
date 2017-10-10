@@ -5,7 +5,7 @@
         id="++resource++plone.app.jquerytools.overlays.css"
         media="screen" rel="stylesheet" rendering="link"
         cacheable="True" compression="safe" cookable="True"
-        enabled="1" expression=""/>
+        enabled="0" expression=""/>
 
     <stylesheet title=""
         id="++resource++plone.app.jquerytools.dateinput.css"
