@@ -14,7 +14,7 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Disabled overlays.css to match upgradestep.
 
 
 1.9.2 (2017-06-28)
