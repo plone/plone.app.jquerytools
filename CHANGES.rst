@@ -4,18 +4,11 @@ Changelog
 1.9.3 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Disabled overlays.css to match upgradestep.
-
+  [jaroel]
+ 
 
 1.9.2 (2017-06-28)
 ------------------
