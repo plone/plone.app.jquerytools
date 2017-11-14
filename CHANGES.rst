@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Please pyScss. Makes it compatible with Plone 5.1.
+  [thomasdesvenain]
 
 
 1.9.3 (2017-10-11)

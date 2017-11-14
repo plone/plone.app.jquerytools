@@ -163,11 +163,11 @@ a.caldisabled {
 }
 
 #calprev {
-background-image:url(++resource++plone.app.jquerytools.prev.gif);
+background-image:url("++resource++plone.app.jquerytools.prev.gif");
 }
 
 #calnext {
-background-image:url(++resource++plone.app.jquerytools.next.gif);
+background-image:url("++resource++plone.app.jquerytools.next.gif");
 }
 
 #calroot {
