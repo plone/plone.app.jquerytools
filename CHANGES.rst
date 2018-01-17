@@ -14,7 +14,7 @@ New features:
 
 Bug fixes:
 
-- Please pyScss. Makes it compatible with Plone 5.1.
+- Please pyScss by adding quotes in the urls. Makes it compatible with Plone 5.1.
   [thomasdesvenain]
 
 
@@ -25,7 +25,7 @@ Bug fixes:
 
 - Disabled overlays.css to match upgradestep.
   [jaroel]
- 
+
 
 1.9.2 (2017-06-28)
 ------------------
