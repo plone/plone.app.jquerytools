@@ -4,14 +4,6 @@ Changelog
 1.9.4 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Please pyScss by adding quotes in the urls. Makes it compatible with Plone 5.1.
