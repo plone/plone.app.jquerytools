@@ -21,7 +21,7 @@ div.overlay-iframe {
 /* default close button positioned on upper-left corner */
 div.overlaybg div.close,
 div.overlay div.close {
-    background-image: url(++resource++plone.app.jquerytools.pb_close.png);
+    background-image: url("++resource++plone.app.jquerytools.pb_close.png");
     position: absolute;
     left: -14px;
     top: -14px;
@@ -86,7 +86,7 @@ div.overlay .formTab {
 div.overlay .formTab.lastFormTab {
     margin-right:0em;
 }
-div.overlay .formControls a { 
+div.overlay .formControls a {
     display: block;
     margin: 0.75em;
 }

@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- More quote fixes for scss
+  [agitator]
 
 
 1.9.4 (2018-01-17)
