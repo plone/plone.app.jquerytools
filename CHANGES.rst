@@ -4,14 +4,6 @@ Changelog
 1.9.5 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - More quote fixes for scss
