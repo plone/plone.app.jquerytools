@@ -111,6 +111,15 @@
         for="Products.CMFCore.interfaces.ISiteRoot"
         />
 
+    <genericsetup:registerProfile
+        name="uninstall"
+        title="Plone JQuery Tools Integration (Uninstall)"
+        directory="profiles/uninstall"
+        description="Uninstalls the profile for Plone's JQuery Tools resources."
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        for="Products.CMFCore.interfaces.ISiteRoot"
+        />
+
     <!-- custom steps for installation profile -->
     <genericsetup:importStep
         name="jquerytools-various"
